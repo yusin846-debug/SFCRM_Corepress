@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand><headerColor>#1B2A4A</headerColor><logo>corepress_lettermark</logo><logoVersion>1</logoVersion></brand>
+    <description>코어프레스 경영 대시보드</description><formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled><isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>CorePress Management</label><navType>Standard</navType>
+    <tabs>standard-home</tabs><tabs>standard-Dashboard</tabs><tabs>standard-report</tabs><tabs>standard-Opportunity</tabs>
+    <tabs>standard-Contract</tabs><uiType>Lightning</uiType>
+</CustomApplication>

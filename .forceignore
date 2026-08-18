@@ -1,0 +1,5 @@
+# Local source previews for ContentAsset PNG placeholders.
+**/contentassets/*.png
+
+**/jsconfig.json
+**/.eslintrc.json

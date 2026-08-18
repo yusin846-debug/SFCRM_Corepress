@@ -1,0 +1,16 @@
+# Salesforce CLI local authentication and state
+.sf/
+.sfdx/
+
+# Local retrieve scratch directories
+.tmp-retrieve/
+.tmp-retrieve2/
+
+# Editor and OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs and test output
+*.log
+coverage/
