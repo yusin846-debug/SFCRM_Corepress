@@ -100,45 +100,18 @@
             ><span class="next">다음 정비 2026.12.28</span>
           </div>
         </div>
-        <div class="featured">
-          <div
-            class="machine"
-            style="
-              overflow: visible;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            "
-          >
-            <img
-              src={cp7100Url}
-              alt="CP7100+ 압축기"
-              style="
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
-                object-position: center;
-                transform: none;
-              "
-            />
-          </div>
-          <div>
-            <em>CP7100+</em>
-            <h2>CP7100+</h2>
-            <small>HIGH FLOW</small>
-            <dl>
-              <dt>용량</dt>
-              <dd>39,000 Nm³/hr</dd>
-              <dt>토출 압력</dt>
-              <dd>15.2 bar A</dd>
-              <dt>구동 방식</dt>
-              <dd>모터 구동</dd>
-              <dt>설치 위치</dt>
-              <dd>여수 2공장</dd>
-              <dt>상태</dt>
-              <dd class="active-state">운전 중</dd>
-            </dl>
-          </div>
+        <div class="asset-health">
+          <header>
+            <h2>설비별 건강도 <img class="info-icon" src={infoIconUrl} alt="설비별 건강도 안내" /></h2>
+            <a href="asset-list">설비 전체 보기 <span>→</span></a>
+          </header>
+          <ul>
+            <li><span class="asset-name"><b>터보압축기 #1</b><small>CP7100+</small></span><span class="score-track"><i class="score-98"></i></span><strong>98</strong><em class="good">양호</em></li>
+            <li><span class="asset-name"><b>압축기 #2</b><small>CP2100</small></span><span class="score-track"><i class="score-94"></i></span><strong>94</strong><em class="good">양호</em></li>
+            <li><span class="asset-name"><b>압축기 #3</b><small>CP100 Pro</small></span><span class="score-track"><i class="score-92"></i></span><strong>92</strong><em class="good">양호</em></li>
+            <li><span class="asset-name"><b>압축기 #4</b><small>CP2100</small></span><span class="score-track"><i class="score-89"></i></span><strong>89</strong><em class="watch">관찰</em></li>
+            <li><span class="asset-name"><b>압축기 #5</b><small>CP7100+</small></span><span class="score-track"><i class="score-76"></i></span><strong>76</strong><em class="attention">점검 필요</em></li>
+          </ul>
         </div>
       </section>
       <section class="stepper" id="requests">
