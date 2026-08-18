@@ -46,7 +46,7 @@
                                     <p>담당자가 상황을 정확히 파악할 수 있도록 자세히 작성해 주세요.</p>
                                     <label class="field"><span>요청 제목 <em>필수</em></span><input name="subject" type="text" maxlength="255" placeholder="예: 운전 중 비정상 진동과 소음 발생" required /></label>
                                     <label class="field"><span>상세 내용 <em>필수</em></span><textarea name="description" rows="6" placeholder="증상 발생 시점, 빈도, 현재 운전 상태 등을 입력해 주세요." required></textarea></label>
-                                    <label class="field"><span>현장 사진 및 자료 <small>선택</small></span><input class="file-input" name="files" type="file" accept="image/*,.pdf" multiple /></label>
+                                    <div class="field"><span>현장 사진 및 자료 <small>선택</small></span><label class="file-upload"><input name="files" type="file" accept="image/*,.pdf" multiple onchange={handleFileChange} /><span class="file-button">파일 선택 <b aria-hidden="true">+</b></span><span class="file-name">{selectedFileLabel}</span></label><p class="file-help">이미지 또는 PDF 파일을 첨부할 수 있습니다.</p></div>
                                 </div>
                             </section>
                         </div>
@@ -58,7 +58,7 @@
                             <div class="support-note"><strong>긴급 지원이 필요하신가요?</strong><span>설비 정지 등 긴급 상황은 접수 후 고객센터로 연락해 주세요.</span><a href="tel:15880000">1588-0000</a></div>
                         </aside>
                     </div>
-                    <div class="form-actions"><button class="cancel" type="button" onclick={handleCancel}>취소</button><button class="submit" type="submit">서비스 요청 접수 <span aria-hidden="true">→</span></button></div>
+                    <div class="form-actions"><button class="cancel" type="button" onclick={handleCancel}>취소</button><button class="submit" type="submit"><span>서비스 요청 접수</span><b aria-hidden="true">→</b></button></div>
                 </form>
             </section>
         </template>
