@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>CorePress Asset List</masterLabel>
+    <description>CorePress 고객 포털 보유 설비 목록</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="detailUrl" type="String" label="설비 상세 경로" default="asset-detail" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
