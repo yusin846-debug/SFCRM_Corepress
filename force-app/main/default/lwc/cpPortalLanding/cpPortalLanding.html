@@ -23,7 +23,7 @@
                 <p class="hero-description">{heroDescription}</p>
                 <div class="hero-actions">
                     <a class="button button-outline" href={loginUrl}>고객 포털 접속 <span aria-hidden="true">→</span></a>
-                    <a class="text-action" href="#products">카탈로그 보기 <span aria-hidden="true">→</span></a>
+                    <button class="text-action catalog-trigger" type="button" onclick={openCatalogModal}>카탈로그 보기 <span aria-hidden="true">→</span></button>
                 </div>
             </div>
             <div class="hero-metrics" aria-label="서비스 상태 요약">
@@ -54,4 +54,30 @@
             </div>
         </section>
     </main>
+
+    <template if:true={isCatalogModalOpen}>
+        <section class="modal-backdrop" role="presentation" onclick={handleBackdropClick} onkeydown={handleModalKeydown}>
+            <div class="catalog-modal" role="dialog" aria-modal="true" aria-label="카탈로그 문의">
+                <button class="modal-close" type="button" aria-label="닫기" onclick={closeCatalogModal}>×</button>
+                <template if:false={isCatalogSubmitted}>
+                    <header class="modal-heading"><p>PRODUCT CATALOG</p><h2>카탈로그 문의</h2><span>관심 제품과 연락처를 남겨 주시면 제품 카탈로그를 안내해 드립니다.</span></header>
+                    <form onsubmit={submitCatalogInquiry} novalidate>
+                        <div class="form-grid">
+                            <label>회사명 <em>*</em><input class="first-field" name="company" type="text" autocomplete="organization" required /></label>
+                            <label>담당자명 <em>*</em><input name="name" type="text" autocomplete="name" required /></label>
+                            <label>이메일 <em>*</em><input name="email" type="email" autocomplete="email" required /></label>
+                            <label>연락처 <em>*</em><input name="phone" type="tel" autocomplete="tel" pattern="[0-9+() -]{8,20}" required /></label>
+                            <label class="full">관심 제품 <em>*</em><select name="product" required><option value="">제품을 선택해 주세요</option><option>CP100 Pro</option><option>CP2100</option><option>CP7100+</option><option>전체 제품</option></select></label>
+                            <label class="full">문의 내용<textarea name="message" rows="3" placeholder="적용 공정이나 필요한 사양을 입력해 주세요."></textarea></label>
+                        </div>
+                        <label class="consent"><input name="consent" type="checkbox" required /><span>카탈로그 제공을 위한 개인정보 수집 및 이용에 동의합니다. <em>*</em></span></label>
+                        <div class="modal-actions"><button class="cancel" type="button" onclick={closeCatalogModal}>취소</button><button class="submit" type="submit">문의 요청 <span aria-hidden="true">→</span></button></div>
+                    </form>
+                </template>
+                <template if:true={isCatalogSubmitted}>
+                    <div class="success-state"><span class="success-mark">✓</span><p>REQUEST COMPLETE</p><h2>문의가 접수되었습니다</h2><div>담당자가 확인한 후 입력하신 이메일로 카탈로그를 안내해 드립니다.</div><template if:true={hasCatalogUrl}><a class="download" href={catalogUrl} target="_blank" rel="noopener">카탈로그 바로 보기 <span aria-hidden="true">→</span></a></template><button class="close-complete" type="button" onclick={closeCatalogModal}>닫기</button></div>
+                </template>
+            </div>
+        </section>
+    </template>
 </template>

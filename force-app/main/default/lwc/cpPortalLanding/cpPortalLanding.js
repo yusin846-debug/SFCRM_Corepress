@@ -14,6 +14,7 @@ export default class CpPortalLanding extends LightningElement {
     @api heroDescription =
         '설치부터 보증, 현장 서비스까지\n압축기의 전체 수명주기를 한곳에서 관리합니다.';
     @api loginUrl = 'login';
+    @api catalogUrl;
 
     coverImageUrl = coverImage;
     headerLogoUrl = headerLogo;
@@ -24,4 +25,41 @@ export default class CpPortalLanding extends LightningElement {
     supportIconUrl = supportIcon;
     maintenanceIconUrl = maintenanceIcon;
     portalUserIconUrl = portalUserIcon;
+    isCatalogModalOpen = false;
+    isCatalogSubmitted = false;
+
+    get hasCatalogUrl() {
+        return Boolean(this.catalogUrl);
+    }
+
+    openCatalogModal() {
+        this.isCatalogSubmitted = false;
+        this.isCatalogModalOpen = true;
+        window.requestAnimationFrame(() => {
+            this.template.querySelector('.first-field')?.focus();
+        });
+    }
+
+    closeCatalogModal() {
+        this.isCatalogModalOpen = false;
+        this.isCatalogSubmitted = false;
+    }
+
+    handleBackdropClick(event) {
+        if (event.target === event.currentTarget) this.closeCatalogModal();
+    }
+
+    handleModalKeydown(event) {
+        if (event.key === 'Escape') this.closeCatalogModal();
+    }
+
+    submitCatalogInquiry(event) {
+        event.preventDefault();
+        const fields = [...this.template.querySelectorAll('.catalog-modal input, .catalog-modal select, .catalog-modal textarea')];
+        const isValid = fields.reduce((valid, field) => {
+            field.reportValidity();
+            return valid && field.checkValidity();
+        }, true);
+        if (isValid) this.isCatalogSubmitted = true;
+    }
 }

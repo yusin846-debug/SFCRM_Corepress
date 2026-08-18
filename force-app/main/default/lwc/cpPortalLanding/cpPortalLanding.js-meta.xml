@@ -13,6 +13,7 @@
             <property name="heroTitle" type="String" label="히어로 제목" default="공정을 멈추지 않는 서비스" />
             <property name="heroDescription" type="String" label="히어로 설명" default="설치부터 보증, 현장 서비스까지 압축기의 전체 수명주기를 한곳에서 관리합니다." />
             <property name="loginUrl" type="String" label="포털 로그인 경로" default="login" />
+            <property name="catalogUrl" type="String" label="카탈로그 다운로드 URL" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
