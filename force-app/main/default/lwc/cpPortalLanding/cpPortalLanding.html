@@ -5,100 +5,59 @@
                 <span class="brand-mark" aria-hidden="true">C</span>
                 <span class="brand-name">COREPRESS</span>
             </a>
-
             <nav class="site-nav" aria-label="주요 메뉴">
-                <a href="#solutions">제품</a>
-                <a href="#service">서비스</a>
-                <a href="#technology">기술</a>
-                <a href="#support">지원</a>
+                <a href="#products">제품</a><a href="#service">서비스</a>
+                <a href="#technology">기술자료</a><a href="#company">회사소개</a>
             </nav>
-
-            <a class="header-action" href={loginUrl}>고객 포털</a>
+            <div class="utility-nav">
+                <span class="locale">KR · EN</span>
+                <a class="portal-link" href={loginUrl}>고객 포털</a>
+            </div>
         </header>
 
         <section class="hero" aria-labelledby="hero-title">
+            <img class="hero-image" src={coverImageUrl} alt="CorePress 압축기 설비를 점검하는 현장 엔지니어" width="1536" height="1024" />
+            <div class="hero-overlay" aria-hidden="true"></div>
             <div class="hero-copy">
                 <p class="eyebrow">DIGITAL SERVICE SOLUTION</p>
                 <h1 id="hero-title">{heroTitle}</h1>
                 <p class="hero-description">{heroDescription}</p>
                 <div class="hero-actions">
-                    <a class="button button-primary" href={loginUrl}>고객 포털 접속</a>
-                    <a class="button button-secondary" href="#solutions">제품 살펴보기</a>
+                    <a class="button button-outline" href={loginUrl}>고객 포털 접속 <span aria-hidden="true">→</span></a>
+                    <a class="text-action" href="#products">카탈로그 보기 <span aria-hidden="true">→</span></a>
                 </div>
             </div>
+        </section>
 
-            <div class="hero-visual">
-                <img
-                    src={coverImageUrl}
-                    alt="CorePress 오일프리 원심 공기압축기 엔지니어링 도면"
-                    width="1400"
-                    height="992"
-                />
+        <section class="product-section" id="products" aria-labelledby="product-title">
+            <div class="section-heading">
+                <div><p class="section-kicker">PRODUCT LINEUP</p><h2 id="product-title">현장 조건에 맞는 압축기 라인업</h2></div>
+                <a class="all-products" href="#technology">전체 제품 보기 <span aria-hidden="true">→</span></a>
+            </div>
+            <img class="lineup-image" src={lineupImageUrl} alt="CorePress CP100 Pro, CP2100, CP7100+ 압축기 제품 3종" width="1536" height="1024" loading="lazy" />
+            <div class="product-meta">
+                <article><p class="product-code">CP100 Pro</p><p>높은 효율과 신뢰성의 표준 솔루션</p><a href="#service">자세히 보기 <span aria-hidden="true">→</span></a></article>
+                <article><p class="product-code">CP2100</p><p>컴팩트 설계로 공간 효율 극대화</p><a href="#service">자세히 보기 <span aria-hidden="true">→</span></a></article>
+                <article><p class="product-code">CP7100+</p><p>대유량과 고효율로 공정 성능 극대화</p><a href="#service">자세히 보기 <span aria-hidden="true">→</span></a></article>
             </div>
         </section>
 
-        <section class="promise" id="service" aria-labelledby="promise-title">
-            <div class="promise-heading">
-                <p class="section-kicker">CONNECTED SERVICE</p>
-                <h2 id="promise-title">설비의 전 생애주기를 연결합니다</h2>
+        <section class="service-section" id="service" aria-labelledby="service-title">
+            <div class="service-intro">
+                <p class="section-kicker">CONNECTED SERVICE</p><h2 id="service-title">설비의 전 생애주기를 연결합니다</h2>
+                <p>설치 정보와 서비스 이력을 한곳에서 확인하고 필요한 지원을 빠르게 요청할 수 있습니다.</p>
             </div>
-            <p class="promise-copy">
-                설치 정보와 서비스 이력을 한곳에서 확인하고, 필요한 지원을 빠르게 요청할 수 있습니다.
-            </p>
+            <div class="service-list" id="technology">
+                <article><span>24/7</span><div><h3>연속 운전 지원</h3><p>장비 상태와 서비스 요청의 진행 상황을 연결합니다.</p></div></article>
+                <article><span>01</span><div><h3>자산 정보</h3><p>압축기 정보, 보증 기간, 관련 문서를 확인합니다.</p></div></article>
+                <article><span>02</span><div><h3>서비스 요청</h3><p>현장 상황을 접수하고 처리 단계를 확인합니다.</p></div></article>
+            </div>
         </section>
 
-        <section class="service-grid" id="technology" aria-label="CorePress 서비스 특징">
-            <article class="service-feature service-feature-primary">
-                <span class="feature-index" aria-hidden="true">24/7</span>
-                <h3>연속 운전 지원</h3>
-                <p>현장과 서비스 조직을 연결해 장비 상태와 요청 진행 상황을 놓치지 않습니다.</p>
-            </article>
-
-            <article class="service-feature">
-                <span class="feature-index" aria-hidden="true">01</span>
-                <h3>자산 정보</h3>
-                <p>등록된 압축기의 기본 정보, 보증 기간, 관련 문서를 빠르게 확인합니다.</p>
-            </article>
-
-            <article class="service-feature">
-                <span class="feature-index" aria-hidden="true">02</span>
-                <h3>서비스 요청</h3>
-                <p>현장 상황을 정리해 접수하고 처리 단계와 담당 진행 정보를 확인합니다.</p>
-            </article>
-        </section>
-
-        <section class="product-section" id="solutions" aria-labelledby="product-title">
-            <div class="product-copy">
-                <p class="section-kicker">OIL-FREE CENTRIFUGAL AIR COMPRESSOR</p>
-                <h2 id="product-title">신뢰할 수 있는 압축공기 솔루션</h2>
-                <p>
-                    고효율 임펠러와 내구성 높은 기어 시스템을 기반으로 공정에 맞는 제품군을 제공합니다.
-                </p>
-                <a class="text-link" href="#support">제품 상담 요청 <span aria-hidden="true">→</span></a>
-            </div>
-
-            <figure class="product-visual">
-                <img
-                    src={lineupImageUrl}
-                    alt="CorePress CP100 Pro, CP2100, CP7100+ 제품 라인업"
-                    width="1400"
-                    height="992"
-                    loading="lazy"
-                />
-            </figure>
-        </section>
-
-        <section class="support" id="support" aria-labelledby="support-title">
-            <div>
-                <p class="section-kicker">CUSTOMER SUPPORT</p>
-                <h2 id="support-title">필요한 지원을 바로 시작하세요</h2>
-            </div>
+        <section class="support" id="company" aria-labelledby="support-title">
+            <div><p class="section-kicker">CUSTOMER SUPPORT</p><h2 id="support-title">필요한 지원을 바로 시작하세요</h2></div>
             <a class="button button-light" href={loginUrl}>포털에서 요청하기</a>
         </section>
-
-        <footer class="site-footer">
-            <span class="footer-brand">COREPRESS</span>
-            <p>Engineering beyond standards</p>
-        </footer>
+        <footer class="site-footer"><span class="footer-brand">COREPRESS</span><p>Engineering beyond standards</p></footer>
     </main>
 </template>
