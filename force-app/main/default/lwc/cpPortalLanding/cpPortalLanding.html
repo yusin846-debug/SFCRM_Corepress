@@ -38,35 +38,19 @@
                 <div><p class="section-kicker">PRODUCT LINEUP</p><h2 id="product-title">현장 조건에 맞는 압축기 라인업</h2></div>
                 <a class="all-products" href="#technology">전체 제품 보기 <span aria-hidden="true">→</span></a>
             </div>
-            <div class="product-showcase">
-                <article class="product-stage" aria-live="polite">
-                    <div class="product-visual">
-                        <img src={selectedProduct.imageUrl} alt={selectedProduct.imageAlt} width="1024" height="1024" loading="lazy" />
-                    </div>
-                    <div class="product-caption">
-                        <p>{selectedProduct.category}</p>
-                        <h3>{selectedProduct.name}</h3>
-                        <span>{selectedProduct.description}</span>
-                        <a href="#technology">제품 자세히 보기 <span aria-hidden="true">→</span></a>
-                    </div>
-                    <div class="product-tabs" role="tablist" aria-label="제품 선택">
-                        <template for:each={productTabs} for:item="product">
-                            <button key={product.id} class={product.tabClass} type="button" role="tab" aria-selected={product.ariaSelected} data-product={product.id} onclick={selectProduct}>{product.name}</button>
-                        </template>
-                    </div>
+            <div class="product-grid">
+                <article>
+                    <div class="product-image"><img src={cp100ImageUrl} alt="CP100 Pro 압축기" width="1024" height="1024" loading="lazy" /></div>
+                    <div><p class="product-code">CP100 Pro</p><small>HIGH EFFICIENCY</small><p>고효율과 안정성을 갖춘 표준형 모델</p><a href="#products">제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
                 </article>
-                <aside class="product-outcomes" aria-label={selectedProduct.name}>
-                    <div class="outcome-heading"><p>FIELD PERFORMANCE</p><h3>현장에서 확인하는<br />운영 성과</h3><span>선택한 압축기의 핵심 운용 가치를 확인하세요.</span></div>
-                    <div class="outcome-list">
-                        <template for:each={selectedProduct.outcomes} for:item="outcome">
-                            <div class="outcome" key={outcome.label}>
-                                <p>{outcome.label}</p>
-                                <strong>{outcome.value}<small>{outcome.unit}</small></strong>
-                                <span>{outcome.note}</span>
-                            </div>
-                        </template>
-                    </div>
-                </aside>
+                <article>
+                    <div class="product-image"><img src={cp2100ImageUrl} alt="CP2100 압축기" width="1024" height="1024" loading="lazy" /></div>
+                    <div><p class="product-code">CP2100</p><small>COMPACT · LOW FLOW</small><p>좁은 공간에도 설치 가능한 컴팩트 모델</p><a href="#products">제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
+                </article>
+                <article>
+                    <div class="product-image"><img src={cp7100ImageUrl} alt="CP7100+ 압축기" width="1024" height="1024" loading="lazy" /></div>
+                    <div><p class="product-code">CP7100+</p><small>HIGH FLOW</small><p>대유량 공정에 최적화된 고효율 모델</p><a href="#products">제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
+                </article>
             </div>
         </section>
     </main>
