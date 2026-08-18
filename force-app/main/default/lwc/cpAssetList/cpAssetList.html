@@ -11,13 +11,13 @@
         <main>
             <header class="page-heading">
                 <h1>보유 설비</h1>
-                <p>등록 설비 5대 <span></span><b>운전 중 4대</b><span></span><em>점검 필요 1대</em></p>
+                <p class="summary"><span><img src={registeredIconUrl} alt="" />등록 설비 5대</span><span><img src={summaryOperatingIconUrl} alt="" />운전 중 4대</span><span class="attention"><img src={summaryWarningIconUrl} alt="" />점검 필요 1대</span></p>
             </header>
 
             <section class="controls" aria-label="보유 설비 검색 및 필터">
-                <label class="search"><span aria-hidden="true">⌕</span><input type="search" placeholder="설비명 또는 일련번호 검색" value={searchTerm} oninput={handleSearch} /></label>
+                <label class="search"><img src={searchIconUrl} alt="검색" /><input type="search" placeholder="설비명 또는 일련번호 검색" value={searchTerm} oninput={handleSearch} /></label>
                 <div class="filters"><button class={allFilterClass} onclick={showAll}>전체 <b>5</b></button><button class={runningFilterClass} onclick={showRunning}>운전 중 <b>4</b></button><button class={attentionFilterClass} onclick={showAttention}>점검 필요 <b>1</b></button></div>
-                <div class="view-toggle" aria-label="보기 방식"><button class={gridButtonClass} onclick={showGrid} aria-label="카드 보기">▦</button><button class={listButtonClass} onclick={showList} aria-label="목록 보기">☷</button></div>
+                <div class="view-toggle" aria-label="보기 방식"><button class={gridButtonClass} onclick={showGrid} aria-label="카드 보기"><img src={gridIconUrl} alt="" /></button><button class={listButtonClass} onclick={showList} aria-label="목록 보기"><img src={listIconUrl} alt="" /></button></div>
             </section>
 
             <section class={gridClass} aria-label="보유 설비 목록">

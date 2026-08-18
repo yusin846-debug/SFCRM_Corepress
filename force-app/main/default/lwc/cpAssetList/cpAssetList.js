@@ -7,6 +7,10 @@ import locationIcon from "@salesforce/resourceUrl/CorePressLocationIcon";
 import operatingIcon from "@salesforce/resourceUrl/CorePressOperatingIcon";
 import warningIcon from "@salesforce/resourceUrl/CorePressWarningIcon";
 import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutIcon";
+import registeredIcon from "@salesforce/resourceUrl/CorePressRegisteredIcon";
+import searchIcon from "@salesforce/resourceUrl/CorePressSearchIcon";
+import gridIcon from "@salesforce/resourceUrl/CorePressGridIcon";
+import listIcon from "@salesforce/resourceUrl/CorePressListIcon";
 
 const ASSETS = [
   {
@@ -76,6 +80,12 @@ export default class CpAssetList extends LightningElement {
   logoUrl = logo;
   locationIconUrl = locationIcon;
   logoutIconUrl = logoutIcon;
+  registeredIconUrl = registeredIcon;
+  summaryOperatingIconUrl = operatingIcon;
+  summaryWarningIconUrl = warningIcon;
+  searchIconUrl = searchIcon;
+  gridIconUrl = gridIcon;
+  listIconUrl = listIcon;
   searchTerm = "";
   activeFilter = "전체";
   viewMode = "grid";
