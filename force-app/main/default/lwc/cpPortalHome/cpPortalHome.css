@@ -45,14 +45,22 @@ a {
   gap: 40px;
 }
 .cp-gnb nav a {
+  position: relative;
   padding: 22px 0 18px;
   color: rgba(255, 255, 255, 0.75);
   font-size: 15px;
-  border-bottom: 3px solid transparent;
 }
 .cp-gnb nav .active {
   color: white;
-  border-color: var(--cp-teal);
+}
+.cp-gnb nav .active::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  left: 0;
+  height: 3px;
+  background: var(--cp-teal);
 }
 .user {
   justify-self: end;
@@ -403,23 +411,32 @@ h2 {
   height: 2px;
   background: #55bcb7;
 }
-.primary {
+.step-actions .service-request-button {
   min-width: 180px;
+  width: 180px;
   padding: 14px 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: white;
-  background: var(--cp-navy);
+  flex: 0 0 auto;
+  color: #ffffff !important;
+  background: #071a3d !important;
+  border: 1px solid #071a3d;
   font-size: 14px;
+  font-weight: 650;
   border-radius: 4px;
+}
+.step-actions .service-request-button:hover,
+.step-actions .service-request-button:focus-visible {
+  color: #ffffff !important;
+  background: #0c2859 !important;
 }
 .step-actions {
   display: grid;
   gap: 9px;
 }
 .asset-link {
-  color: #159c92;
+  color: #159c92 !important;
   font-size: 12px;
   font-weight: 550;
 }
@@ -453,26 +470,31 @@ th {
 }
 .badge {
   padding: 3px 11px;
-  border: 1px solid currentColor;
+  border: 1px solid transparent;
   border-radius: 4px;
+  font-weight: 550;
 }
 .new {
-  color: #2f6d8a;
-  background: #f3f8fa;
+  color: #376d86;
+  border-color: #b9d5df;
+  background: #f4fafc;
 }
 .assigned {
-  color: #238f89;
-  background: #f1faf9;
+  color: #2e827e;
+  border-color: #b9dfdb;
+  background: #f3fbfa;
 }
 .progress {
-  color: #168f84;
-  background: #eef9f8;
+  color: #237e88;
+  border-color: #b7dce0;
+  background: #f2fafb;
 }
 .link {
   display: inline-block;
   margin-top: 16px;
-  color: #159c92;
+  color: #159c92 !important;
   font-size: 12px;
+  font-weight: 550;
 }
 .notices {
   margin: 0;
