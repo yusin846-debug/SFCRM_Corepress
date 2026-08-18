@@ -178,8 +178,11 @@ h2 {
   border-radius: 50%;
   background: conic-gradient(
     from -90deg,
-    var(--cp-teal) 0 98%,
-    rgba(46, 196, 182, 0.2) 98% 100%
+    #1daaa5 0%,
+    #4ecbc0 38%,
+    #8addd5 68%,
+    #2eb7b0 98%,
+    rgba(46, 196, 182, 0.16) 98% 100%
   );
 }
 .ring > div {
@@ -271,29 +274,40 @@ h2 {
     #000 calc(100% - 6px)
   );
 }
-.gauge-center {
+.gauge-needle {
   position: absolute;
-  top: 45px;
+  z-index: 2;
+  top: 73px;
   left: 50%;
   width: 45px;
-  height: 45px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--cp-border);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--cp-navy);
+  transform: rotate(254deg);
+  transform-origin: 0 50%;
+}
+.gauge-needle::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -1px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--cp-white);
+  background: var(--cp-teal);
+}
+.gauge-hub {
+  position: absolute;
+  z-index: 3;
+  top: 67px;
+  left: 50%;
+  width: 13px;
+  height: 13px;
+  border: 3px solid var(--cp-white);
+  border-radius: 50%;
+  background: var(--cp-navy);
+  box-shadow: 0 0 0 1px rgba(27, 42, 74, 0.18);
   transform: translateX(-50%);
-}
-.gauge-center b {
-  color: var(--cp-navy);
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-.gauge-center small {
-  margin-top: 2px;
-  color: var(--cp-text-caption);
-  font-size: 8px;
 }
 .gauge-summary {
   margin: -8px 0 8px;
