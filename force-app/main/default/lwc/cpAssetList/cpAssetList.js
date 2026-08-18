@@ -6,11 +6,13 @@ import cp7100 from "@salesforce/resourceUrl/CorePressCP7100";
 import locationIcon from "@salesforce/resourceUrl/CorePressLocationIcon";
 import operatingIcon from "@salesforce/resourceUrl/CorePressSummaryOperatingIcon";
 import warningIcon from "@salesforce/resourceUrl/CorePressSummaryWarningIcon";
-import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutIcon";
+import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutWhiteIcon";
 import registeredIcon from "@salesforce/resourceUrl/CorePressRegisteredIcon";
 import searchIcon from "@salesforce/resourceUrl/CorePressSearchIcon";
-import gridIcon from "@salesforce/resourceUrl/CorePressGridIcon";
-import listIcon from "@salesforce/resourceUrl/CorePressListIcon";
+import gridIconActive from "@salesforce/resourceUrl/CorePressGridIconActive";
+import gridIconInactive from "@salesforce/resourceUrl/CorePressGridIconInactive";
+import listIconActive from "@salesforce/resourceUrl/CorePressListIconActive";
+import listIconInactive from "@salesforce/resourceUrl/CorePressListIconInactive";
 
 const ASSETS = [
   {
@@ -84,8 +86,6 @@ export default class CpAssetList extends LightningElement {
   summaryOperatingIconUrl = operatingIcon;
   summaryWarningIconUrl = warningIcon;
   searchIconUrl = searchIcon;
-  gridIconUrl = gridIcon;
-  listIconUrl = listIcon;
   searchTerm = "";
   activeFilter = "전체";
   viewMode = "grid";
@@ -119,6 +119,18 @@ export default class CpAssetList extends LightningElement {
   }
   get gridClass() {
     return this.viewMode === "grid" ? "asset-grid" : "asset-grid list-view";
+  }
+  get isGridView() {
+    return this.viewMode === "grid";
+  }
+  get isListView() {
+    return this.viewMode === "list";
+  }
+  get currentGridIconUrl() {
+    return this.isGridView ? gridIconActive : gridIconInactive;
+  }
+  get currentListIconUrl() {
+    return this.isListView ? listIconActive : listIconInactive;
   }
   get allFilterClass() {
     return this.activeFilter === "전체" ? "filter active" : "filter";
@@ -164,5 +176,9 @@ export default class CpAssetList extends LightningElement {
   }
   showList() {
     this.viewMode = "list";
+  }
+  handleLogout() {
+    const returnUrl = encodeURIComponent("/corepressvforcesite/s/");
+    window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`);
   }
 }

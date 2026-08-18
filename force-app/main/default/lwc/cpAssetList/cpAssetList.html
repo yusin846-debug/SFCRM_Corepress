@@ -5,7 +5,7 @@
             <nav aria-label="고객 포털 주요 메뉴">
                 <a href="portal-home">홈</a><a class="active" href="asset-list">보유 설비</a><a href="service-requests">서비스 요청</a><a href="rfp-list">RFP·RFQ</a><a href="quotes">견적</a>
             </nav>
-            <div class="user">대한케미컬 · 김유신 <span></span><a href="logout"><img src={logoutIconUrl} alt="" />로그아웃</a></div>
+            <div class="user">대한케미컬 · 김유신 <span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div>
         </header>
 
         <main>
@@ -17,7 +17,7 @@
             <section class="controls" aria-label="보유 설비 검색 및 필터">
                 <label class="search"><img src={searchIconUrl} alt="검색" /><input type="search" placeholder="설비명 또는 일련번호 검색" value={searchTerm} oninput={handleSearch} /></label>
                 <div class="filters"><button class={allFilterClass} onclick={showAll}>전체 <b>5</b></button><button class={runningFilterClass} onclick={showRunning}>운전 중 <b>4</b></button><button class={attentionFilterClass} onclick={showAttention}>점검 필요 <b>1</b></button></div>
-                <div class="view-toggle" aria-label="보기 방식"><button class={gridButtonClass} onclick={showGrid} aria-label="카드 보기"><img src={gridIconUrl} alt="" /></button><button class={listButtonClass} onclick={showList} aria-label="목록 보기"><img src={listIconUrl} alt="" /></button></div>
+                <div class="view-toggle" aria-label="보기 방식"><button class={gridButtonClass} onclick={showGrid} aria-label="카드 보기" aria-pressed={isGridView}><img src={currentGridIconUrl} alt="" /></button><button class={listButtonClass} onclick={showList} aria-label="목록 보기" aria-pressed={isListView}><img src={currentListIconUrl} alt="" /></button></div>
             </section>
 
             <section class={gridClass} aria-label="보유 설비 목록">

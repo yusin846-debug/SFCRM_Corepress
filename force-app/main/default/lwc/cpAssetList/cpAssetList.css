@@ -71,15 +71,23 @@ a {
   height: 20px;
   border-left: 1px solid rgba(255, 255, 255, 0.55);
 }
-.user a {
+.logout {
+  padding: 5px 0;
   display: flex;
   align-items: center;
+  gap: 7px;
+  border: 0;
   color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  background: transparent;
 }
-.user img {
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
+.logout img {
+  width: 17px;
+  height: 17px;
   object-fit: contain;
 }
 main {
@@ -181,30 +189,31 @@ main {
 .view-toggle {
   justify-self: end;
   display: flex;
+  overflow: hidden;
+  border: 1px solid #d5dee8;
+  border-radius: 5px;
+  background: #fff;
 }
 .view-button {
   width: 56px;
   height: 44px;
-  border: 1px solid #d5dee8;
-  color: var(--navy);
-  font-size: 20px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  cursor: pointer;
   background: #fff;
 }
 .view-button img {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
 }
-.view-button:first-child {
-  border-radius: 5px 0 0 5px;
-}
 .view-button:last-child {
-  border-left: 0;
-  border-radius: 0 5px 5px 0;
+  border-left: 1px solid #e0e6ed;
 }
 .view-button.active {
-  color: #148e94;
-  border-color: #1caeb0;
+  position: relative;
+  z-index: 1;
   box-shadow: 0 0 0 1px #1caeb0 inset;
 }
 .asset-grid {
