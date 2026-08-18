@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>CorePress Portal Landing</masterLabel>
+    <description>CorePress 고객 포털 공개 랜딩 페이지</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="heroTitle" type="String" label="히어로 제목" default="공정을 멈추지 않는 서비스" />
+            <property name="heroDescription" type="String" label="히어로 설명" default="설비 정보부터 서비스 요청까지, CorePress 고객 포털에서 한 번에 연결합니다." />
+            <property name="loginUrl" type="String" label="포털 로그인 경로" default="login" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

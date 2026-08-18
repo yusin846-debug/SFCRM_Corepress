@@ -1,0 +1,104 @@
+<template>
+    <main class="portal" id="main-content">
+        <header class="site-header">
+            <a class="brand" href="#main-content" aria-label="CorePress 홈">
+                <span class="brand-mark" aria-hidden="true">C</span>
+                <span class="brand-name">COREPRESS</span>
+            </a>
+
+            <nav class="site-nav" aria-label="주요 메뉴">
+                <a href="#solutions">제품</a>
+                <a href="#service">서비스</a>
+                <a href="#technology">기술</a>
+                <a href="#support">지원</a>
+            </nav>
+
+            <a class="header-action" href={loginUrl}>고객 포털</a>
+        </header>
+
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-copy">
+                <p class="eyebrow">DIGITAL SERVICE SOLUTION</p>
+                <h1 id="hero-title">{heroTitle}</h1>
+                <p class="hero-description">{heroDescription}</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href={loginUrl}>고객 포털 접속</a>
+                    <a class="button button-secondary" href="#solutions">제품 살펴보기</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <img
+                    src={coverImageUrl}
+                    alt="CorePress 오일프리 원심 공기압축기 엔지니어링 도면"
+                    width="1400"
+                    height="992"
+                />
+            </div>
+        </section>
+
+        <section class="promise" id="service" aria-labelledby="promise-title">
+            <div class="promise-heading">
+                <p class="section-kicker">CONNECTED SERVICE</p>
+                <h2 id="promise-title">설비의 전 생애주기를 연결합니다</h2>
+            </div>
+            <p class="promise-copy">
+                설치 정보와 서비스 이력을 한곳에서 확인하고, 필요한 지원을 빠르게 요청할 수 있습니다.
+            </p>
+        </section>
+
+        <section class="service-grid" id="technology" aria-label="CorePress 서비스 특징">
+            <article class="service-feature service-feature-primary">
+                <span class="feature-index" aria-hidden="true">24/7</span>
+                <h3>연속 운전 지원</h3>
+                <p>현장과 서비스 조직을 연결해 장비 상태와 요청 진행 상황을 놓치지 않습니다.</p>
+            </article>
+
+            <article class="service-feature">
+                <span class="feature-index" aria-hidden="true">01</span>
+                <h3>자산 정보</h3>
+                <p>등록된 압축기의 기본 정보, 보증 기간, 관련 문서를 빠르게 확인합니다.</p>
+            </article>
+
+            <article class="service-feature">
+                <span class="feature-index" aria-hidden="true">02</span>
+                <h3>서비스 요청</h3>
+                <p>현장 상황을 정리해 접수하고 처리 단계와 담당 진행 정보를 확인합니다.</p>
+            </article>
+        </section>
+
+        <section class="product-section" id="solutions" aria-labelledby="product-title">
+            <div class="product-copy">
+                <p class="section-kicker">OIL-FREE CENTRIFUGAL AIR COMPRESSOR</p>
+                <h2 id="product-title">신뢰할 수 있는 압축공기 솔루션</h2>
+                <p>
+                    고효율 임펠러와 내구성 높은 기어 시스템을 기반으로 공정에 맞는 제품군을 제공합니다.
+                </p>
+                <a class="text-link" href="#support">제품 상담 요청 <span aria-hidden="true">→</span></a>
+            </div>
+
+            <figure class="product-visual">
+                <img
+                    src={lineupImageUrl}
+                    alt="CorePress CP100 Pro, CP2100, CP7100+ 제품 라인업"
+                    width="1400"
+                    height="992"
+                    loading="lazy"
+                />
+            </figure>
+        </section>
+
+        <section class="support" id="support" aria-labelledby="support-title">
+            <div>
+                <p class="section-kicker">CUSTOMER SUPPORT</p>
+                <h2 id="support-title">필요한 지원을 바로 시작하세요</h2>
+            </div>
+            <a class="button button-light" href={loginUrl}>포털에서 요청하기</a>
+        </section>
+
+        <footer class="site-footer">
+            <span class="footer-brand">COREPRESS</span>
+            <p>Engineering beyond standards</p>
+        </footer>
+    </main>
+</template>
