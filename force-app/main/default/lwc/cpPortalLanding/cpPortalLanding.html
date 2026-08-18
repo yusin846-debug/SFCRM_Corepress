@@ -38,30 +38,20 @@
                 <div><p class="section-kicker">PRODUCT LINEUP</p><h2 id="product-title">현장 조건에 맞는 압축기 라인업</h2></div>
                 <a class="all-products" href="#technology">전체 제품 보기 <span aria-hidden="true">→</span></a>
             </div>
-            <img class="lineup-image" src={lineupImageUrl} alt="CorePress CP100 Pro, CP2100, CP7100+ 압축기 제품 3종" width="1536" height="1024" loading="lazy" />
-            <div class="product-meta">
-                <article><p class="product-code">CP100 Pro</p><p>높은 효율과 신뢰성의 표준 솔루션</p><a href="#service">자세히 보기 <span aria-hidden="true">→</span></a></article>
-                <article><p class="product-code">CP2100</p><p>컴팩트 설계로 공간 효율 극대화</p><a href="#service">자세히 보기 <span aria-hidden="true">→</span></a></article>
-                <article><p class="product-code">CP7100+</p><p>대유량과 고효율로 공정 성능 극대화</p><a href="#service">자세히 보기 <span aria-hidden="true">→</span></a></article>
+            <div class="product-grid">
+                <article>
+                    <div class="product-image product-image-first"><img src={lineupImageUrl} alt="CP100 Pro 압축기" width="1536" height="1024" loading="lazy" /></div>
+                    <div><p class="product-code">CP100 Pro</p><small>HIGH EFFICIENCY</small><p>고효율과 안정성을 갖춘 표준형 모델</p><a href="#products">제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
+                </article>
+                <article>
+                    <div class="product-image product-image-second"><img src={lineupImageUrl} alt="CP2100 압축기" width="1536" height="1024" loading="lazy" /></div>
+                    <div><p class="product-code">CP2100</p><small>COMPACT · LOW FLOW</small><p>좁은 공간에도 설치 가능한 컴팩트 모델</p><a href="#products">제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
+                </article>
+                <article>
+                    <div class="product-image product-image-third"><img src={lineupImageUrl} alt="CP7100+ 압축기" width="1536" height="1024" loading="lazy" /></div>
+                    <div><p class="product-code">CP7100+</p><small>HIGH FLOW</small><p>대유량 공정에 최적화된 고효율 모델</p><a href="#products">제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
+                </article>
             </div>
         </section>
-
-        <section class="service-section" id="service" aria-labelledby="service-title">
-            <div class="service-intro">
-                <p class="section-kicker">CONNECTED SERVICE</p><h2 id="service-title">설비의 전 생애주기를 연결합니다</h2>
-                <p>설치 정보와 서비스 이력을 한곳에서 확인하고 필요한 지원을 빠르게 요청할 수 있습니다.</p>
-            </div>
-            <div class="service-list" id="technology">
-                <article><span>24/7</span><div><h3>연속 운전 지원</h3><p>장비 상태와 서비스 요청의 진행 상황을 연결합니다.</p></div></article>
-                <article><span>01</span><div><h3>자산 정보</h3><p>압축기 정보, 보증 기간, 관련 문서를 확인합니다.</p></div></article>
-                <article><span>02</span><div><h3>서비스 요청</h3><p>현장 상황을 접수하고 처리 단계를 확인합니다.</p></div></article>
-            </div>
-        </section>
-
-        <section class="support" id="company" aria-labelledby="support-title">
-            <div><p class="section-kicker">CUSTOMER SUPPORT</p><h2 id="support-title">필요한 지원을 바로 시작하세요</h2></div>
-            <a class="button button-light" href={loginUrl}>포털에서 요청하기</a>
-        </section>
-        <footer class="site-footer"><span class="footer-brand">COREPRESS</span><p>Engineering beyond standards</p></footer>
     </main>
 </template>
