@@ -1,7 +1,7 @@
 <template>
   <div class="shell">
     <header class="cp-gnb">
-      <img src="{logoUrl}" alt="CorePress" />
+      <img src={logoUrl} alt="CorePress" />
       <nav>
         <a class="active" href="#home">홈</a><a href="#assets">보유 설비</a
         ><a href="#requests">서비스 요청</a><a href="#rfp">RFP·RFQ</a
@@ -11,7 +11,7 @@
         대한케미컬 · 김유신 <span></span
         ><a href="logout"
           ><img
-            src="{logoutIconUrl}"
+            src={logoutIconUrl}
             alt=""
             style="
               width: 18px;
@@ -31,25 +31,25 @@
         <div class="status">
           <h2>
             설비 현황
-            <img class="info-icon" src="{infoIconUrl}" alt="설비 현황 안내" />
+            <img class="info-icon" src={infoIconUrl} alt="설비 현황 안내" />
           </h2>
           <p>
-            <i><img src="{registeredIconUrl}" alt="" /></i>등록 설비
+            <i><img src={registeredIconUrl} alt="" /></i>등록 설비
             <strong>5<small>대</small></strong>
           </p>
           <p>
-            <i><img src="{operatingIconUrl}" alt="" /></i>운전 중
+            <i><img src={operatingIconUrl} alt="" /></i>운전 중
             <strong>4<small>대</small></strong>
           </p>
           <p>
-            <i><img src="{warningIconUrl}" alt="" /></i>점검 필요
+            <i><img src={warningIconUrl} alt="" /></i>점검 필요
             <strong>1<small>대</small></strong>
           </p>
         </div>
         <div class="health">
           <h2>
             설비 건강도
-            <img class="info-icon" src="{infoIconUrl}" alt="설비 건강도 안내" />
+            <img class="info-icon" src={infoIconUrl} alt="설비 건강도 안내" />
           </h2>
           <div class="ring">
             <div>
@@ -58,19 +58,19 @@
           </div>
           <ul>
             <li>
-              <img class="check-icon" src="{completeIconUrl}" alt="" />진동
+              <img class="check-icon" src={completeIconUrl} alt="" />진동
               <b>양호</b>
             </li>
             <li>
-              <img class="check-icon" src="{completeIconUrl}" alt="" />온도
+              <img class="check-icon" src={completeIconUrl} alt="" />온도
               <b>양호</b>
             </li>
             <li>
-              <img class="check-icon" src="{completeIconUrl}" alt="" />압력
+              <img class="check-icon" src={completeIconUrl} alt="" />압력
               <b>양호</b>
             </li>
             <li>
-              <img class="check-icon" src="{completeIconUrl}" alt="" />윤활유
+              <img class="check-icon" src={completeIconUrl} alt="" />윤활유
               <b>양호</b>
             </li>
           </ul>
@@ -80,17 +80,22 @@
             예방정비 주기
             <img
               class="info-icon"
-              src="{infoIconUrl}"
+              src={infoIconUrl}
               alt="예방정비 주기 안내"
             />
           </h2>
           <p>다음 권장 정비까지</p>
           <strong>132<small>일</small></strong>
-          <div class="gauge">
-            <div class="gauge-arc"><span class="gauge-dot"></span></div>
-            <span class="gauge-center"
-              ><img src="{maintenanceIconUrl}" alt="정비"
-            /></span>
+          <div class="gauge" aria-label="정비 주기 41퍼센트 경과">
+            <div class="gauge-arc"></div>
+            <span class="gauge-center">
+              <b>41%</b>
+              <small>경과</small>
+            </span>
+          </div>
+          <div class="gauge-summary">
+            <span>경과 92일</span>
+            <strong>남은 기간 132일</strong>
           </div>
           <div class="gauge-legend">
             <span class="recent">최근 정비 2026.05.18</span
@@ -108,7 +113,7 @@
             "
           >
             <img
-              src="{cp7100Url}"
+              src={cp7100Url}
               alt="CP7100+ 압축기"
               style="
                 width: 100%;
@@ -143,27 +148,27 @@
           서비스 요청 현황
           <img
             class="info-icon"
-            src="{infoIconUrl}"
+            src={infoIconUrl}
             alt="서비스 요청 현황 안내"
           />
         </h2>
         <div class="step">
-          <i><img src="{requestIconUrl}" alt="" /></i
+          <i><img src={requestIconUrl} alt="" /></i
           ><span>접수<strong>2</strong></span>
         </div>
         <b></b>
         <div class="step">
-          <i><img src="{assignedIconUrl}" alt="" /></i
+          <i><img src={assignedIconUrl} alt="" /></i
           ><span>배정<strong>1</strong></span>
         </div>
         <b></b>
         <div class="step">
-          <i><img src="{workIconUrl}" alt="" /></i
+          <i><img src={workIconUrl} alt="" /></i
           ><span>작업 중<strong>1</strong></span>
         </div>
         <b></b>
         <div class="step">
-          <i><img src="{completeIconUrl}" alt="" /></i
+          <i><img src={completeIconUrl} alt="" /></i
           ><span>완료<strong>8</strong></span>
         </div>
         <div class="step-actions">
@@ -223,7 +228,7 @@
             <li>
               <i
                 ><img
-                  src="{warrantyIconUrl}"
+                  src={warrantyIconUrl}
                   alt=""
                   style="width: 24px; height: 24px; object-fit: contain" /></i
               ><span
@@ -234,7 +239,7 @@
             <li>
               <i
                 ><img
-                  src="{infoIconUrl}"
+                  src={infoIconUrl}
                   alt=""
                   style="width: 24px; height: 24px; object-fit: contain" /></i
               ><span
@@ -245,7 +250,7 @@
             <li>
               <i
                 ><img
-                  src="{documentIconUrl}"
+                  src={documentIconUrl}
                   alt=""
                   style="width: 24px; height: 24px; object-fit: contain" /></i
               ><span
