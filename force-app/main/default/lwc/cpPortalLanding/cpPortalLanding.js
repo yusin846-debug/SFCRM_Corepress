@@ -1,10 +1,10 @@
 import { LightningElement, api } from 'lwc';
 import coverImage from '@salesforce/resourceUrl/CorePressBrochureCover';
 import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
-import cp100Image from '@salesforce/resourceUrl/CorePressCP100Clean';
+import cp100Image from '@salesforce/resourceUrl/CorePressCP100';
 import cp2100Image from '@salesforce/resourceUrl/CorePressCP2100';
 import cp7100Image from '@salesforce/resourceUrl/CorePressCP7100';
-import growthMap from '@salesforce/resourceUrl/CorePressIndustrialGrowthMap';
+import growthMap from '@salesforce/resourceUrl/CorePressGrowthMap';
 import healthIcon from '@salesforce/resourceUrl/CorePressHealthIcon';
 import supportIcon from '@salesforce/resourceUrl/CorePressSupportIcon';
 import maintenanceIcon from '@salesforce/resourceUrl/CorePressMaintenanceIcon';
