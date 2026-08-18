@@ -7,7 +7,13 @@ export default class CpServiceRequest extends LightningElement {
     headerLogoUrl = headerLogo;
     isSubmitted = false;
     selectedFileLabel = '선택된 파일 없음';
-    recommendationText = '공정 영향을 선택하면 시급도를 추천합니다.';
+    selectedUrgency = '';
+    recommendationText = '공정 영향에 따라 시급도가 함께 지정됩니다.';
+    showUrgencyOverride = false;
+
+    get overrideIndicator() {
+        return this.showUrgencyOverride ? '−' : '+';
+    }
 
     handleImpactChange(event) {
         const recommendations = {
@@ -16,15 +22,17 @@ export default class CpServiceRequest extends LightningElement {
             stopped: { urgency: '긴급', label: '설비 정지 상태를 기준으로 긴급을 추천했습니다.' }
         };
         const recommendation = recommendations[event.target.value];
-        const urgencyField = this.template.querySelector('select[name="urgency"]');
-        urgencyField.value = recommendation.urgency;
+        this.selectedUrgency = recommendation.urgency;
         this.recommendationText = recommendation.label;
     }
 
     handleUrgencyChange(event) {
-        if (event.target.value) {
-            this.recommendationText = '추천값을 직접 변경할 수 있습니다.';
-        }
+        this.selectedUrgency = event.target.value;
+        this.recommendationText = `희망 시급도: ${event.target.value}으로 직접 조정했습니다.`;
+    }
+
+    toggleUrgencyOverride() {
+        this.showUrgencyOverride = !this.showUrgencyOverride;
     }
 
     handleFileChange(event) {
@@ -56,6 +64,8 @@ export default class CpServiceRequest extends LightningElement {
     resetForm() {
         this.isSubmitted = false;
         this.selectedFileLabel = '선택된 파일 없음';
-        this.recommendationText = '공정 영향을 선택하면 시급도를 추천합니다.';
+        this.selectedUrgency = '';
+        this.recommendationText = '공정 영향에 따라 시급도가 함께 지정됩니다.';
+        this.showUrgencyOverride = false;
     }
 }

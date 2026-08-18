@@ -31,15 +31,14 @@
                                 <div class="section-content">
                                     <h2>증상 및 시급도</h2>
                                     <p>현재 확인되는 증상과 공정 영향을 선택해 주세요.</p>
-                                    <div class="field-grid">
-                                        <label class="field"><span>증상 유형 <em>필수</em></span><select name="type" required><option value="">증상 유형 선택</option><option>소음·진동</option><option>토출압 저하</option><option>온도 상승</option><option>드레인 이상</option><option>누설</option><option>기타</option></select></label>
-                                        <label class="field"><span>희망 시급도 <em>필수</em></span><select name="urgency" required onchange={handleUrgencyChange}><option value="">시급도 선택</option><option>긴급</option><option>보통</option><option>낮음</option></select><small class="recommendation">{recommendationText}</small></label>
-                                    </div>
-                                    <fieldset class="impact-group"><legend>공정 영향 <em>필수</em></legend><div class="impact-options">
-                                        <label class="impact"><input type="radio" name="impact" value="normal" required onchange={handleImpactChange} /><span><strong>정상 운전 가능</strong><small>조업 영향 없이 운전 중</small></span></label>
-                                        <label class="impact"><input type="radio" name="impact" value="limited" onchange={handleImpactChange} /><span><strong>제한 운전 중</strong><small>성능 저하 또는 감속 운전</small></span></label>
-                                        <label class="impact"><input type="radio" name="impact" value="stopped" onchange={handleImpactChange} /><span><strong>설비 정지</strong><small>현재 조업에 직접적인 영향 발생</small></span></label>
+                                    <label class="field symptom-field"><span>증상 유형 <em>필수</em></span><select name="type" required><option value="">증상 유형 선택</option><option>소음·진동</option><option>토출압 저하</option><option>온도 상승</option><option>드레인 이상</option><option>누설</option><option>기타</option></select></label>
+                                    <fieldset class="impact-group"><legend>공정 영향 및 희망 시급도 <em>필수</em></legend><div class="impact-options">
+                                        <label class="impact"><input type="radio" name="impact" value="normal" required onchange={handleImpactChange} /><span><span class="impact-title"><strong>정상 운전 가능</strong><b>낮음</b></span><small>조업 영향 없이 운전 중</small></span></label>
+                                        <label class="impact"><input type="radio" name="impact" value="limited" onchange={handleImpactChange} /><span><span class="impact-title"><strong>제한 운전 중</strong><b>보통</b></span><small>성능 저하 또는 감속 운전</small></span></label>
+                                        <label class="impact"><input type="radio" name="impact" value="stopped" onchange={handleImpactChange} /><span><span class="impact-title"><strong>설비 정지</strong><b>긴급</b></span><small>현재 조업에 직접적인 영향 발생</small></span></label>
                                     </div></fieldset>
+                                    <div class="urgency-adjust"><button type="button" onclick={toggleUrgencyOverride}>시급도 직접 조정 <span aria-hidden="true">{overrideIndicator}</span></button><span>{recommendationText}</span></div>
+                                    <template if:true={showUrgencyOverride}><label class="field urgency-field"><span>희망 시급도 조정</span><select name="urgency" value={selectedUrgency} onchange={handleUrgencyChange}><option>긴급</option><option>보통</option><option>낮음</option></select></label></template>
                                 </div>
                             </section>
 
