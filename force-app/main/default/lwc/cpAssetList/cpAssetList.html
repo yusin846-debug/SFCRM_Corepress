@@ -21,7 +21,7 @@
             </section>
 
             <section class={gridClass} aria-label="보유 설비 목록">
-                <template for:each={filteredAssets} for:item="asset">
+                <template for:each={paginatedAssets} for:item="asset">
                     <article class="asset-card" key={asset.id}>
                         <div class="machine"><img src={asset.imageUrl} alt={asset.name} /></div>
                         <div class="asset-copy">
@@ -36,7 +36,10 @@
             </section>
 
             <template if:false={filteredAssets.length}><section class="empty"><h2>조건에 맞는 설비가 없습니다</h2><p>검색어나 상태 필터를 다시 확인해 주세요.</p></section></template>
-            <footer><span>1 / 1페이지</span><b>{resultsLabel}</b></footer>
+            <footer class="pagination" aria-label="페이지 이동">
+                <label><span class="assistive-text">현재 페이지</span><input type="number" min="1" max={totalPages} value={currentPage} onchange={handlePageChange} onblur={handlePageChange} /></label>
+                <span>/ {totalPages}페이지</span><b>{resultsLabel}</b>
+            </footer>
         </main>
     </div>
 </template>

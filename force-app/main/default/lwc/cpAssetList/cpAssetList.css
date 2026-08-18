@@ -241,26 +241,32 @@ main {
 }
 .model {
   color: #149b99;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 .asset-copy h2 {
-  margin: 8px 0 5px;
-  font-size: 20px;
-  letter-spacing: -0.035em;
+  margin: 9px 0 7px;
+  font-size: 19px;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
 }
 .serial {
-  margin: 0 0 13px;
+  margin: 0 0 15px;
   color: #4a6078;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.45;
   font-variant-numeric: tabular-nums;
 }
 .location {
-  margin: 0 0 12px;
+  margin: 0 0 13px;
   display: flex;
   align-items: center;
   gap: 7px;
   color: #41536a;
   font-size: 12px;
+  line-height: 1.45;
 }
 .location img {
   width: 19px;
@@ -277,6 +283,8 @@ main {
   border-radius: 4px;
   color: #277d79;
   font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
   background: #f2fbfa;
 }
 .status img {
@@ -290,10 +298,11 @@ main {
   background: #fff8ef;
 }
 .asset-copy dl {
-  margin: 14px 0 0;
+  margin: 15px 0 0;
   display: grid;
   grid-template-columns: 50px 1fr;
   font-size: 11px;
+  line-height: 1.45;
 }
 .asset-copy dt {
   color: var(--muted);
@@ -339,16 +348,50 @@ main {
   color: var(--muted);
   font-size: 13px;
 }
-footer {
+.pagination {
   padding-top: 28px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 46px;
+  gap: 5px;
   color: #52657a;
   font-size: 12px;
 }
-footer b {
+.pagination input {
+  width: 28px;
+  height: 26px;
+  padding: 0 3px;
+  border: 1px solid #c7d1dc;
+  border-radius: 3px;
+  outline: none;
+  color: #263a53;
+  font: 600 12px/1 inherit;
+  text-align: center;
+  background: #fff;
+  appearance: textfield;
+}
+.pagination input::-webkit-inner-spin-button,
+.pagination input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+.pagination input:focus {
+  border-color: #159c92;
+  box-shadow: 0 0 0 2px rgba(21, 156, 146, 0.14);
+}
+.pagination b {
+  margin-left: 40px;
   font-weight: 600;
+}
+.assistive-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 @media (max-width: 1100px) {
   .gnb {

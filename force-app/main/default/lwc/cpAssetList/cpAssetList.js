@@ -89,6 +89,8 @@ export default class CpAssetList extends LightningElement {
   searchTerm = "";
   activeFilter = "전체";
   viewMode = "grid";
+  currentPage = 1;
+  pageSize = 6;
 
   get filteredAssets() {
     const term = this.searchTerm.trim().toLowerCase();
@@ -106,6 +108,14 @@ export default class CpAssetList extends LightningElement {
 
   get resultsLabel() {
     return `총 ${this.filteredAssets.length}건`;
+  }
+  get totalPages() {
+    return Math.max(1, Math.ceil(this.filteredAssets.length / this.pageSize));
+  }
+  get paginatedAssets() {
+    const safePage = Math.min(this.currentPage, this.totalPages);
+    const start = (safePage - 1) * this.pageSize;
+    return this.filteredAssets.slice(start, start + this.pageSize);
   }
   get gridClass() {
     return this.viewMode === "grid" ? "asset-grid" : "asset-grid list-view";
@@ -128,15 +138,26 @@ export default class CpAssetList extends LightningElement {
 
   handleSearch(event) {
     this.searchTerm = event.target.value;
+    this.currentPage = 1;
+  }
+  handlePageChange(event) {
+    const requestedPage = Number.parseInt(event.target.value, 10);
+    this.currentPage = Number.isFinite(requestedPage)
+      ? Math.min(Math.max(requestedPage, 1), this.totalPages)
+      : 1;
+    event.target.value = this.currentPage;
   }
   showAll() {
     this.activeFilter = "전체";
+    this.currentPage = 1;
   }
   showRunning() {
     this.activeFilter = "운전 중";
+    this.currentPage = 1;
   }
   showAttention() {
     this.activeFilter = "점검 필요";
+    this.currentPage = 1;
   }
   showGrid() {
     this.viewMode = "grid";
