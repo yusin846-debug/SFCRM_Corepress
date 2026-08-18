@@ -4,7 +4,7 @@ import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 import cp100Image from '@salesforce/resourceUrl/CorePressCP100';
 import cp2100Image from '@salesforce/resourceUrl/CorePressCP2100';
 import cp7100Image from '@salesforce/resourceUrl/CorePressCP7100';
-import cp7100Blueprint from '@salesforce/resourceUrl/CorePressCP7100Blueprint';
+import growthMap from '@salesforce/resourceUrl/CorePressGrowthMap';
 import healthIcon from '@salesforce/resourceUrl/CorePressHealthIcon';
 import supportIcon from '@salesforce/resourceUrl/CorePressSupportIcon';
 import maintenanceIcon from '@salesforce/resourceUrl/CorePressMaintenanceIcon';
@@ -23,7 +23,7 @@ export default class CpPortalLanding extends LightningElement {
     cp100ImageUrl = cp100Image;
     cp2100ImageUrl = cp2100Image;
     cp7100ImageUrl = cp7100Image;
-    cp7100BlueprintUrl = cp7100Blueprint;
+    growthMapUrl = growthMap;
     healthIconUrl = healthIcon;
     supportIconUrl = supportIcon;
     maintenanceIconUrl = maintenanceIcon;
@@ -105,7 +105,7 @@ export default class CpPortalLanding extends LightningElement {
         this.productTransition = window.setTimeout(() => {
             this.selectedProductId = productId;
             this.isProductChanging = false;
-        }, 240);
+        }, 420);
     }
 
     restartProductRotation() {
