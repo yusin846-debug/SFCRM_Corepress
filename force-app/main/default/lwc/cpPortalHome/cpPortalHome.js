@@ -10,7 +10,7 @@ import completeIcon from "@salesforce/resourceUrl/CorePressCompleteIcon";
 import warrantyIcon from "@salesforce/resourceUrl/CorePressWarrantyIcon";
 import infoIcon from "@salesforce/resourceUrl/CorePressInfoIcon";
 import documentIcon from "@salesforce/resourceUrl/CorePressDocumentIcon";
-import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutIcon";
+import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutWhiteIcon";
 import maintenanceIcon from "@salesforce/resourceUrl/CorePressMaintenanceIcon";
 
 export default class CpPortalHome extends LightningElement {
@@ -27,4 +27,9 @@ export default class CpPortalHome extends LightningElement {
   documentIconUrl = documentIcon;
   logoutIconUrl = logoutIcon;
   maintenanceIconUrl = maintenanceIcon;
+
+  handleLogout() {
+    const returnUrl = encodeURIComponent("/corepressvforcesite/s/");
+    window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`);
+  }
 }

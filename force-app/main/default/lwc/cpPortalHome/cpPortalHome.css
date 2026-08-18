@@ -74,6 +74,25 @@ a {
   height: 20px;
   border-left: 1px solid rgba(255, 255, 255, 0.65);
 }
+.logout {
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  background: transparent;
+}
+.cp-gnb .logout img {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+}
 .cp-page {
   max-width: 1400px;
   min-height: calc(100vh - 64px);

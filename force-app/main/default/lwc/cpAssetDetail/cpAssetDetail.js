@@ -3,7 +3,7 @@ import logo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 import cp7100 from '@salesforce/resourceUrl/CorePressCP7100';
 import locationIcon from '@salesforce/resourceUrl/CorePressLocationIcon';
 import operatingIcon from '@salesforce/resourceUrl/CorePressOperatingIcon';
-import logoutIcon from '@salesforce/resourceUrl/CorePressLogoutIcon';
+import logoutIcon from '@salesforce/resourceUrl/CorePressLogoutWhiteIcon';
 
 export default class CpAssetDetail extends LightningElement {
     logoUrl = logo;
@@ -11,4 +11,9 @@ export default class CpAssetDetail extends LightningElement {
     locationIconUrl = locationIcon;
     operatingIconUrl = operatingIcon;
     logoutIconUrl = logoutIcon;
+
+    handleLogout() {
+        const returnUrl = encodeURIComponent('/corepressvforcesite/s/');
+        window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`);
+    }
 }
