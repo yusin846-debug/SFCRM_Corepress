@@ -51,6 +51,7 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 }
 .hero-image { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(27,42,74,.26), transparent 60%); }
+.time-flow { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: screen; }
 .hero-copy { position: relative; z-index: 2; width: min(650px, 48vw); padding: 50px 0 54px 4.5vw; }
 .eyebrow, .section-kicker { margin: 0 0 24px; color: var(--accent); font-size: 11px; font-weight: 800; letter-spacing: .16em; }
 .hero h1 { max-width: 590px; margin: 0 0 24px; font-family: "Batang", "Noto Serif KR", Georgia, serif; font-size: clamp(40px, 3.7vw, 58px); font-weight: 500; letter-spacing: -.045em; line-height: 1.2; word-break: keep-all; }
@@ -145,4 +146,4 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
     .support { margin: 0 20px; padding: 48px 24px; align-items: stretch; flex-direction: column; }
     .site-footer { margin-top: 74px; padding: 34px 20px; align-items: flex-start; flex-direction: column; }
 }
-@media (prefers-reduced-motion: reduce) { .button, .site-nav a, .portal-link, .text-action, .all-products, .product-meta a { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .time-flow { display: none; } .button, .site-nav a, .portal-link, .text-action, .all-products, .product-meta a { transition: none; } }
