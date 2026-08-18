@@ -37,6 +37,7 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 .utility-nav { justify-self: end; display: flex; align-items: center; gap: 24px; font-size: 13px; }
 .locale { color: #d4dde6; }
 .portal-link { padding-left: 24px; display: inline-flex; align-items: center; gap: 10px; border-left: 1px solid rgba(255,255,255,.55); font-weight: 700; }
+.portal-link img { width: 19px; height: 19px; flex: 0 0 19px; display: block; object-fit: contain; }
 .portal-link lightning-icon, .metric lightning-icon { --slds-c-icon-color-foreground-default: var(--white); }
 
 .hero {

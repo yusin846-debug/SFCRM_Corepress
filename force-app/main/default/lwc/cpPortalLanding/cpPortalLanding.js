@@ -7,7 +7,7 @@ import cp7100Image from '@salesforce/resourceUrl/CorePressCP7100';
 import healthIcon from '@salesforce/resourceUrl/CorePressHealthIcon';
 import supportIcon from '@salesforce/resourceUrl/CorePressSupportIcon';
 import maintenanceIcon from '@salesforce/resourceUrl/CorePressMaintenanceIcon';
-import portalUserIcon from '@salesforce/resourceUrl/CorePressAssignedIcon';
+import portalUserIcon from '@salesforce/resourceUrl/CorePressPortalUserIcon';
 
 export default class CpPortalLanding extends LightningElement {
     @api heroTitle = '공정을 멈추지 않는 서비스';
