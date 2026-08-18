@@ -50,12 +50,12 @@
                     </div>
                     <div class="product-tabs" role="tablist" aria-label="제품 선택">
                         <template for:each={productTabs} for:item="product">
-                            <button key={product.id} class={product.tabClass} type="button" role="tab" aria-label={product.name} aria-selected={product.ariaSelected} data-product={product.id} onclick={selectProduct}><span>{product.name}</span></button>
+                            <button key={product.id} class={product.tabClass} type="button" role="tab" aria-selected={product.ariaSelected} data-product={product.id} onclick={selectProduct}>{product.name}</button>
                         </template>
                     </div>
                 </article>
                 <aside class="product-outcomes" aria-label="CorePress 회사 역량">
-                    <img class="about-backdrop" src={growthMapUrl} alt="" aria-hidden="true" />
+                    <img class="about-backdrop" src={cp7100BlueprintUrl} alt="" aria-hidden="true" />
                     <div class="outcome-heading"><h2 class="panel-label">About</h2><h3>압축 공정의 기준을<br />설계합니다</h3><span>설비 선정과 설치, 운전, 정비를 하나의 기술 흐름으로 연결합니다.</span></div>
                     <div class="company-proof" aria-label="CorePress 핵심 역량">
                         <div><strong>3</strong><p>핵심 제품 라인업</p><span>공정 규모와 운전 조건에 맞춘 제품 구성</span></div>
