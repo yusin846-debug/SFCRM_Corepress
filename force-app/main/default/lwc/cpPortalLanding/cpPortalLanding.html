@@ -40,14 +40,16 @@
             </div>
             <div class="product-showcase">
                 <article class="product-stage" aria-live="polite">
-                    <div class="product-visual">
-                        <img src={selectedProduct.imageUrl} alt={selectedProduct.imageAlt} width="1024" height="1024" loading="lazy" />
-                    </div>
-                    <div class="product-caption">
-                        <p>{selectedProduct.category}</p>
-                        <h3>{selectedProduct.name}</h3>
-                        <span>{selectedProduct.description}</span>
-                        <a href="#technology">제품 자세히 보기 <span aria-hidden="true">→</span></a>
+                    <div class={productDisplayClass}>
+                        <div class="product-visual">
+                            <img src={selectedProduct.imageUrl} alt={selectedProduct.imageAlt} width="1024" height="1024" loading="lazy" />
+                        </div>
+                        <div class="product-caption">
+                            <p>{selectedProduct.category}</p>
+                            <h3>{selectedProduct.name}</h3>
+                            <span>{selectedProduct.description}</span>
+                            <a href="#technology">제품 자세히 보기 <span aria-hidden="true">→</span></a>
+                        </div>
                     </div>
                     <div class="product-tabs" role="tablist" aria-label="제품 선택">
                         <template for:each={productTabs} for:item="product">
@@ -55,17 +57,14 @@
                         </template>
                     </div>
                 </article>
-                <aside class="product-outcomes" aria-label={selectedProduct.name}>
-                    <div class="outcome-heading"><p>FIELD PERFORMANCE</p><h3>현장에서 확인하는<br />운영 성과</h3><span>선택한 압축기의 핵심 운용 가치를 확인하세요.</span></div>
-                    <div class="outcome-list">
-                        <template for:each={selectedProduct.outcomes} for:item="outcome">
-                            <div class="outcome" key={outcome.label}>
-                                <p>{outcome.label}</p>
-                                <strong>{outcome.value}<small>{outcome.unit}</small></strong>
-                                <span>{outcome.note}</span>
-                            </div>
-                        </template>
+                <aside class="product-outcomes" aria-label="CorePress 회사 역량">
+                    <div class="outcome-heading"><p>ABOUT COREPRESS</p><h3>압축 공정의 기준을<br />설계합니다</h3><span>설비 선정과 설치, 운전, 정비를 하나의 기술 흐름으로 연결합니다.</span></div>
+                    <div class="company-proof" aria-label="CorePress 핵심 역량">
+                        <div><strong>3</strong><p>핵심 제품 라인업</p><span>공정 규모와 운전 조건에 맞춘 제품 구성</span></div>
+                        <div><strong>24/7</strong><p>서비스 대응 체계</p><span>현장 요청부터 예방정비까지 연결</span></div>
+                        <div><strong>ONE</strong><p>생애주기 관리</p><span>설치, 보증, 서비스 이력의 통합 관리</span></div>
                     </div>
+                    <p class="company-statement">기술과 현장 데이터를 바탕으로 설비가 멈추지 않는 운영 환경을 만듭니다.</p>
                 </aside>
             </div>
         </section>
