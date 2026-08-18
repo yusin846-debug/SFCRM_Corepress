@@ -1,0 +1,70 @@
+<template>
+    <main class="request-page">
+        <header class="request-header">
+            <img src={headerLogoUrl} alt="CorePress" />
+            <nav aria-label="고객 포털 메뉴"><a href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a><span aria-current="page">서비스 요청</span><a href="#rfp">RFP·RFQ</a><a href="#quote">견적</a></nav>
+            <div class="account">대한케미컬 · 김유신</div>
+        </header>
+
+        <template if:false={isSubmitted}>
+            <section class="content" aria-labelledby="request-title">
+                <div class="page-heading">
+                    <p>SERVICE REQUEST</p>
+                    <h1 id="request-title">서비스 요청 등록</h1>
+                    <span>설비의 현재 상태와 증상을 알려주시면 담당자가 확인 후 신속히 연락드리겠습니다.</span>
+                </div>
+
+                <form onsubmit={handleSubmit} novalidate>
+                    <div class="form-layout">
+                        <div class="form-main">
+                            <section class="form-section">
+                                <div class="section-number">01</div>
+                                <div class="section-content">
+                                    <h2>대상 설비</h2>
+                                    <p>서비스가 필요한 설비를 선택해 주세요.</p>
+                                    <label class="field"><span>보유 설비 <em>필수</em></span><select name="asset" required><option value="">설비를 선택해 주세요</option><option value="cp7100">터보압축기 #1 · CP7100+ · CP-2024-0847</option><option value="cp2100">압축기 #4 · CP2100 · CP-2024-0398</option><option value="cp100">표준압축기 #2 · CP100 Pro · CP-2025-0112</option></select></label>
+                                </div>
+                            </section>
+
+                            <section class="form-section">
+                                <div class="section-number">02</div>
+                                <div class="section-content">
+                                    <h2>증상 및 시급도</h2>
+                                    <p>현재 확인되는 증상과 공정 영향을 선택해 주세요.</p>
+                                    <div class="field-grid">
+                                        <label class="field"><span>증상 유형 <em>필수</em></span><select name="type" required><option value="">증상 유형 선택</option><option>소음·진동</option><option>토출압 저하</option><option>온도 상승</option><option>드레인 이상</option><option>누설</option><option>기타</option></select></label>
+                                        <label class="field"><span>희망 시급도 <em>필수</em></span><select name="urgency" required><option value="">시급도 선택</option><option>긴급</option><option>보통</option><option>낮음</option></select></label>
+                                    </div>
+                                    <label class="impact"><input type="checkbox" name="stopped" /><span><strong>현재 설비가 정지된 상태입니다</strong><small>조업에 직접적인 영향이 있는 경우 선택해 주세요.</small></span></label>
+                                </div>
+                            </section>
+
+                            <section class="form-section">
+                                <div class="section-number">03</div>
+                                <div class="section-content">
+                                    <h2>요청 내용</h2>
+                                    <p>담당자가 상황을 정확히 파악할 수 있도록 자세히 작성해 주세요.</p>
+                                    <label class="field"><span>요청 제목 <em>필수</em></span><input name="subject" type="text" maxlength="255" placeholder="예: 운전 중 비정상 진동과 소음 발생" required /></label>
+                                    <label class="field"><span>상세 내용 <em>필수</em></span><textarea name="description" rows="6" placeholder="증상 발생 시점, 빈도, 현재 운전 상태 등을 입력해 주세요." required></textarea></label>
+                                    <label class="field"><span>현장 사진 및 자료 <small>선택</small></span><input class="file-input" name="files" type="file" accept="image/*,.pdf" multiple /></label>
+                                </div>
+                            </section>
+                        </div>
+
+                        <aside class="request-guide">
+                            <p class="guide-label">REQUEST GUIDE</p>
+                            <h2>접수 전 확인해 주세요</h2>
+                            <ol><li><span>1</span><p><strong>설비를 확인합니다</strong><small>모델명과 시리얼 번호가 맞는지 확인해 주세요.</small></p></li><li><span>2</span><p><strong>증상을 구체적으로 적습니다</strong><small>발생 시점과 반복 여부를 함께 알려주세요.</small></p></li><li><span>3</span><p><strong>담당자가 접수 내용을 검토합니다</strong><small>접수 후 진행 상황은 포털에서 확인할 수 있습니다.</small></p></li></ol>
+                            <div class="support-note"><strong>긴급 지원이 필요하신가요?</strong><span>설비 정지 등 긴급 상황은 접수 후 고객센터로 연락해 주세요.</span><a href="tel:15880000">1588-0000</a></div>
+                        </aside>
+                    </div>
+                    <div class="form-actions"><button class="cancel" type="button" onclick={handleCancel}>취소</button><button class="submit" type="submit">서비스 요청 접수 <span aria-hidden="true">→</span></button></div>
+                </form>
+            </section>
+        </template>
+
+        <template if:true={isSubmitted}>
+            <section class="success" aria-live="polite"><div class="success-icon">✓</div><p>REQUEST RECEIVED</p><h1>서비스 요청이 접수되었습니다</h1><span>담당자가 내용을 확인한 뒤 등록된 연락처로 안내드리겠습니다.</span><dl><div><dt>접수 상태</dt><dd>신규접수</dd></div><div><dt>접수 경로</dt><dd>고객 포털</dd></div><div><dt>예상 안내</dt><dd>영업시간 기준 2시간 이내</dd></div></dl><button type="button" onclick={resetForm}>새 요청 등록</button></section>
+        </template>
+    </main>
+</template>
