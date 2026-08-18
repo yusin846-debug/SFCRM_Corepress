@@ -8,6 +8,7 @@ import healthIcon from '@salesforce/resourceUrl/CorePressHealthIcon';
 import supportIcon from '@salesforce/resourceUrl/CorePressSupportIcon';
 import maintenanceIcon from '@salesforce/resourceUrl/CorePressMaintenanceIcon';
 import portalUserIcon from '@salesforce/resourceUrl/CorePressPortalUserIcon';
+import productBrochure from '@salesforce/resourceUrl/CorePressProductBrochure';
 
 export default class CpPortalLanding extends LightningElement {
     @api heroTitle = '공정을 멈추지 않는 서비스';
@@ -29,7 +30,11 @@ export default class CpPortalLanding extends LightningElement {
     isCatalogSubmitted = false;
 
     get hasCatalogUrl() {
-        return Boolean(this.catalogUrl);
+        return Boolean(this.resolvedCatalogUrl);
+    }
+
+    get resolvedCatalogUrl() {
+        return this.catalogUrl || productBrochure;
     }
 
     openCatalogModal() {
