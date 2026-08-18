@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import coverImage from '@salesforce/resourceUrl/CorePressBrochureCover';
 import lineupImage from '@salesforce/resourceUrl/CorePressProductLineup';
+import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 
 export default class CpPortalLanding extends LightningElement {
     @api heroTitle = '공정을 멈추지 않는 서비스';
@@ -10,4 +11,5 @@ export default class CpPortalLanding extends LightningElement {
 
     coverImageUrl = coverImage;
     lineupImageUrl = lineupImage;
+    headerLogoUrl = headerLogo;
 }
