@@ -88,6 +88,9 @@ export default class CpAssetList extends LightningElement {
   searchIconUrl = searchIcon;
   searchTerm = "";
   activeFilter = "전체";
+  pendingFilter = "";
+  isFiltering = false;
+  filterTimer;
   viewMode = "grid";
   currentPage = 1;
   pageSize = 6;
@@ -118,7 +121,11 @@ export default class CpAssetList extends LightningElement {
     return this.filteredAssets.slice(start, start + this.pageSize);
   }
   get gridClass() {
-    return this.viewMode === "grid" ? "asset-grid" : "asset-grid list-view";
+    const viewClass = this.viewMode === "grid" ? "asset-grid" : "asset-grid list-view";
+    return this.isFiltering ? `${viewClass} is-filtering` : viewClass;
+  }
+  get selectedFilter() {
+    return this.pendingFilter || this.activeFilter;
   }
   get isGridView() {
     return this.viewMode === "grid";
@@ -133,13 +140,13 @@ export default class CpAssetList extends LightningElement {
     return this.isListView ? listIconActive : listIconInactive;
   }
   get allFilterClass() {
-    return this.activeFilter === "전체" ? "filter active" : "filter";
+    return this.selectedFilter === "전체" ? "filter active" : "filter";
   }
   get runningFilterClass() {
-    return this.activeFilter === "운전 중" ? "filter active" : "filter";
+    return this.selectedFilter === "운전 중" ? "filter active" : "filter";
   }
   get attentionFilterClass() {
-    return this.activeFilter === "점검 필요" ? "filter active" : "filter";
+    return this.selectedFilter === "점검 필요" ? "filter active" : "filter";
   }
   get gridButtonClass() {
     return this.viewMode === "grid" ? "view-button active" : "view-button";
@@ -160,16 +167,26 @@ export default class CpAssetList extends LightningElement {
     event.target.value = this.currentPage;
   }
   showAll() {
-    this.activeFilter = "전체";
-    this.currentPage = 1;
+    this.applyFilter("전체");
   }
   showRunning() {
-    this.activeFilter = "운전 중";
-    this.currentPage = 1;
+    this.applyFilter("운전 중");
   }
   showAttention() {
-    this.activeFilter = "점검 필요";
-    this.currentPage = 1;
+    this.applyFilter("점검 필요");
+  }
+  applyFilter(filter) {
+    window.clearTimeout(this.filterTimer);
+    this.pendingFilter = filter;
+    this.isFiltering = true;
+    this.filterTimer = window.setTimeout(() => {
+      this.activeFilter = filter;
+      this.currentPage = 1;
+      this.pendingFilter = "";
+      window.requestAnimationFrame(() => {
+        this.isFiltering = false;
+      });
+    }, 140);
   }
   showGrid() {
     this.viewMode = "grid";
@@ -180,5 +197,8 @@ export default class CpAssetList extends LightningElement {
   handleLogout() {
     const returnUrl = encodeURIComponent("/corepressvforcesite/s/");
     window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`);
+  }
+  disconnectedCallback() {
+    window.clearTimeout(this.filterTimer);
   }
 }

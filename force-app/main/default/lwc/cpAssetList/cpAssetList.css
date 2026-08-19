@@ -168,6 +168,12 @@ main {
   color: var(--navy);
   font: 600 13px inherit;
   background: #fff;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 .filter:first-child {
   border-radius: 5px 0 0 5px;
@@ -185,6 +191,7 @@ main {
   color: #117e85;
   border-color: #1caeb0;
   box-shadow: 0 0 0 1px #1caeb0 inset;
+  background: #f2fbfa;
 }
 .view-toggle {
   justify-self: end;
@@ -220,6 +227,17 @@ main {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.16s ease,
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.asset-grid.is-filtering {
+  opacity: 0;
+  transform: translateY(7px);
+  pointer-events: none;
 }
 .asset-card {
   min-height: 270px;
@@ -453,5 +471,14 @@ main {
   .filter {
     min-width: 105px;
     padding: 0 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .filter,
+  .asset-grid {
+    transition: none;
+  }
+  .asset-grid.is-filtering {
+    transform: none;
   }
 }
