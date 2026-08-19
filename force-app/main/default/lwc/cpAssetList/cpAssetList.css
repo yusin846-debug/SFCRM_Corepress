@@ -15,7 +15,10 @@
     BlinkMacSystemFont,
     system-ui,
     sans-serif;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 86% 6%, rgba(46, 196, 182, 0.055), transparent 34rem),
+    linear-gradient(180deg, #f8fafc 0%, #f4f7fa 52%, #f7f9fb 100%);
+  background-attachment: fixed;
 }
 * {
   box-sizing: border-box;
