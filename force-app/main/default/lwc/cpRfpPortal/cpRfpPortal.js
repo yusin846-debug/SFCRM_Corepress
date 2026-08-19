@@ -15,6 +15,8 @@ export default class CpRfpPortal extends LightningElement {
     get rfpSubmitLabel(){return this.isEmailMode?'이메일 RFP 등록':'RFP 제출'}
     get isRfqPortalMode(){return this.rfqEntryMode==='portal'} get isRfqEmailMode(){return this.rfqEntryMode==='email'}
     get rfqPortalModeClass(){return `mode-option ${this.isRfqPortalMode?'selected':''}`} get rfqEmailModeClass(){return `mode-option ${this.isRfqEmailMode?'selected':''}`}
+    get rfqLayoutClass(){return this.isRfqEmailMode?'layout email-layout':'layout'}
+    get rfqSubmitLabel(){return this.isRfqEmailMode?'이메일 RFQ 등록':'RFQ 제출'}
     @wire(getRecord,{recordId:USER_ID,fields:[USER_NAME,USER_EMAIL]}) currentUser;
     get customerName(){return getFieldValue(this.currentUser.data,USER_NAME)||'로그인 고객'}
     get customerEmail(){return getFieldValue(this.currentUser.data,USER_EMAIL)||'계정 이메일 확인 중'}
