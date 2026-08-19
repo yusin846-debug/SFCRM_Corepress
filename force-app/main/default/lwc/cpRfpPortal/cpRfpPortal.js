@@ -1,4 +1,8 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import USER_ID from '@salesforce/user/Id';
+import USER_NAME from '@salesforce/schema/User.Name';
+import USER_EMAIL from '@salesforce/schema/User.Email';
 import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 export default class CpRfpPortal extends LightningElement {
     @api homeUrl='/'; @api assetListUrl='/asset-list'; @api serviceUrl='/service-request';
@@ -9,6 +13,9 @@ export default class CpRfpPortal extends LightningElement {
     get portalModeClass(){return `mode-option ${this.isPortalMode?'selected':''}`} get emailModeClass(){return `mode-option ${this.isEmailMode?'selected':''}`}
     get isRfqPortalMode(){return this.rfqEntryMode==='portal'} get isRfqEmailMode(){return this.rfqEntryMode==='email'}
     get rfqPortalModeClass(){return `mode-option ${this.isRfqPortalMode?'selected':''}`} get rfqEmailModeClass(){return `mode-option ${this.isRfqEmailMode?'selected':''}`}
+    @wire(getRecord,{recordId:USER_ID,fields:[USER_NAME,USER_EMAIL]}) currentUser;
+    get customerName(){return getFieldValue(this.currentUser.data,USER_NAME)||'로그인 고객'}
+    get customerEmail(){return getFieldValue(this.currentUser.data,USER_EMAIL)||'계정 이메일 확인 중'}
     selectTab(e){this.activeTab=e.currentTarget.dataset.tab} goToRfq(){this.activeTab='rfq'}
     changeEntryMode(e){this.entryMode=e.target.value;this.fileLabel='선택된 파일 없음'}
     changeRfqEntryMode(e){this.rfqEntryMode=e.target.value;this.rfqFileLabel='선택된 파일 없음'}
