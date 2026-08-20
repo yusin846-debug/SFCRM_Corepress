@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import submitCatalogInquiry from '@salesforce/apex/CpCatalogLeadController.submitCatalogInquiry';
 import coverImage from '@salesforce/resourceUrl/CorePressBrochureCover';
 import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 import cp100Image from '@salesforce/resourceUrl/CorePressCP100';
@@ -28,6 +29,8 @@ export default class CpPortalLanding extends LightningElement {
     portalUserIconUrl = portalUserIcon;
     isCatalogModalOpen = false;
     isCatalogSubmitted = false;
+    isSubmittingCatalog = false;
+    catalogError = '';
 
     get hasCatalogUrl() {
         return Boolean(this.resolvedCatalogUrl);
@@ -39,6 +42,7 @@ export default class CpPortalLanding extends LightningElement {
 
     openCatalogModal() {
         this.isCatalogSubmitted = false;
+        this.catalogError = '';
         this.isCatalogModalOpen = true;
         window.requestAnimationFrame(() => {
             this.template.querySelector('.first-field')?.focus();
@@ -48,6 +52,7 @@ export default class CpPortalLanding extends LightningElement {
     closeCatalogModal() {
         this.isCatalogModalOpen = false;
         this.isCatalogSubmitted = false;
+        this.catalogError = '';
     }
 
     handleBackdropClick(event) {
@@ -58,13 +63,40 @@ export default class CpPortalLanding extends LightningElement {
         if (event.key === 'Escape') this.closeCatalogModal();
     }
 
-    submitCatalogInquiry(event) {
+    async submitCatalogInquiry(event) {
         event.preventDefault();
+        this.catalogError = '';
         const fields = [...this.template.querySelectorAll('.catalog-modal input, .catalog-modal select, .catalog-modal textarea')];
         const isValid = fields.reduce((valid, field) => {
             field.reportValidity();
             return valid && field.checkValidity();
         }, true);
-        if (isValid) this.isCatalogSubmitted = true;
+        if (!isValid) return;
+
+        this.isSubmittingCatalog = true;
+        try {
+            await submitCatalogInquiry({ inquiry: this.collectInquiry() });
+            this.isCatalogSubmitted = true;
+        } catch (error) {
+            this.catalogError =
+                error?.body?.message ||
+                '문의 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+        } finally {
+            this.isSubmittingCatalog = false;
+        }
+    }
+
+    collectInquiry() {
+        const value = (name) =>
+            this.template.querySelector(`.catalog-modal [name="${name}"]`)?.value?.trim() || '';
+        return {
+            company: value('company'),
+            name: value('name'),
+            email: value('email'),
+            phone: value('phone'),
+            product: value('product'),
+            message: value('message'),
+            consent: Boolean(this.template.querySelector('.catalog-modal [name="consent"]')?.checked)
+        };
     }
 }

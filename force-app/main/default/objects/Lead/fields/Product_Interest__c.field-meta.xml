@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Product_Interest__c</fullName>
+    <description>잠재고객이 다운로드한 카탈로그의 제품 유형을 나타내며, 후속 영업 시 맥락 정보로 활용됩니다.</description>
+    <label>관심 제품군</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>압축기</fullName>
+                <default>false</default>
+                <label>압축기</label>
+            </value>
+            <value>
+                <fullName>드라이어</fullName>
+                <default>false</default>
+                <label>드라이어</label>
+            </value>
+            <value>
+                <fullName>필터·부품</fullName>
+                <default>false</default>
+                <label>필터·부품</label>
+            </value>
+            <value>
+                <fullName>서비스</fullName>
+                <default>false</default>
+                <label>서비스</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
