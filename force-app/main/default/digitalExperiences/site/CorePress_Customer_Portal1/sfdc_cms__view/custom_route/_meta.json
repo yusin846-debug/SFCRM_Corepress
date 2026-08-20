@@ -1,0 +1,5 @@
+{
+  "apiName" : "custom_route",
+  "type" : "sfdc_cms__view",
+  "path" : "views"
+}

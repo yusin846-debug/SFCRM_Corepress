@@ -1,0 +1,72 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "보유 설비",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"83f0a5ee-fd8e-4206-b69b-7727940a1ac7\",\"columns\":[{\"UUID\":\"eea6cc2d-e2e6-42e7-83d4-f966a7bf1150\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "detailUrl" : "asset-detail",
+                "dxpStyle" : { }
+              },
+              "definition" : "c:cpAssetList",
+              "id" : "40a731bf-3a4c-499a-86e8-b07c443c7f8d",
+              "type" : "component"
+            } ],
+            "id" : "eea6cc2d-e2e6-42e7-83d4-f966a7bf1150",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "83f0a5ee-fd8e-4206-b69b-7727940a1ac7",
+          "type" : "component"
+        } ],
+        "id" : "817b9adc-2d9b-49e3-b255-af26f7ea23bd",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "보유 설비",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "7b15eda9-0f40-4fd5-bb5e-9fb978ac024a",
+          "type" : "component"
+        } ],
+        "id" : "191ffbd7-c24b-4c5f-ab27-33860912f2e5",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "bf331ee6-172e-43d6-9cc8-9c863c04709a",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-asset-list"
+  },
+  "urlName" : "보유-설비"
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+  <apiVersion>66.0</apiVersion>
+  <isExposed>true</isExposed>
+  <masterLabel>CorePress 견적 조회</masterLabel>
+  <description>고객 포털 견적 목록 및 상세 조회 화면</description>
+  <targets>
+    <target>lightningCommunity__Page</target>
+    <target>lightningCommunity__Default</target>
+  </targets>
+  <targetConfigs>
+    <targetConfig targets="lightningCommunity__Default">
+      <property name="homeUrl" type="String" label="홈 URL" default="portal-home"/>
+      <property name="assetListUrl" type="String" label="보유 설비 URL" default="asset-list"/>
+      <property name="serviceUrl" type="String" label="서비스 요청 URL" default="service-request"/>
+      <property name="rfpUrl" type="String" label="RFP·RFQ URL" default="rfp-rfq"/>
+      <property name="quoteUrl" type="String" label="견적 URL" default="quotes"/>
+    </targetConfig>
+  </targetConfigs>
+</LightningComponentBundle>

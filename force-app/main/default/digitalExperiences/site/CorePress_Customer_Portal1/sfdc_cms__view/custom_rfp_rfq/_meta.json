@@ -1,0 +1,5 @@
+{
+  "apiName" : "custom_rfp_rfq",
+  "type" : "sfdc_cms__view",
+  "path" : "views"
+}

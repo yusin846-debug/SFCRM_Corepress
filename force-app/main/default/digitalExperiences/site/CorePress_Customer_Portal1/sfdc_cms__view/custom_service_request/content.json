@@ -1,0 +1,73 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "서비스요청등록",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"3b1ccce3-7f25-490f-b331-1c9999cac23e\",\"columns\":[{\"UUID\":\"1f4c5900-f517-4b5a-b5e7-f7e8d9ec3cd0\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "assetListUrl" : "asset-list",
+                "dxpStyle" : { },
+                "homeUrl" : "portal-home"
+              },
+              "definition" : "c:cpServiceRequest",
+              "id" : "03cb2b18-abaa-422e-a1f7-8662fed4609f",
+              "type" : "component"
+            } ],
+            "id" : "1f4c5900-f517-4b5a-b5e7-f7e8d9ec3cd0",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "3b1ccce3-7f25-490f-b331-1c9999cac23e",
+          "type" : "component"
+        } ],
+        "id" : "0aaf6041-8ba9-43d0-8331-ed9e37d1eed2",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "서비스요청등록",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "d467550d-b700-44b1-a69c-757e7b5a08f1",
+          "type" : "component"
+        } ],
+        "id" : "e0cc2a2a-ba07-431c-9407-5775a4bf7a6b",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "945767ae-2734-4193-ad94-3d68e61af547",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-service-request"
+  },
+  "urlName" : "서비스요청등록"
+}

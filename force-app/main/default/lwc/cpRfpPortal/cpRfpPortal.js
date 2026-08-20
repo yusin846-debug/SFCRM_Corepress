@@ -5,7 +5,7 @@ import USER_NAME from '@salesforce/schema/User.Name';
 import USER_EMAIL from '@salesforce/schema/User.Email';
 import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 export default class CpRfpPortal extends LightningElement {
-    @api homeUrl='/'; @api assetListUrl='/asset-list'; @api serviceUrl='/service-request';
+    @api homeUrl='portal-home'; @api assetListUrl='asset-list'; @api serviceUrl='service-request'; @api quoteUrl='quotes';
     headerLogoUrl=headerLogo; activeTab='issue'; entryMode='portal'; rfqEntryMode='portal'; fileLabel='선택된 파일 없음'; rfqFileLabel='선택된 파일 없음'; showProductChange=false;
     get showIssue(){return this.activeTab==='issue'} get showStatus(){return this.activeTab==='status'} get showRfq(){return this.activeTab==='rfq'}
     get issueTabClass(){return this.activeTab==='issue'?'active':''} get statusTabClass(){return this.activeTab==='status'?'active':''} get rfqTabClass(){return this.activeTab==='rfq'?'active':''}

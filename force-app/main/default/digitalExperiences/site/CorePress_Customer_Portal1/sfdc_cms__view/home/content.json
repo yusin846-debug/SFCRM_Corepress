@@ -9,6 +9,7 @@
             "backgroundImageConfig" : "",
             "backgroundImageOverlay" : "rgba(0,0,0,0)",
             "componentSpacerSize" : "",
+            "dxpStyle" : { },
             "layoutDirectionDesktop" : "row",
             "layoutDirectionMobile" : "column",
             "layoutDirectionTablet" : "column",
@@ -21,11 +22,24 @@
           "children" : [ {
             "children" : [ {
               "attributes" : {
-                "imageInfos" : "",
-                "richTextValue" : "<div style=\"display: flex; justify-content: center; align-items: center; margin: 50px 0; flex-direction: column; text-align: center;\"><div style=\"background-image: url(assets/img/desert.svg) !important; background-size: cover; background-position: center; height: 300px; width: 100%; max-width: 600px; min-width: 300px;\"></div><h1 class=\"slds-text-heading_medium slds-p-bottom_x-small\">Start Building Your Page</h1> <div>Drag and drop a component into the content slots.</div></div>"
+                "dxpStyle" : { },
+                "heroDescription" : "현장 조건에 최적화된 맞춤 설계·제작·설치부터, 설비 전 수명주기를 책임지는 디지털 통합 관리까지 — CorePress.",
+                "heroTitle" : "첨단공정을 숨 쉬게 하는  Oil-free 압축장비",
+                "loginUrl" : "login"
               },
-              "definition" : "community_builder:htmlEditor",
-              "id" : "4c056a2b-add5-4047-a9d5-d84344a6e442",
+              "definition" : "c:cpPortalLanding",
+              "id" : "6a0360a4-5375-41aa-bcba-6eda61cfe44a",
+              "type" : "component"
+            }, {
+              "attributes" : {
+                "clientVersion" : "WebV1",
+                "dxpStyle" : { },
+                "hideChatButtonOnLoad" : "Default",
+                "isExpSiteAuthMode" : false,
+                "scrtUrl" : "https://trailsignup-783b48e7f9b1eb.my.salesforce-scrt.com"
+              },
+              "definition" : "experience_messaging:embeddedMessaging",
+              "id" : "84a36f9f-e9c5-4ad6-b4a9-206116cf6ffa",
               "type" : "component"
             } ],
             "id" : "dcedc46e-9547-427e-b143-b20417132eb0",
@@ -46,6 +60,7 @@
           "attributes" : {
             "customHeadTags" : "",
             "description" : "",
+            "dxpStyle" : { },
             "pageTitle" : "Home",
             "recordId" : "{!recordId}"
           },

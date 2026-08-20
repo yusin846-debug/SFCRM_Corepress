@@ -1,4 +1,17 @@
-import { LightningElement, api } from "lwc";
+import { LightningElement, api, wire } from "lwc";
+import { getRecord, getFieldValue } from "lightning/uiRecordApi";
+import { getRelatedListRecords } from "lightning/uiRelatedListApi";
+import USER_ID from "@salesforce/user/Id";
+import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
+import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
+import ASSET_ID from "@salesforce/schema/Asset.Id";
+import ASSET_NAME from "@salesforce/schema/Asset.Name";
+import ASSET_SERIAL from "@salesforce/schema/Asset.SerialNumber";
+import ASSET_STATUS from "@salesforce/schema/Asset.Status";
+import ASSET_INSTALL_DATE from "@salesforce/schema/Asset.InstallDate";
+import ASSET_CITY from "@salesforce/schema/Asset.City";
+import ASSET_STREET from "@salesforce/schema/Asset.Street";
+import ASSET_PRODUCT_NAME from "@salesforce/schema/Asset.Product2.Name";
 import logo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import cp100 from "@salesforce/resourceUrl/CorePressCP100";
 import cp2100 from "@salesforce/resourceUrl/CorePressCP2100";
@@ -77,7 +90,23 @@ const ASSETS = [
   },
 ];
 
+const ASSET_FIELDS = [
+  ASSET_ID,
+  ASSET_NAME,
+  ASSET_SERIAL,
+  ASSET_STATUS,
+  ASSET_INSTALL_DATE,
+  ASSET_CITY,
+  ASSET_STREET,
+  ASSET_PRODUCT_NAME,
+];
+
 export default class CpAssetList extends LightningElement {
+  @api homeUrl = "portal-home";
+  @api assetListUrl = "asset-list";
+  @api serviceUrl = "service-request";
+  @api rfpUrl = "rfp-rfq";
+  @api quoteUrl = "quotes";
   @api detailUrl = "asset-detail";
   logoUrl = logo;
   locationIconUrl = locationIcon;
@@ -94,10 +123,96 @@ export default class CpAssetList extends LightningElement {
   viewMode = "grid";
   currentPage = 1;
   pageSize = 6;
+  assets = ASSETS;
+  isPreview = true;
+  isLoading = true;
+  loadError = "";
+
+  @wire(getRecord, { recordId: USER_ID, fields: [USER_CONTACT_ID] })
+  userRecord;
+
+  get contactId() {
+    return getFieldValue(this.userRecord.data, USER_CONTACT_ID);
+  }
+
+  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_ACCOUNT_ID] })
+  contactRecord;
+
+  get accountId() {
+    return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID);
+  }
+
+  @wire(getRelatedListRecords, {
+    parentRecordId: "$accountId",
+    relatedListId: "Assets",
+    fields: ASSET_FIELDS,
+    sortBy: ["Asset.InstallDate"],
+    pageSize: 199,
+  })
+  wiredAssets({ data, error }) {
+    if (data) {
+      this.assets = data.records.map((record) => this.mapAsset(record));
+      this.isPreview = false;
+      this.isLoading = false;
+      this.loadError = "";
+      return;
+    }
+    if (error) {
+      this.assets = [];
+      this.isPreview = false;
+      this.isLoading = false;
+      this.loadError = "설비 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
+    }
+  }
+
+  renderedCallback() {
+    if (this.isLoading && this.userRecord.data && !this.contactId) {
+      this.isLoading = false;
+    }
+  }
+
+  mapAsset(record) {
+    const model = getFieldValue(record, ASSET_PRODUCT_NAME) || "모델 미등록";
+    const sourceStatus = getFieldValue(record, ASSET_STATUS) || "Registered";
+    const isRunning = sourceStatus === "Installed" || sourceStatus === "Registered";
+    const city = getFieldValue(record, ASSET_CITY);
+    const street = getFieldValue(record, ASSET_STREET);
+    const id = getFieldValue(record, ASSET_ID);
+    return {
+      id,
+      model,
+      name: getFieldValue(record, ASSET_NAME) || "설비명 미등록",
+      serial: getFieldValue(record, ASSET_SERIAL) || "시리얼 미등록",
+      location: [city, street].filter(Boolean).join(" ") || "설치 위치 미등록",
+      status: isRunning ? "운전 중" : "점검 필요",
+      sourceStatus,
+      statusClass: isRunning ? "status running" : "status attention",
+      statusIcon: isRunning ? operatingIcon : warningIcon,
+      imageUrl: this.resolveImage(model),
+      installDate: this.formatDate(getFieldValue(record, ASSET_INSTALL_DATE)),
+      detailUrl: `${this.detailUrl}?recordId=${id}`,
+    };
+  }
+
+  resolveImage(model) {
+    const normalized = model.toUpperCase();
+    if (normalized.includes("7100")) return cp7100;
+    if (normalized.includes("2100")) return cp2100;
+    return cp100;
+  }
+
+  formatDate(value) {
+    if (!value) return "미등록";
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date(`${value}T00:00:00`)).replaceAll(". ", ".").replace(/\.$/, "");
+  }
 
   get filteredAssets() {
     const term = this.searchTerm.trim().toLowerCase();
-    return ASSETS.filter((asset) => {
+    return this.assets.filter((asset) => {
       const matchesFilter =
         this.activeFilter === "전체" || asset.status === this.activeFilter;
       const matchesTerm =
@@ -109,8 +224,21 @@ export default class CpAssetList extends LightningElement {
     });
   }
 
+  get showPreviewNotice() {
+    return !this.isLoading && this.isPreview;
+  }
+
   get resultsLabel() {
     return `총 ${this.filteredAssets.length}건`;
+  }
+  get totalAssetCount() {
+    return this.assets.length;
+  }
+  get runningAssetCount() {
+    return this.assets.filter((asset) => asset.status === "운전 중").length;
+  }
+  get attentionAssetCount() {
+    return this.assets.filter((asset) => asset.status === "점검 필요").length;
   }
   get totalPages() {
     return Math.max(1, Math.ceil(this.filteredAssets.length / this.pageSize));
@@ -195,7 +323,7 @@ export default class CpAssetList extends LightningElement {
     this.viewMode = "list";
   }
   handleLogout() {
-    const returnUrl = encodeURIComponent("/corepressvforcesite/s/");
+    const returnUrl = encodeURIComponent("/corepress/s/login");
     window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`);
   }
   disconnectedCallback() {

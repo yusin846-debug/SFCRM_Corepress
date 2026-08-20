@@ -129,6 +129,31 @@ main {
 .summary .attention {
   color: #a55b19;
 }
+.data-notice {
+  margin: 0 0 20px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #c9dfe1;
+  border-radius: 4px;
+  color: #31556a;
+  font-size: 11px;
+  background: #f2faf9;
+}
+.data-notice strong {
+  flex: none;
+  color: #167f7a;
+  font-size: 11px;
+}
+.data-notice.error {
+  border-color: #dfcbbb;
+  color: #795536;
+  background: #fff8f1;
+}
+.data-notice.error strong {
+  color: #945619;
+}
 .controls {
   display: grid;
   grid-template-columns: 340px auto 1fr;

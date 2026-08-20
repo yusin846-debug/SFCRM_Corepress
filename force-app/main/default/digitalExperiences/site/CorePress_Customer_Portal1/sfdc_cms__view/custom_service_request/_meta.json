@@ -1,0 +1,5 @@
+{
+  "apiName" : "custom_service_request",
+  "type" : "sfdc_cms__view",
+  "path" : "views"
+}

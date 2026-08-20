@@ -5,5 +5,5 @@
     <masterLabel>CorePress 서비스 요청 등록</masterLabel>
     <description>고객 포털 서비스 요청 등록 화면</description>
     <targets><target>lightningCommunity__Page</target><target>lightningCommunity__Default</target></targets>
-    <targetConfigs><targetConfig targets="lightningCommunity__Default"><property name="homeUrl" type="String" label="홈 URL" default="/"/><property name="assetListUrl" type="String" label="보유 설비 URL" default="/asset-list"/></targetConfig></targetConfigs>
+    <targetConfigs><targetConfig targets="lightningCommunity__Default"><property name="homeUrl" type="String" label="홈 URL" default="portal-home"/><property name="assetListUrl" type="String" label="보유 설비 URL" default="asset-list"/><property name="rfpUrl" type="String" label="RFP·RFQ URL" default="rfp-rfq"/><property name="quoteUrl" type="String" label="견적 URL" default="quotes"/></targetConfig></targetConfigs>
 </LightningComponentBundle>

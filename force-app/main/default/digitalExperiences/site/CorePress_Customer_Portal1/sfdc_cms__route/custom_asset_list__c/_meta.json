@@ -1,0 +1,5 @@
+{
+  "apiName" : "custom_asset_list__c",
+  "type" : "sfdc_cms__route",
+  "path" : "routes"
+}

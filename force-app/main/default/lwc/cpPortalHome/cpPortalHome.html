@@ -3,9 +3,9 @@
     <header class="cp-gnb">
       <img src={logoUrl} alt="CorePress" />
       <nav>
-        <a class="active" href="#home">홈</a><a href="#assets">보유 설비</a
-        ><a href="#requests">서비스 요청</a><a href="#rfp">RFP·RFQ</a
-        ><a href="#quotes">견적</a>
+        <a class="active" href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a
+        ><a href={serviceUrl}>서비스 요청</a><a href={rfpUrl}>RFP·RFQ</a
+        ><a href={quoteUrl}>견적</a>
       </nav>
       <div class="user">
         대한케미컬 · 김유신 <span></span
@@ -93,7 +93,7 @@
         <div class="asset-health">
           <header>
             <h2>설비별 건강도 <img class="info-icon" src={infoIconUrl} alt="설비별 건강도 안내" /></h2>
-            <a href="asset-list">설비 전체 보기 <span>→</span></a>
+            <a href={assetListUrl}>설비 전체 보기 <span>→</span></a>
           </header>
           <ul>
             <li><span class="asset-name"><b>터보압축기 #1</b><small>CP7100+</small></span><span class="score-track"><i class="score-98"></i></span><strong>98</strong><em class="good">양호</em></li>
@@ -133,9 +133,9 @@
           ><span>완료<strong>8</strong></span>
         </div>
         <div class="step-actions">
-          <a class="service-request-button" href="#requests"
+          <a class="service-request-button" href={serviceUrl}
             >서비스 요청 <span>→</span></a
-          ><a class="asset-link" href="#assets"
+          ><a class="asset-link" href={assetListUrl}
             >설비 전체 보기 <span>→</span></a
           >
         </div>
@@ -181,7 +181,7 @@
               </tr>
             </tbody>
           </table>
-          <a class="link" href="#requests">전체 서비스 요청 보기 →</a>
+          <a class="link" href={serviceUrl}>서비스 요청 등록하기 →</a>
         </div>
         <div>
           <h2>공지 및 보증 안내</h2>
@@ -220,7 +220,7 @@
               ><time>2026.08.15</time>
             </li>
           </ul>
-          <a class="link" href="#notices">전체 공지 보기 →</a>
+          <span class="link" aria-disabled="true">공지 전체보기 준비 중</span>
         </div>
       </section>
     </main>

@@ -2,9 +2,11 @@ import { LightningElement, api } from 'lwc';
 import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 
 export default class CpServiceDetail extends LightningElement {
-    @api homeUrl = '/';
-    @api assetListUrl = '/asset-list';
-    @api requestListUrl = '/service-request';
+    @api homeUrl = 'portal-home';
+    @api assetListUrl = 'asset-list';
+    @api requestListUrl = 'service-request';
+    @api rfpUrl = 'rfp-rfq';
+    @api quoteUrl = 'quotes';
     headerLogoUrl = headerLogo;
     steps = [
         { number: '01', label: '신규접수', date: '08.10', className: 'step complete' },

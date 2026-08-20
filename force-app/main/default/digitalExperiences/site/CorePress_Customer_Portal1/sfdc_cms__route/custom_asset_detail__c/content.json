@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "보유 설비 상세",
+  "contentBody" : {
+    "activeViewId" : "custom_asset_detail",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-asset-detail",
+    "urlPrefix" : "asset-detail"
+  },
+  "urlName" : "보유-설비-상세"
+}

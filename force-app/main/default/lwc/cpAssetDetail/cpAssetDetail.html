@@ -1,37 +1,21 @@
 <template>
   <div class="shell">
-    <header class="gnb">
-      <img class="brand" src={logoUrl} alt="CorePress" />
-      <nav aria-label="고객 포털 주요 메뉴">
-        <a href={homeUrl}>홈</a><a class="active" href={assetListUrl}>보유 설비</a><a href={serviceListUrl}>서비스 요청</a><a href="rfp-list">RFP·RFQ</a><a href="quotes">견적</a>
-      </nav>
-      <div class="user">대한케미컬 · 김유신 <span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div>
-    </header>
+    <header class="gnb"><img class="brand" src={logoUrl} alt="CorePress" /><nav aria-label="고객 포털 주요 메뉴"><a href={homeUrl}>홈</a><a class="active" href={assetListUrl}>보유 설비</a><a href={serviceListUrl}>서비스 요청</a><a href={rfpUrl}>RFP·RFQ</a><a href={quoteUrl}>견적</a></nav><div class="user">대한케미컬 · 김유신 <span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div></header>
     <main>
       <a class="back" href={assetListUrl}><span aria-hidden="true">←</span> 보유 설비 목록</a>
+      <template if:true={loadError}><aside class="data-notice" role="alert">{loadError}</aside></template>
+      <template if:true={isPreview}><aside class="data-notice" role="status">Builder 미리보기입니다. 실제 설비 상세는 보유 설비 목록에서 선택해 확인해 주세요.</aside></template>
       <section class="asset-hero" aria-labelledby="asset-title">
-        <div class="visuals"><img class="asset-image" src={cp7100Url} alt="CP7100+ 터보압축기" /><img class="blueprint" src={blueprintUrl} alt="" /></div>
-        <div class="summary">
-          <p class="model">CP7100+</p><h1 id="asset-title">터보압축기 #1</h1><p class="serial">CP-2024-0847</p>
-          <dl><dt><img src={locationIconUrl} alt="" /></dt><dd>여수 제2공장 A동</dd><dt><img src={operatingIconUrl} alt="" /></dt><dd>운전 중</dd></dl>
-        </div>
-        <a class="primary" href={serviceRequestUrl}>서비스 요청 <span aria-hidden="true">→</span></a>
+        <div class="visuals"><img class="asset-image" src={cp7100Url} alt={assetName} /><img class="blueprint" src={blueprintUrl} alt="" /></div>
+        <div class="summary"><p class="model">{model}</p><h1 id="asset-title">{assetName}</h1><p class="serial">{serial}</p><dl><dt><img src={locationIconUrl} alt="" /></dt><dd>{location}</dd><dt><img src={statusIconUrl} alt="" /></dt><dd>{status}</dd></dl></div>
+        <a class="primary" href={serviceRequestHref}>서비스 요청 <span aria-hidden="true">→</span></a>
       </section>
       <nav class="tabs" aria-label="설비 상세 영역"><a class="active" href="#basic">기본 정보</a><a href="#history">서비스 이력</a><a href="#warranty">보증 현황</a></nav>
       <section class="details" id="basic">
-        <div class="specification"><h2>기술 사양</h2><div class="specs">
-          <dl><dt>모델</dt><dd>CP7100+</dd><dt>정격 유량</dt><dd>39,000 Nm³/hr</dd><dt>토출 압력</dt><dd>15.2 bar A</dd><dt>구동 방식</dt><dd>모터 구동</dd><dt>정격 전력</dt><dd>1,200 kW</dd></dl>
-          <dl><dt>냉각 방식</dt><dd>수랭</dd><dt>흡입 압력 범위</dt><dd>3.5 - 25 bar A</dd><dt>토출 온도</dt><dd>≤ 120 °C</dd><dt>누적 운전 시간</dt><dd>15,240 hr</dd><dt>모니터링 등급</dt><dd>Smart Care S2</dd></dl>
-        </div></div>
-        <div class="warranty" id="warranty"><h2>보증 현황 <small>(CP7100+ 보증 만료 60일 전 안내)</small></h2>
-          <div class="dates"><span>보증 시작<strong>2024.06.15</strong></span><span class="today">오늘<strong>2026.08.18</strong></span><span>보증 종료<strong>2026.11.16</strong></span></div>
-          <div class="timeline" aria-label="보증 기간 진행 현황"><i></i><span></span></div><p>남은 보증 기간<strong>D-90</strong></p>
-        </div>
+        <div class="specification"><h2>설비 정보</h2><div class="specs"><dl><dt>모델</dt><dd>{model}</dd><dt>설치일</dt><dd>{installDate}</dd><dt>누적 운전 시간</dt><dd>{runtime}</dd><dt>가동시간 기준일</dt><dd>{runtimeDate}</dd></dl><dl><dt>정비 단계</dt><dd>{smartCare}</dd><dt>다음 오버홀까지</dt><dd>{overhaulHours}</dd><dt>예상 교체 시점</dt><dd>{replacementDate}</dd><dt>일련번호</dt><dd>{serial}</dd></dl></div></div>
+        <div class="warranty" id="warranty"><h2>보증 현황</h2><div class="dates"><span>보증 시작<strong>{warrantyStart}</strong></span><span class="today">오늘</span><span>보증 종료<strong>{warrantyEnd}</strong></span></div><div class="timeline" aria-label="보증 기간 진행 현황"><i></i><span style={warrantyProgressStyle}></span></div><p>남은 보증 기간<strong>{warrantyRemaining}</strong></p><div class="coverage"><span>부품 <b>{warrantyParts}</b></span><span>공임 <b>{warrantyLabor}</b></span><span>출장비 <b>{warrantyExpenses}</b></span></div></div>
       </section>
-      <section class="history" id="history"><div class="history-heading"><h2>최근 서비스 이력</h2><span>최근 3건 기준</span></div><div class="history-body">
-        <table><thead><tr><th>요청번호</th><th>요청 내용</th><th>서비스 일시</th><th>상태</th><th>담당 엔지니어</th></tr></thead><tbody><tr><td>CS-2026-0147</td><td>이상 진동·소음</td><td>2026.08.18 09:21</td><td class="teal">접수</td><td>이현우 엔지니어</td></tr></tbody></table>
-        <a href={serviceListUrl}>전체 서비스 이력 보기 <span aria-hidden="true">→</span></a>
-      </div></section>
+      <section class="history" id="history"><div class="history-heading"><h2>최근 서비스 이력</h2><span>최근 3건 기준</span></div><div class="history-body"><template if:true={hasCases}><table><thead><tr><th>요청번호</th><th>요청 내용</th><th>서비스 일시</th><th>상태</th><th>담당 엔지니어</th></tr></thead><tbody><template for:each={cases} for:item="item"><tr key={item.id}><td>{item.number}</td><td>{item.subject}</td><td>{item.date}</td><td class="teal">{item.status}</td><td>{item.engineer}</td></tr></template></tbody></table></template><template if:false={hasCases}><p class="empty-history">등록된 서비스 이력이 없습니다.</p></template><a href={serviceListUrl}>서비스 요청 등록 <span aria-hidden="true">→</span></a></div></section>
     </main>
   </div>
 </template>

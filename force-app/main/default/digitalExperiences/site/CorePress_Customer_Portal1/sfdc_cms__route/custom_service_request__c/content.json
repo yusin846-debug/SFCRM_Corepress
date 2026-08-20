@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "서비스요청등록",
+  "contentBody" : {
+    "activeViewId" : "custom_service_request",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-service-request",
+    "urlPrefix" : "service-request"
+  },
+  "urlName" : "서비스요청등록"
+}

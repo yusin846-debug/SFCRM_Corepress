@@ -3,7 +3,7 @@
         <header class="gnb">
             <img class="brand" src={logoUrl} alt="CorePress" />
             <nav aria-label="고객 포털 주요 메뉴">
-                <a href="portal-home">홈</a><a class="active" href="asset-list">보유 설비</a><a href="service-requests">서비스 요청</a><a href="rfp-list">RFP·RFQ</a><a href="quotes">견적</a>
+                <a href={homeUrl}>홈</a><a class="active" href={assetListUrl}>보유 설비</a><a href={serviceUrl}>서비스 요청</a><a href={rfpUrl}>RFP·RFQ</a><a href={quoteUrl}>견적</a>
             </nav>
             <div class="user">대한케미컬 · 김유신 <span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div>
         </header>
@@ -11,12 +11,15 @@
         <main>
             <header class="page-heading">
                 <h1>보유 설비</h1>
-                <p class="summary"><span><img src={registeredIconUrl} alt="" />등록 설비 5대</span><span><img src={summaryOperatingIconUrl} alt="" />운전 중 4대</span><span class="attention"><img src={summaryWarningIconUrl} alt="" />점검 필요 1대</span></p>
+                <p class="summary"><span><img src={registeredIconUrl} alt="" />등록 설비 {totalAssetCount}대</span><span><img src={summaryOperatingIconUrl} alt="" />운전 중 {runningAssetCount}대</span><span class="attention"><img src={summaryWarningIconUrl} alt="" />점검 필요 {attentionAssetCount}대</span></p>
             </header>
+
+            <template if:true={showPreviewNotice}><aside class="data-notice preview" role="status"><strong>Builder 미리보기 데이터</strong><span>현재 사용자는 고객 Contact에 연결되어 있지 않아 예시 설비를 표시합니다. 실제 고객 로그인 시 해당 고객사의 설비만 조회됩니다.</span></aside></template>
+            <template if:true={loadError}><aside class="data-notice error" role="alert"><strong>설비 조회 오류</strong><span>{loadError}</span></aside></template>
 
             <section class="controls" aria-label="보유 설비 검색 및 필터">
                 <label class="search"><img src={searchIconUrl} alt="검색" /><input type="search" placeholder="설비명 또는 일련번호 검색" value={searchTerm} oninput={handleSearch} /></label>
-                <div class="filters"><button class={allFilterClass} onclick={showAll}>전체 <b>5</b></button><button class={runningFilterClass} onclick={showRunning}>운전 중 <b>4</b></button><button class={attentionFilterClass} onclick={showAttention}>점검 필요 <b>1</b></button></div>
+                <div class="filters"><button class={allFilterClass} onclick={showAll}>전체 <b>{totalAssetCount}</b></button><button class={runningFilterClass} onclick={showRunning}>운전 중 <b>{runningAssetCount}</b></button><button class={attentionFilterClass} onclick={showAttention}>점검 필요 <b>{attentionAssetCount}</b></button></div>
                 <div class="view-toggle" aria-label="보기 방식"><button class={gridButtonClass} onclick={showGrid} aria-label="카드 보기" aria-pressed={isGridView}><img src={currentGridIconUrl} alt="" /></button><button class={listButtonClass} onclick={showList} aria-label="목록 보기" aria-pressed={isListView}><img src={currentListIconUrl} alt="" /></button></div>
             </section>
 
@@ -29,7 +32,7 @@
                             <p class="location"><img src={locationIconUrl} alt="" />{asset.location}</p>
                             <span class={asset.statusClass}><img src={asset.statusIcon} alt="" />{asset.status}</span>
                             <dl><dt>설치일</dt><dd>{asset.installDate}</dd></dl>
-                            <a class="detail-link" href={detailUrl}>상세 보기 <span>→</span></a>
+                            <a class="detail-link" href={asset.detailUrl}>상세 보기 <span>→</span></a>
                         </div>
                     </article>
                 </template>

@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "RFP·RFQ",
+  "contentBody" : {
+    "activeViewId" : "custom_rfp_rfq",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-rfp-rfq",
+    "urlPrefix" : "rfp-rfq"
+  },
+  "urlName" : "rfp-rfq"
+}

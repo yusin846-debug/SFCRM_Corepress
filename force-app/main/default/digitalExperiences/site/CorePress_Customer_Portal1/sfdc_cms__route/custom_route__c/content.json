@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "포털 홈",
+  "contentBody" : {
+    "activeViewId" : "custom_route",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-route",
+    "urlPrefix" : "portal-home"
+  },
+  "urlName" : "포털-홈"
+}

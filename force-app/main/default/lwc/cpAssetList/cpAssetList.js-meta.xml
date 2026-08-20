@@ -10,6 +10,11 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightningCommunity__Default">
+            <property name="homeUrl" type="String" label="홈 URL" default="portal-home" />
+            <property name="assetListUrl" type="String" label="보유 설비 URL" default="asset-list" />
+            <property name="serviceUrl" type="String" label="서비스 요청 URL" default="service-request" />
+            <property name="rfpUrl" type="String" label="RFP·RFQ URL" default="rfp-rfq" />
+            <property name="quoteUrl" type="String" label="견적 URL" default="quotes" />
             <property name="detailUrl" type="String" label="설비 상세 경로" default="asset-detail" />
         </targetConfig>
     </targetConfigs>
