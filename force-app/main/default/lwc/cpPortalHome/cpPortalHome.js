@@ -17,6 +17,7 @@ export default class CpPortalHome extends LightningElement {
   @api homeUrl = "portal-home";
   @api assetListUrl = "asset-list";
   @api serviceUrl = "service-request";
+  @api serviceListUrl = "service-list";
   @api rfpUrl = "rfp-rfq";
   @api quoteUrl = "quotes";
   logoUrl = logo;

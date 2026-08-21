@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "서비스 요청 목록",
+  "contentBody" : {
+    "activeViewId" : "custom_service_list",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-service-list",
+    "urlPrefix" : "service-list"
+  },
+  "urlName" : "서비스-요청-목록"
+}

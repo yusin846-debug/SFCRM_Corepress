@@ -29,7 +29,7 @@ const WARRANTY_FIELDS = ["AssetWarranty.StartDate", "AssetWarranty.EndDate", "As
 export default class CpAssetDetail extends LightningElement {
   @api homeUrl = "portal-home";
   @api assetListUrl = "asset-list";
-  @api serviceListUrl = "service-request";
+  @api serviceListUrl = "service-list";
   @api serviceRequestUrl = "service-request";
   @api rfpUrl = "rfp-rfq";
   @api quoteUrl = "quotes";
@@ -94,6 +94,7 @@ export default class CpAssetDetail extends LightningElement {
   get smartCare() { return getFieldValue(this.assetRecord, ASSET_SMART_CARE) || "미등록"; }
   get replacementDate() { return this.formatDate(getFieldValue(this.assetRecord, ASSET_REPLACEMENT_DATE)); }
   get serviceRequestHref() { return this.recordId ? `${this.serviceRequestUrl}?assetId=${this.recordId}` : this.serviceRequestUrl; }
+  get serviceHistoryHref() { return this.recordId ? `${this.serviceListUrl}?assetId=${this.recordId}` : this.serviceListUrl; }
   get hasCases() { return this.cases.length > 0; }
   get isPreview() { return !this.recordId; }
   get warrantyStart() { return this.formatDate(this.warrantyRecord?.fields?.StartDate?.value); }

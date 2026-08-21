@@ -3,6 +3,15 @@
     <isVisibleByExternalUsers>true</isVisibleByExternalUsers>
     <language>ko</language>
     <masterLabel>CorePress Logo Dark</masterLabel>
-    <relationships><organization><access>VIEWER</access></organization></relationships>
-    <versions><version><number>1</number><pathOnClient>corepress_logo_dark.png</pathOnClient></version></versions>
+    <relationships>
+        <organization>
+            <access>VIEWER</access>
+        </organization>
+    </relationships>
+    <versions>
+        <version>
+            <number>1</number>
+            <pathOnClient>corepress_logo_dark.png</pathOnClient>
+        </version>
+    </versions>
 </ContentAsset>

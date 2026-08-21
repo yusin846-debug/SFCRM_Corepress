@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>CorePress Portal Error</masterLabel>
+    <description>CorePress 고객 포털 오류 안내 화면</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="homeUrl" type="String" label="홈 URL" default="portal-home" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

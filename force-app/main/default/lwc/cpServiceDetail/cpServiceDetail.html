@@ -2,23 +2,31 @@
     <main class="page">
         <header class="header"><img src={headerLogoUrl} alt="CorePress"/><nav><a href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a><span aria-current="page">서비스 요청</span><a href={rfpUrl}>RFP·RFQ</a><a href={quoteUrl}>견적</a></nav><div>대한케미컬 · 김유신</div></header>
         <section class="content">
-            <a class="back" href={requestListUrl}>← 서비스 요청 등록</a>
-            <div class="title-row"><div><p>SERVICE REQUEST</p><h1>CS-2026-0147</h1><span>터보압축기 #1 · CP7100+ · CP-2024-0847</span></div><div class="request-meta"><small>접수일</small><strong>2026.08.10 09:21</strong><b>진행중</b></div></div>
+            <a class="back" href={requestListUrl}>← 서비스 요청 목록</a>
 
-            <section class="progress" aria-label="서비스 처리 단계">
-                <template for:each={steps} for:item="step"><div key={step.label} class={step.className}><span>{step.number}</span><strong>{step.label}</strong><small>{step.date}</small></div></template>
-            </section>
+            <template if:true={isPreview}><aside class="data-notice" role="status">Builder 미리보기입니다. 실제 서비스 요청 상세는 목록에서 선택해 확인해 주세요.</aside></template>
+            <template if:true={loadError}><aside class="data-notice error" role="alert">{loadError}</aside></template>
 
-            <div class="detail-grid">
-                <div class="main-column">
-                    <section class="panel"><header><p>01</p><h2>요청 정보</h2></header><div class="info-grid"><dl><dt>증상 유형</dt><dd>소음·진동</dd></dl><dl><dt>공정 영향</dt><dd>제한 운전 중 <span class="tag">보통</span></dd></dl><dl><dt>요청자</dt><dd>김유신 · 설비관리팀</dd></dl><dl><dt>설비 위치</dt><dd>여수 제2공장 A동</dd></dl></div><div class="description"><small>요청 내용</small><strong>운전 중 1단 로터 주변에서 비정상 진동이 발생합니다.</strong><p>8월 9일 야간 운전부터 80Hz 대역의 진동이 반복적으로 확인되었습니다. 현재 감속 운전 중이며 현장 점검을 요청합니다.</p></div><div class="files"><span>vibration_data.xlsx</span><span>현장사진_01.jpg</span></div></section>
-                    <section class="panel"><header><p>02</p><h2>작업 진행 상황</h2></header><div class="work-status"><div class="work-icon">↗</div><div><strong>현장 방문이 예정되어 있습니다</strong><p>담당 엔지니어가 설비 상태와 진동 데이터를 확인할 예정입니다.</p></div></div><div class="work-note"><small>최근 업데이트 · 2026.08.11 16:40</small><p>원격 진단 결과 베어링 또는 축정렬 상태 확인이 필요하여 현장 방문으로 전환했습니다.</p></div></section>
+            <template if:true={hasCase}>
+                <div class="title-row"><div><p>SERVICE REQUEST</p><h1>{caseNumber}</h1><span>{assetSummary}</span></div><div class="request-meta"><small>접수일</small><strong>{createdDate}</strong><b>{status}</b></div></div>
+
+                <section class="progress" aria-label="서비스 처리 단계">
+                    <template for:each={steps} for:item="step"><div key={step.label} class={step.className}><span>{step.number}</span><strong>{step.label}</strong></div></template>
+                </section>
+
+                <div class="detail-grid">
+                    <div class="main-column">
+                        <section class="panel"><header><p>01</p><h2>요청 정보</h2></header><div class="info-grid"><dl><dt>증상 유형</dt><dd>{type}</dd></dl><dl><dt>요청자</dt><dd>{contactName}</dd></dl><dl><dt>대상 설비</dt><dd>{assetSummary}</dd></dl></div><div class="description"><small>요청 내용</small><p>{description}</p></div></section>
+                        <section class="panel"><header><p>02</p><h2>조치 결과</h2></header><template if:true={hasWorkPerformed}><div class="work-note"><small>조치 내용</small><p>{workPerformed}</p></div><template if:true={partsUsed}><div class="files"><span>{partsUsed}</span></div></template></template><template if:false={hasWorkPerformed}><div class="work-status"><div class="work-icon">↗</div><div><strong>아직 조치 결과가 등록되지 않았습니다</strong><p>담당 엔지니어의 현장 확인 후 업데이트됩니다.</p></div></div></template></section>
+                    </div>
+                    <aside>
+                        <section class="side-panel"><p>WARRANTY</p><h2>보증 판정</h2><div class="warranty"><span>{warrantyDetermination}</span><strong>{determinationBasis}</strong></div><template if:false={isWarrantyCovered}><dl><div><dt>유상 사유</dt><dd>{billableReason}</dd></div><div><dt>견적 금액</dt><dd>{quotedAmount}</dd></div><div><dt>승인 상태</dt><dd>{approvalStatus}</dd></div></dl></template></section>
+                        <template if:true={hasScheduledVisit}>
+                        <section class="side-panel visit"><p>VISIT SCHEDULE</p><h2>방문 정보</h2><div class="date"><strong>{visitDate}</strong></div><dl><div><dt>담당 엔지니어</dt><dd>{engineerName}</dd></div><div><dt>연락처</dt><dd>{engineerPhone}</dd></div></dl></section>
+                        </template>
+                    </aside>
                 </div>
-                <aside>
-                    <section class="side-panel"><p>WARRANTY</p><h2>보증 판정</h2><div class="warranty"><span>무상</span><strong>보증 적용 대상</strong></div><dl><div><dt>보증 종료일</dt><dd>2026.11.16</dd></div><div><dt>부품</dt><dd>100%</dd></div><div><dt>공임</dt><dd>100%</dd></div><div><dt>출장비</dt><dd>50%</dd></div></dl></section>
-                    <section class="side-panel visit"><p>VISIT SCHEDULE</p><h2>방문 정보</h2><div class="date"><strong>2026.08.12</strong><span>14:00</span></div><dl><div><dt>담당 엔지니어</dt><dd>김기술</dd></div><div><dt>연락처</dt><dd>010-1234-5678</dd></div><div><dt>방문 장소</dt><dd>여수 제2공장 A동</dd></div></dl><button type="button">담당자에게 문의 <span>→</span></button></section>
-                </aside>
-            </div>
+            </template>
         </section>
     </main>
 </template>

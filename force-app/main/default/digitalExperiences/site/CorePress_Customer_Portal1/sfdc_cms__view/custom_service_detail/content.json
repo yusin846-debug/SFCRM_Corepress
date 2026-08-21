@@ -25,7 +25,7 @@
                 "assetListUrl" : "asset-list",
                 "dxpStyle" : { },
                 "homeUrl" : "portal-home",
-                "requestListUrl" : "service-request"
+                "requestListUrl" : "service-list"
               },
               "definition" : "c:cpServiceDetail",
               "id" : "f062550f-cec7-4bd3-a6c5-42ab6db72c4f",
