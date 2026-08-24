@@ -4,9 +4,7 @@ import { getRecord, getFieldValue } from "lightning/uiRecordApi";
 import { getRelatedListRecords } from "lightning/uiRelatedListApi";
 import USER_ID from "@salesforce/user/Id";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
-import CONTACT_NAME from "@salesforce/schema/Contact.Name";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
-import ACCOUNT_NAME from "@salesforce/schema/Account.Name";
 import ASSET_NAME from "@salesforce/schema/Asset.Name";
 import ASSET_SERIAL from "@salesforce/schema/Asset.SerialNumber";
 import ASSET_STATUS from "@salesforce/schema/Asset.Status";
@@ -54,19 +52,9 @@ export default class CpAssetDetail extends LightningElement {
   userRecord;
   get contactId() { return getFieldValue(this.userRecord.data, USER_CONTACT_ID); }
 
-  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_NAME, CONTACT_ACCOUNT_ID] })
+  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_ACCOUNT_ID] })
   contactRecord;
-  get contactName() { return getFieldValue(this.contactRecord.data, CONTACT_NAME); }
   get accountId() { return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID); }
-
-  @wire(getRecord, { recordId: "$accountId", fields: [ACCOUNT_NAME] })
-  accountRecord;
-  get accountName() { return getFieldValue(this.accountRecord.data, ACCOUNT_NAME); }
-
-  get headerLabel() {
-    const real = [this.accountName, this.contactName].filter(Boolean).join(" · ");
-    return real || "대한케미컬 · 김유신";
-  }
 
   @wire(CurrentPageReference)
   setPageReference(pageReference) {

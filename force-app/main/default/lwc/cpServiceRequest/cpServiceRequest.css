@@ -1,12 +1,16 @@
 :host { --navy:#061b3d; --ink:#112846; --teal:#20b8b0; --line:#dbe3e9; --muted:#65768a; display:block; color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic",Arial,sans-serif; background:#f7f9fa; }
 * { box-sizing:border-box; }
 .request-page { min-height:100vh; background:#f7f9fa; }
-.request-header { height:86px; padding:0 3vw; display:grid; grid-template-columns:280px 1fr 280px; align-items:center; background:var(--navy); color:#fff; }
-.request-header img { width:215px; height:auto; }
-.request-header nav { height:100%; display:flex; justify-content:center; gap:50px; align-items:center; }
-.request-header a,.request-header span { position:relative; color:#fff; text-decoration:none; font-size:15px; }
-.request-header span[aria-current="page"]::after { position:absolute; right:0; bottom:-31px; left:0; height:3px; content:""; background:var(--teal); }
-.account { text-align:right; font-size:14px; }
+.request-header { height:64px; padding:0 40px; display:grid; grid-template-columns:240px 1fr 300px; align-items:center; background:var(--navy); color:#fff; }
+.request-header img { width:190px; height:auto; }
+.request-header nav { height:100%; display:flex; justify-content:center; gap:40px; align-items:center; }
+.request-header a { position:relative; padding:22px 0 18px; color:rgba(255,255,255,.76); text-decoration:none; font-size:15px; }
+.request-header span[aria-current="page"] { position:relative; padding:22px 0 18px; color:#fff; text-decoration:none; font-size:15px; }
+.request-header span[aria-current="page"]::after { position:absolute; right:0; bottom:8px; left:0; height:3px; content:""; background:var(--teal); }
+.account { justify-self:end; display:flex; align-items:center; gap:16px; color:rgba(255,255,255,.8); font-size:13px; }
+.account > span { height:20px; border-left:1px solid rgba(255,255,255,.55); }
+.logout { padding:5px 0; display:flex; align-items:center; gap:7px; border:0; color:#fff; font-family:inherit; font-size:13px; font-weight:500; line-height:1.2; cursor:pointer; background:transparent; }
+.logout img { width:17px; height:17px; object-fit:contain; }
 .content { width:min(1420px,92vw); margin:0 auto; padding:58px 0 80px; }
 .page-heading { padding-bottom:30px; border-bottom:1px solid var(--line); }
 .page-heading p,.guide-label { margin:0 0 12px; color:var(--teal); font-size:11px; font-weight:800; letter-spacing:.16em; }

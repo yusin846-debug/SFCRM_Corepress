@@ -1,6 +1,6 @@
 <template>
   <div class="shell">
-    <header class="gnb"><img class="brand" src={logoUrl} alt="CorePress" /><nav aria-label="고객 포털 주요 메뉴"><a href={homeUrl}>홈</a><a class="active" href={assetListUrl}>보유 설비</a><a href={serviceListUrl}>서비스 요청</a><a href={rfpUrl}>RFP·RFQ</a><a href={quoteUrl}>견적</a></nav><div class="user">{headerLabel} <span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div></header>
+    <header class="gnb"><img class="brand" src={logoUrl} alt="CorePress" /><nav aria-label="고객 포털 주요 메뉴"><a href={homeUrl}>홈</a><a class="active" href={assetListUrl}>보유 설비</a><a href={serviceListUrl}>서비스 요청</a><a href={rfpUrl}>RFP·RFQ</a><a href={quoteUrl}>견적</a></nav><div class="user">대한케미컬 · 김재혁 <span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div></header>
     <main>
       <a class="back" href={assetListUrl}><span aria-hidden="true">←</span> 보유 설비 목록</a>
       <template if:true={loadError}><aside class="data-notice" role="alert">{loadError}</aside></template>

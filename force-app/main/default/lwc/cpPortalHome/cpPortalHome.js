@@ -2,7 +2,6 @@ import { LightningElement, api, wire } from "lwc";
 import { getRecord, getFieldValue } from "lightning/uiRecordApi";
 import { getRelatedListRecords } from "lightning/uiRelatedListApi";
 import USER_ID from "@salesforce/user/Id";
-import USER_NAME from "@salesforce/schema/User.Name";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
 import ACCOUNT_NAME from "@salesforce/schema/Account.Name";
@@ -69,12 +68,8 @@ export default class CpPortalHome extends LightningElement {
   assets = [];
   cases = [];
 
-  @wire(getRecord, { recordId: USER_ID, fields: [USER_NAME, USER_CONTACT_ID] })
+  @wire(getRecord, { recordId: USER_ID, fields: [USER_CONTACT_ID] })
   userRecord;
-
-  get userName() {
-    return getFieldValue(this.userRecord.data, USER_NAME) || "";
-  }
 
   get contactId() {
     return getFieldValue(this.userRecord.data, USER_CONTACT_ID);
@@ -89,10 +84,6 @@ export default class CpPortalHome extends LightningElement {
 
   get accountName() {
     return getFieldValue(this.contactRecord.data, ACCOUNT_NAME) || "";
-  }
-
-  get headerLabel() {
-    return [this.accountName, this.userName].filter(Boolean).join(" · ");
   }
 
   get pageTitle() {

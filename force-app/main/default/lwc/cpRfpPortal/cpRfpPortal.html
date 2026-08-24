@@ -1,6 +1,6 @@
 <template>
     <main class="page">
-        <header class="header"><img src={headerLogoUrl} alt="CorePress"/><nav><a href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a><a href={serviceUrl}>서비스 요청</a><span aria-current="page">RFP·RFQ</span><a href={quoteUrl}>견적</a></nav><div>{headerLabel}</div></header>
+        <header class="header"><img src={headerLogoUrl} alt="CorePress"/><nav><a href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a><a href={serviceUrl}>서비스 요청</a><span aria-current="page">RFP·RFQ</span><a href={quoteUrl}>견적</a></nav><div class="account">대한케미컬 · 김재혁 <span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div></header>
         <section class="content">
             <div class="heading"><p>PROCUREMENT REQUEST</p><h1>RFP·RFQ</h1><span>요구 사양을 전달하고 기술 제안과 견적 요청을 한곳에서 관리합니다.</span></div>
             <div class="tabs" role="tablist"><button class={issueTabClass} data-tab="issue" onclick={selectTab}>RFP 발행</button><button class={statusTabClass} data-tab="status" onclick={selectTab}>내 RFP 현황</button><button class={rfqTabClass} data-tab="rfq" onclick={selectTab}>RFQ 제출</button><button class={rfqStatusTabClass} data-tab="rfq-status" onclick={selectTab}>내 RFQ 현황</button></div>

@@ -4,9 +4,7 @@ import { getRelatedListRecords } from "lightning/uiRelatedListApi";
 import USER_ID from "@salesforce/user/Id";
 import CASE_OBJECT from "@salesforce/schema/Case";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
-import CONTACT_NAME from "@salesforce/schema/Contact.Name";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
-import ACCOUNT_NAME from "@salesforce/schema/Account.Name";
 import CASE_ACCOUNT_ID from "@salesforce/schema/Case.AccountId";
 import CASE_CONTACT_ID from "@salesforce/schema/Case.ContactId";
 import CASE_ASSET_ID from "@salesforce/schema/Case.AssetId";
@@ -18,6 +16,7 @@ import CASE_ORIGIN from "@salesforce/schema/Case.Origin";
 import CASE_STATUS from "@salesforce/schema/Case.Status";
 import uploadFile from "@salesforce/apex/CpPortalFileController.uploadFile";
 import headerLogo from "@salesforce/resourceUrl/CorePressHeaderLogo";
+import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutWhiteIcon";
 
 const ASSET_FIELDS = ["Asset.Id", "Asset.Name", "Asset.SerialNumber", "Asset.Product2.Name"];
 
@@ -27,6 +26,7 @@ export default class CpServiceRequest extends LightningElement {
   @api rfpUrl = "rfp-rfq";
   @api quoteUrl = "quotes";
   headerLogoUrl = headerLogo;
+  logoutIconUrl = logoutIcon;
   isSubmitted = false;
   isSubmitting = false;
   selectedFileLabel = "선택된 파일 없음";
@@ -41,15 +41,8 @@ export default class CpServiceRequest extends LightningElement {
 
   @wire(getRecord, { recordId: USER_ID, fields: [USER_CONTACT_ID] }) userRecord;
   get contactId() { return getFieldValue(this.userRecord.data, USER_CONTACT_ID); }
-  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_NAME, CONTACT_ACCOUNT_ID] }) contactRecord;
-  get contactName() { return getFieldValue(this.contactRecord.data, CONTACT_NAME); }
+  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_ACCOUNT_ID] }) contactRecord;
   get accountId() { return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID); }
-  @wire(getRecord, { recordId: "$accountId", fields: [ACCOUNT_NAME] }) accountRecord;
-  get accountName() { return getFieldValue(this.accountRecord.data, ACCOUNT_NAME); }
-  get headerLabel() {
-    const real = [this.accountName, this.contactName].filter(Boolean).join(" · ");
-    return real || "대한케미컬 · 김유신";
-  }
 
   @wire(getRelatedListRecords, { parentRecordId: "$accountId", relatedListId: "Assets", fields: ASSET_FIELDS, pageSize: 199 })
   wiredAssets({ data, error }) {
@@ -131,4 +124,8 @@ export default class CpServiceRequest extends LightningElement {
   readFile(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result.split(",")[1]); reader.onerror = reject; reader.readAsDataURL(file); }); }
   handleCancel() { window.history.back(); }
   resetForm() { window.location.reload(); }
+  handleLogout() {
+    const returnUrl = encodeURIComponent("/corepress/s/login");
+    window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`);
+  }
 }

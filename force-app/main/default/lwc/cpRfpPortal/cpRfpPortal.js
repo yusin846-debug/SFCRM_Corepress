@@ -5,7 +5,6 @@ import USER_ID from '@salesforce/user/Id';
 import USER_NAME from '@salesforce/schema/User.Name';
 import USER_EMAIL from '@salesforce/schema/User.Email';
 import USER_CONTACT_ID from '@salesforce/schema/User.ContactId';
-import CONTACT_NAME from '@salesforce/schema/Contact.Name';
 import CONTACT_ACCOUNT_ID from '@salesforce/schema/Contact.AccountId';
 import ACCOUNT_NAME from '@salesforce/schema/Account.Name';
 import OPPORTUNITY_OBJECT from '@salesforce/schema/Opportunity';
@@ -18,6 +17,7 @@ import OPPORTUNITY_DESCRIPTION from '@salesforce/schema/Opportunity.Description'
 import syncLeadOnRfpSubmit from '@salesforce/apex/CpSalesPipelineController.syncLeadOnRfpSubmit';
 import reassignOpportunityOwner from '@salesforce/apex/CpSalesPipelineController.reassignOpportunityOwner';
 import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
+import logoutIcon from '@salesforce/resourceUrl/CorePressLogoutWhiteIcon';
 
 const OPPORTUNITY_LIST_FIELDS = [
     'Opportunity.Id',
@@ -42,6 +42,7 @@ export default class CpRfpPortal extends LightningElement {
     @api serviceUrl = 'service-request';
     @api quoteUrl = 'quotes';
     headerLogoUrl = headerLogo;
+    logoutIconUrl = logoutIcon;
     activeTab = 'issue';
     entryMode = 'portal';
     rfqEntryMode = 'portal';
@@ -84,15 +85,10 @@ export default class CpRfpPortal extends LightningElement {
     get customerEmail() { return getFieldValue(this.currentUser.data, USER_EMAIL) || '계정 이메일 확인 중'; }
     get contactId() { return getFieldValue(this.currentUser.data, USER_CONTACT_ID); }
 
-    @wire(getRecord, { recordId: '$contactId', fields: [CONTACT_NAME, CONTACT_ACCOUNT_ID] })
+    @wire(getRecord, { recordId: '$contactId', fields: [CONTACT_ACCOUNT_ID] })
     contactRecord;
-    get contactName() { return getFieldValue(this.contactRecord.data, CONTACT_NAME); }
     get accountId() { return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID); }
     get hasCustomerContext() { return Boolean(this.contactId && this.accountId); }
-    get headerLabel() {
-        const real = [this.accountName, this.contactName].filter(Boolean).join(' · ');
-        return real || '대한케미컬 · 김유신';
-    }
 
     @wire(getRecord, { recordId: '$accountId', fields: [ACCOUNT_NAME] })
     accountRecord;
@@ -279,5 +275,10 @@ export default class CpRfpPortal extends LightningElement {
         } finally {
             this.isSubmittingRfq = false;
         }
+    }
+
+    handleLogout() {
+        const returnUrl = encodeURIComponent('/corepress/s/login');
+        window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`);
     }
 }
