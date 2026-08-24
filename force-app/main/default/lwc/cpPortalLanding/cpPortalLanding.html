@@ -67,7 +67,7 @@
                             <label><span>담당자명 <em>필수</em></span><input name="name" type="text" autocomplete="name" required /></label>
                             <label><span>이메일 <em>필수</em></span><input name="email" type="email" autocomplete="email" required /></label>
                             <label><span>연락처 <em>필수</em></span><input name="phone" type="tel" autocomplete="tel" pattern="[0-9+() -]{8,20}" required /></label>
-                            <label class="full"><span>관심 제품 <em>필수</em></span><select name="product" required><option value="">제품을 선택해 주세요</option><option>CP100 Pro</option><option>CP2100</option><option>CP7100+</option><option>전체 제품</option></select></label>
+                            <label class="full"><span>관심 제품 <em>필수</em></span><select name="product" required><option value="">제품을 선택해 주세요</option><template for:each={equipmentProducts} for:item="product"><option key={product.name} value={product.name}>{product.name}</option></template><option>전체 제품</option></select></label>
                             <label class="full">문의 내용<textarea name="message" rows="3" placeholder="적용 공정이나 필요한 사양을 입력해 주세요."></textarea></label>
                         </div>
                         <label class="consent"><input name="consent" type="checkbox" required /><span>카탈로그 제공을 위한 개인정보 수집 및 이용에 동의합니다. <em>필수</em></span></label>

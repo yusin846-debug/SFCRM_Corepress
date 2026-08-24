@@ -16,6 +16,8 @@ import ASSET_SMART_CARE from "@salesforce/schema/Asset.Smart_Care_Stage__c";
 import ASSET_REPLACEMENT_DATE from "@salesforce/schema/Asset.Expected_Replacement_Date__c";
 import logo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import cp7100 from "@salesforce/resourceUrl/CorePressCP7100Detail";
+import cp2100 from "@salesforce/resourceUrl/CorePressCP2100";
+import cp100 from "@salesforce/resourceUrl/CorePressCP100";
 import blueprint from "@salesforce/resourceUrl/CorePressCP7100Blueprint";
 import locationIcon from "@salesforce/resourceUrl/CorePressLocationIcon";
 import operatingIcon from "@salesforce/resourceUrl/CorePressSummaryOperatingIcon";
@@ -35,7 +37,6 @@ export default class CpAssetDetail extends LightningElement {
   @api quoteUrl = "quotes";
   recordId;
   logoUrl = logo;
-  cp7100Url = cp7100;
   blueprintUrl = blueprint;
   locationIconUrl = locationIcon;
   logoutIconUrl = logoutIcon;
@@ -77,6 +78,12 @@ export default class CpAssetDetail extends LightningElement {
   wiredWarranty({ data }) { this.warrantyRecord = data?.records?.[0]; }
 
   get model() { return getFieldValue(this.assetRecord, ASSET_PRODUCT_NAME) || "모델 미등록"; }
+  get heroImageUrl() {
+    const normalized = this.model.trim().toUpperCase();
+    if (normalized === "CP7100+") return cp7100;
+    if (normalized === "CP2100") return cp2100;
+    return cp100;
+  }
   get assetName() { return getFieldValue(this.assetRecord, ASSET_NAME) || "설비명 미등록"; }
   get serial() { return getFieldValue(this.assetRecord, ASSET_SERIAL) || "일련번호 미등록"; }
   get location() { return [getFieldValue(this.assetRecord, ASSET_CITY), getFieldValue(this.assetRecord, ASSET_STREET)].filter(Boolean).join(" ") || "설치 위치 미등록"; }

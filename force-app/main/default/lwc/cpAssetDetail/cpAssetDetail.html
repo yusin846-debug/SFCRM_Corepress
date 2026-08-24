@@ -6,7 +6,7 @@
       <template if:true={loadError}><aside class="data-notice" role="alert">{loadError}</aside></template>
       <template if:true={isPreview}><aside class="data-notice" role="status">Builder 미리보기입니다. 실제 설비 상세는 보유 설비 목록에서 선택해 확인해 주세요.</aside></template>
       <section class="asset-hero" aria-labelledby="asset-title">
-        <div class="visuals"><img class="asset-image" src={cp7100Url} alt={assetName} /><img class="blueprint" src={blueprintUrl} alt="" /></div>
+        <div class="visuals"><img class="asset-image" src={heroImageUrl} alt={assetName} /><img class="blueprint" src={blueprintUrl} alt="" /></div>
         <div class="summary"><p class="model">{model}</p><h1 id="asset-title">{assetName}</h1><p class="serial">{serial}</p><dl><dt><img src={locationIconUrl} alt="" /></dt><dd>{location}</dd><dt><img src={statusIconUrl} alt="" /></dt><dd>{status}</dd></dl></div>
         <a class="primary" href={serviceRequestHref}>서비스 요청 <span aria-hidden="true">→</span></a>
       </section>

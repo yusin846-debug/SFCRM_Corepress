@@ -7,6 +7,7 @@ private class CpCatalogLeadControllerTest {
         inquiry.email = 'buyer@daehan.example.com';
         inquiry.phone = '02-1234-5678';
         inquiry.product = 'CP7100+';
+        inquiry.productFamily = '압축기';
         inquiry.message = '제2공장 압축기 카탈로그 요청합니다.';
         inquiry.consent = true;
         return inquiry;
@@ -31,9 +32,26 @@ private class CpCatalogLeadControllerTest {
         Assert.areEqual('buyer@daehan.example.com', lead.Email, 'Email should map from the form');
         Assert.areEqual('02-1234-5678', lead.Phone, 'Phone should map from the form');
         Assert.areEqual('카탈로그 문의', lead.LeadSource, 'Lead source should be tagged');
-        Assert.areEqual('압축기', lead.Product_Interest__c, 'Product interest should default to compressor line');
+        Assert.areEqual('압축기', lead.Product_Interest__c, 'Product interest should record the selected product family');
         Assert.isTrue(lead.Description.contains('CP7100+'), 'Description should retain selected product model');
         Assert.isTrue(lead.Description.contains('제2공장'), 'Description should retain the message');
+    }
+
+    @IsTest
+    static void shouldAssignSalesOwner_WhenBackupUserExists() {
+        List<User> owners = [SELECT Id FROM User WHERE Username = 'test.teamlead.backup@corepress.demo' AND IsActive = true LIMIT 1];
+        if (owners.isEmpty()) {
+            return; // Org-specific demo user not present in this environment; nothing to assert.
+        }
+
+        CpCatalogLeadController.CatalogInquiry inquiry = buildInquiry();
+
+        Test.startTest();
+        Id leadId = CpCatalogLeadController.submitCatalogInquiry(inquiry);
+        Test.stopTest();
+
+        Lead lead = [SELECT OwnerId FROM Lead WHERE Id = :leadId];
+        Assert.areEqual(owners[0].Id, lead.OwnerId, 'New Lead should be owned by the sales team lead backup account');
     }
 
     @IsTest
@@ -47,6 +65,33 @@ private class CpCatalogLeadControllerTest {
 
         Lead lead = [SELECT LastName FROM Lead WHERE Id = :leadId];
         Assert.areEqual('미입력', lead.LastName, 'Blank name should fall back to placeholder');
+    }
+
+    @IsTest
+    static void shouldDefaultProductInterest_WhenProductFamilyBlank() {
+        CpCatalogLeadController.CatalogInquiry inquiry = buildInquiry();
+        inquiry.product = '전체 제품';
+        inquiry.productFamily = '';
+
+        Test.startTest();
+        Id leadId = CpCatalogLeadController.submitCatalogInquiry(inquiry);
+        Test.stopTest();
+
+        Lead lead = [SELECT Product_Interest__c FROM Lead WHERE Id = :leadId];
+        Assert.areEqual('압축기', lead.Product_Interest__c, 'Blank/unrecognized family should fall back to a valid picklist value');
+    }
+
+    @IsTest
+    static void shouldRejectUnknownProductFamily() {
+        CpCatalogLeadController.CatalogInquiry inquiry = buildInquiry();
+        inquiry.productFamily = '해킹시도';
+
+        Test.startTest();
+        Id leadId = CpCatalogLeadController.submitCatalogInquiry(inquiry);
+        Test.stopTest();
+
+        Lead lead = [SELECT Product_Interest__c FROM Lead WHERE Id = :leadId];
+        Assert.areEqual('압축기', lead.Product_Interest__c, 'Values outside the restricted picklist should fall back to a valid default');
     }
 
     @IsTest

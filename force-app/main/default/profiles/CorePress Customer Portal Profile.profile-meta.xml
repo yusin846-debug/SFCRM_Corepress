@@ -4,6 +4,10 @@
         <apexClass>CpCatalogLeadController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>CpProductCatalogController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <custom>true</custom>
     <userLicense>Guest User License</userLicense>
 </Profile>

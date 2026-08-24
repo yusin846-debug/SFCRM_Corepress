@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentAsset xmlns="http://soap.sforce.com/2006/04/metadata">
+    <isVisibleByExternalUsers>true</isVisibleByExternalUsers>
+    <language>en_US</language>
+    <masterLabel>Dark_experience_header_logo_inverse</masterLabel>
+    <relationships>
+        <organization>
+            <access>VIEWER</access>
+        </organization>
+    </relationships>
+    <versions>
+        <version>
+            <number>1</number>
+            <pathOnClient>Dark_experience_header_logo_inverse_darkmode_brand_transparent_600x120.png</pathOnClient>
+        </version>
+    </versions>
+</ContentAsset>

@@ -195,9 +195,9 @@ export default class CpAssetList extends LightningElement {
   }
 
   resolveImage(model) {
-    const normalized = model.toUpperCase();
-    if (normalized.includes("7100")) return cp7100;
-    if (normalized.includes("2100")) return cp2100;
+    const normalized = model.trim().toUpperCase();
+    if (normalized === "CP7100+") return cp7100;
+    if (normalized === "CP2100") return cp2100;
     return cp100;
   }
 

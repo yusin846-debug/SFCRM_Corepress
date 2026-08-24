@@ -1,5 +1,6 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, wire } from 'lwc';
 import submitCatalogInquiry from '@salesforce/apex/CpCatalogLeadController.submitCatalogInquiry';
+import getEquipmentProducts from '@salesforce/apex/CpProductCatalogController.getEquipmentProducts';
 import coverImage from '@salesforce/resourceUrl/CorePressBrochureCover';
 import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 import cp100Image from '@salesforce/resourceUrl/CorePressCP100';
@@ -31,6 +32,12 @@ export default class CpPortalLanding extends LightningElement {
     isCatalogSubmitted = false;
     isSubmittingCatalog = false;
     catalogError = '';
+    equipmentProducts = [];
+
+    @wire(getEquipmentProducts)
+    wiredEquipmentProducts({ data }) {
+        this.equipmentProducts = data || [];
+    }
 
     get hasCatalogUrl() {
         return Boolean(this.resolvedCatalogUrl);
@@ -89,12 +96,15 @@ export default class CpPortalLanding extends LightningElement {
     collectInquiry() {
         const value = (name) =>
             this.template.querySelector(`.catalog-modal [name="${name}"]`)?.value?.trim() || '';
+        const product = value('product');
+        const matchedProduct = this.equipmentProducts.find((item) => item.name === product);
         return {
             company: value('company'),
             name: value('name'),
             email: value('email'),
             phone: value('phone'),
-            product: value('product'),
+            product,
+            productFamily: matchedProduct?.family || '',
             message: value('message'),
             consent: Boolean(this.template.querySelector('.catalog-modal [name="consent"]')?.checked)
         };
