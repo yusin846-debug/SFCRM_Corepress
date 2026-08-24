@@ -40,7 +40,7 @@
                 "passwordLabel" : "Password",
                 "selfRegisterLabel" : "Not a member?",
                 "selfRegisterUrl" : "/SelfRegister",
-                "startUrl" : "",
+                "startUrl" : "https://trailsignup-783b48e7f9b1eb.my.site.com/corepress/portal-home",
                 "usernameLabel" : "Username"
               },
               "definition" : "community_login:loginForm",

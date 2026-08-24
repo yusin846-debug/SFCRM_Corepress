@@ -4,7 +4,9 @@ import { getRelatedListRecords } from "lightning/uiRelatedListApi";
 import USER_ID from "@salesforce/user/Id";
 import CASE_OBJECT from "@salesforce/schema/Case";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
+import CONTACT_NAME from "@salesforce/schema/Contact.Name";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
+import ACCOUNT_NAME from "@salesforce/schema/Account.Name";
 import CASE_ACCOUNT_ID from "@salesforce/schema/Case.AccountId";
 import CASE_CONTACT_ID from "@salesforce/schema/Case.ContactId";
 import CASE_ASSET_ID from "@salesforce/schema/Case.AssetId";
@@ -39,8 +41,15 @@ export default class CpServiceRequest extends LightningElement {
 
   @wire(getRecord, { recordId: USER_ID, fields: [USER_CONTACT_ID] }) userRecord;
   get contactId() { return getFieldValue(this.userRecord.data, USER_CONTACT_ID); }
-  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_ACCOUNT_ID] }) contactRecord;
+  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_NAME, CONTACT_ACCOUNT_ID] }) contactRecord;
+  get contactName() { return getFieldValue(this.contactRecord.data, CONTACT_NAME); }
   get accountId() { return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID); }
+  @wire(getRecord, { recordId: "$accountId", fields: [ACCOUNT_NAME] }) accountRecord;
+  get accountName() { return getFieldValue(this.accountRecord.data, ACCOUNT_NAME); }
+  get headerLabel() {
+    const real = [this.accountName, this.contactName].filter(Boolean).join(" · ");
+    return real || "대한케미컬 · 김유신";
+  }
 
   @wire(getRelatedListRecords, { parentRecordId: "$accountId", relatedListId: "Assets", fields: ASSET_FIELDS, pageSize: 199 })
   wiredAssets({ data, error }) {
