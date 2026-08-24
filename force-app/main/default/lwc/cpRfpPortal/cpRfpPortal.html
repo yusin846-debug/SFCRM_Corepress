@@ -18,11 +18,11 @@
             <template if:true={showStatus}>
                 <div class="status-layout">
                     <section class="request-list"><header><h2>내 RFP 현황</h2><span>총 {rfpRequestCount}건</span></header>
-                        <template for:each={rfpRequestRows} for:item="req"><button key={req.id} class={req.rowClass} type="button" data-id={req.id} onclick={selectRfpRequest}><span class="state">{req.stage}</span><strong>{req.name}</strong><small>예상 완료 {req.closeDate}</small><i>→</i></button></template>
-                        <template if:false={hasRfpRequests}><p class="empty-history">접수된 RFP가 없습니다.</p></template>
+                        <template for:each={rfpRequestRows} for:item="req"><button key={req.id} class={req.rowClass} type="button" data-id={req.id} onclick={selectRfpRequest}><span class="state">{req.status}</span><strong>{req.name}</strong><small>등록 {req.createdDate}</small><i>→</i></button></template>
+                        <template if:false={hasRfpRequests}><p class="empty-history">접수된 Lead가 없습니다. RFP를 제출하면 여기에 표시됩니다.</p></template>
                     </section>
                     <template if:true={selectedRfp}>
-                    <section class="proposal"><p>OPPORTUNITY</p><h2>{selectedRfp.name}</h2><span>{selectedRfp.stage} 단계 · 도입 형태 {selectedRfp.type}</span><div class="review"><small>요청 내용</small><p>{selectedRfp.description}</p></div><div class="proposal-actions"><template if:true={hasRfpProposal}><a href={rfpProposalUrl} target="_blank" rel="noopener">기술 제안서 PDF ↓</a></template><template if:false={hasRfpProposal}><span class="muted">제안서 준비 중</span></template><button type="button" onclick={goToRfq}>RFQ 제출하기 <span>→</span></button></div></section>
+                    <section class="proposal"><p>LEAD</p><h2>{selectedRfp.name}</h2><span>{selectedRfp.status} 단계 · 관심 제품 {selectedRfp.productInterest}</span><div class="review"><small>문의 내용</small><p>{selectedRfp.description}</p></div><div class="proposal-actions"><span class="muted">Lead 등록 {selectedRfp.createdDate}</span><button type="button" onclick={goToRfq}>RFQ 제출하기 <span>→</span></button></div></section>
                     </template>
                 </div>
             </template>

@@ -1,21 +1,16 @@
 import { LightningElement, api, wire } from 'lwc';
-import { getRecord, getFieldValue, createRecord } from 'lightning/uiRecordApi';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { getRelatedListRecords } from 'lightning/uiRelatedListApi';
+import { refreshApex } from '@salesforce/apex';
 import USER_ID from '@salesforce/user/Id';
 import USER_NAME from '@salesforce/schema/User.Name';
 import USER_EMAIL from '@salesforce/schema/User.Email';
 import USER_CONTACT_ID from '@salesforce/schema/User.ContactId';
 import CONTACT_ACCOUNT_ID from '@salesforce/schema/Contact.AccountId';
 import ACCOUNT_NAME from '@salesforce/schema/Account.Name';
-import OPPORTUNITY_OBJECT from '@salesforce/schema/Opportunity';
-import OPPORTUNITY_NAME from '@salesforce/schema/Opportunity.Name';
-import OPPORTUNITY_ACCOUNT_ID from '@salesforce/schema/Opportunity.AccountId';
-import OPPORTUNITY_TYPE from '@salesforce/schema/Opportunity.Type';
-import OPPORTUNITY_STAGE from '@salesforce/schema/Opportunity.StageName';
-import OPPORTUNITY_CLOSE_DATE from '@salesforce/schema/Opportunity.CloseDate';
-import OPPORTUNITY_DESCRIPTION from '@salesforce/schema/Opportunity.Description';
-import syncLeadOnRfpSubmit from '@salesforce/apex/CpSalesPipelineController.syncLeadOnRfpSubmit';
-import reassignOpportunityOwner from '@salesforce/apex/CpSalesPipelineController.reassignOpportunityOwner';
+import advanceLeadForRfp from '@salesforce/apex/CpSalesPipelineController.advanceLeadForRfp';
+import convertLeadForRfq from '@salesforce/apex/CpSalesPipelineController.convertLeadForRfq';
+import getLeadsForAccount from '@salesforce/apex/CpSalesPipelineController.getLeadsForAccount';
 import headerLogo from '@salesforce/resourceUrl/CorePressHeaderLogo';
 import logoutIcon from '@salesforce/resourceUrl/CorePressLogoutWhiteIcon';
 
@@ -28,13 +23,7 @@ const OPPORTUNITY_LIST_FIELDS = [
     'Opportunity.Description',
     'Opportunity.IsClosed'
 ];
-const RFP_STAGES = ['Qualification', 'Discovery'];
 const RFQ_STAGES = ['Proposal/Quote', 'Negotiation', 'Closed Won', 'Closed Lost'];
-const RFP_TYPE_MAP = {
-    '신규 설비 도입': 'New Business',
-    '노후화 장비 교체': 'Existing Business',
-    '기타': 'Services'
-};
 
 export default class CpRfpPortal extends LightningElement {
     @api homeUrl = 'portal-home';
@@ -55,6 +44,8 @@ export default class CpRfpPortal extends LightningElement {
     rfqSubmitError = '';
     openOpportunities = [];
     pipelineOpportunities = [];
+    leads = [];
+    wiredLeadsResult;
     selectedRfpId = '';
     selectedRfqId = '';
 
@@ -132,7 +123,26 @@ export default class CpRfpPortal extends LightningElement {
         return this.openOpportunities.some((opp) => !opp.isClosed && opp.name === normalized);
     }
 
-    get rfpRequests() { return this.pipelineOpportunities.filter((opp) => RFP_STAGES.includes(opp.stage)); }
+    @wire(getLeadsForAccount, { accountName: '$accountName' })
+    wiredLeads(result) {
+        this.wiredLeadsResult = result;
+        if (result.data) {
+            this.leads = result.data.map((lead) => ({
+                id: lead.id,
+                name: lead.name || '이름 미등록',
+                company: lead.company || '',
+                status: lead.status || '신규 문의',
+                productInterest: lead.productInterest || '-',
+                description: lead.description || '문의 내용이 등록되지 않았습니다.',
+                leadSource: lead.leadSource || '',
+                createdDate: this.formatDateTime(lead.createdDate),
+                isConverted: lead.isConverted,
+                convertedOpportunityId: lead.convertedOpportunityId
+            }));
+        }
+    }
+
+    get rfpRequests() { return this.leads; }
     get rfqRequests() { return this.pipelineOpportunities.filter((opp) => RFQ_STAGES.includes(opp.stage)); }
     get hasRfpRequests() { return this.rfpRequests.length > 0; }
     get hasRfqRequests() { return this.rfqRequests.length > 0; }
@@ -140,33 +150,28 @@ export default class CpRfpPortal extends LightningElement {
     get rfqRequestCount() { return this.rfqRequests.length; }
 
     get selectedRfp() {
-        return this.rfpRequests.find((opp) => opp.id === this.selectedRfpId) || this.rfpRequests[0];
+        return this.rfpRequests.find((lead) => lead.id === this.selectedRfpId) || this.rfpRequests[0];
     }
     get selectedRfq() {
         return this.rfqRequests.find((opp) => opp.id === this.selectedRfqId) || this.rfqRequests[0];
     }
     get rfpRequestRows() {
-        return this.rfpRequests.map((opp) => ({ ...opp, rowClass: opp.id === this.selectedRfp?.id ? 'request selected' : 'request' }));
+        return this.rfpRequests.map((lead) => ({ ...lead, rowClass: lead.id === this.selectedRfp?.id ? 'request selected' : 'request' }));
     }
     get rfqRequestRows() {
         return this.rfqRequests.map((opp) => ({ ...opp, rowClass: opp.id === this.selectedRfq?.id ? 'request selected' : 'request' }));
     }
 
+    formatDateTime(value) {
+        if (!value) return '미등록';
+        return new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
+            .format(new Date(value))
+            .replace(/\. /g, '.')
+            .replace(/\.$/, '');
+    }
+
     selectRfpRequest(event) { this.selectedRfpId = event.currentTarget.dataset.id; }
     selectRfqRequest(event) { this.selectedRfqId = event.currentTarget.dataset.id; }
-
-    @wire(getRelatedListRecords, {
-        parentRecordId: '$selectedRfp.id',
-        relatedListId: 'ContentDocumentLinks',
-        fields: ['ContentDocumentLink.ContentDocumentId', 'ContentDocumentLink.ContentDocument.Title'],
-        pageSize: 1
-    })
-    wiredRfpProposal({ data }) {
-        const link = data?.records?.[0];
-        this.rfpProposalUrl = link ? `/sfc/servlet.shepherd/document/download/${link.fields.ContentDocumentId?.value}` : '';
-    }
-    rfpProposalUrl = '';
-    get hasRfpProposal() { return Boolean(this.rfpProposalUrl); }
 
     selectTab(e) { this.activeTab = e.currentTarget.dataset.tab; }
     goToRfq() { this.activeTab = 'rfq'; }
@@ -203,31 +208,11 @@ export default class CpRfpPortal extends LightningElement {
             this.rfpSubmitError = '고객 계정 연결 정보가 없어 접수할 수 없습니다. 관리자에게 Contact 연결을 요청해 주세요.';
             return;
         }
-        const title = this.fieldValue(form, 'rfpTitle');
-        if (this.hasDuplicateOpen(title)) {
-            this.rfpSubmitError = '이미 동일한 제목으로 접수된 요청이 있습니다. 제목을 다시 확인해 주세요.';
-            return;
-        }
         this.isSubmittingRfp = true;
         try {
-            const opportunity = await createRecord({
-                apiName: OPPORTUNITY_OBJECT.objectApiName,
-                fields: {
-                    [OPPORTUNITY_NAME.fieldApiName]: title,
-                    [OPPORTUNITY_ACCOUNT_ID.fieldApiName]: this.accountId,
-                    [OPPORTUNITY_TYPE.fieldApiName]: RFP_TYPE_MAP[this.fieldValue(form, 'rfpType')] || 'Services',
-                    [OPPORTUNITY_STAGE.fieldApiName]: 'Qualification',
-                    [OPPORTUNITY_CLOSE_DATE.fieldApiName]: this.fieldValue(form, 'rfpCloseDate'),
-                    [OPPORTUNITY_DESCRIPTION.fieldApiName]: this.fieldValue(form, 'rfpPurpose')
-                }
-            });
+            await advanceLeadForRfp({ accountName: this.accountName, contactId: this.contactId });
+            await refreshApex(this.wiredLeadsResult);
             this.activeTab = 'status';
-            try {
-                await syncLeadOnRfpSubmit({ accountName: this.accountName });
-                await reassignOpportunityOwner({ opportunityId: opportunity.id });
-            } catch (syncError) {
-                // Sales pipeline sync is best-effort; the RFP itself is already accepted.
-            }
         } catch (error) {
             this.rfpSubmitError = error?.body?.message || error?.message || 'RFP 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
         } finally {
@@ -254,22 +239,16 @@ export default class CpRfpPortal extends LightningElement {
         const description = paymentTerms ? `결제 조건: ${paymentTerms}` : '';
         this.isSubmittingRfq = true;
         try {
-            const opportunity = await createRecord({
-                apiName: OPPORTUNITY_OBJECT.objectApiName,
-                fields: {
-                    [OPPORTUNITY_NAME.fieldApiName]: title,
-                    [OPPORTUNITY_ACCOUNT_ID.fieldApiName]: this.accountId,
-                    [OPPORTUNITY_STAGE.fieldApiName]: 'Proposal/Quote',
-                    [OPPORTUNITY_CLOSE_DATE.fieldApiName]: this.fieldValue(form, 'rfqCloseDate') || this.defaultCloseDate(),
-                    [OPPORTUNITY_DESCRIPTION.fieldApiName]: description
-                }
+            await convertLeadForRfq({
+                accountName: this.accountName,
+                accountId: this.accountId,
+                contactId: this.contactId,
+                rfqTitle: title,
+                closeDate: this.fieldValue(form, 'rfqCloseDate') || this.defaultCloseDate(),
+                description
             });
+            await refreshApex(this.wiredLeadsResult);
             this.activeTab = 'rfq-status';
-            try {
-                await reassignOpportunityOwner({ opportunityId: opportunity.id });
-            } catch (syncError) {
-                // Sales pipeline sync is best-effort; the RFQ itself is already accepted.
-            }
         } catch (error) {
             this.rfqSubmitError = error?.body?.message || error?.message || 'RFQ 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
         } finally {
