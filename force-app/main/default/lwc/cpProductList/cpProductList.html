@@ -1,0 +1,74 @@
+<template>
+  <div class="shell">
+    <header class="gnb">
+      <img class="brand" src={logoUrl} alt="CorePress" />
+      <div class="user">
+        <a href={homeUrl} class="back-link">← 랜딩 페이지로</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-heading">
+        <p>PRODUCT CATALOG</p>
+        <h1>CorePress 제품 카탈로그</h1>
+        <span>고효율 터보압축기와 에어드라이어 라인업 전체를 한곳에서 확인하세요.</span>
+      </section>
+
+      <nav class="tabs" role="tablist" aria-label="제품 분류">
+        <template for:each={tabButtons} for:item="tab">
+          <button key={tab.key} class={tab.tabClass} data-key={tab.key} type="button" onclick={selectFamily}>
+            {tab.label} <b>{tab.count}</b>
+          </button>
+        </template>
+        <span class="results">{resultsLabel}</span>
+      </nav>
+
+      <template if:true={loadError}><aside class="data-notice error" role="alert">{loadError}</aside></template>
+
+      <template if:true={showSkeleton}>
+        <section class="product-grid" aria-hidden="true">
+          <template for:each={skeletonRows} for:item="row">
+            <article class="product-card skeleton" key={row}>
+              <div class="skeleton-image"></div>
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line long"></div>
+              <div class="skeleton-line short"></div>
+            </article>
+          </template>
+        </section>
+      </template>
+
+      <template if:false={showSkeleton}>
+        <template if:true={hasProducts}>
+          <section class="product-grid">
+            <template for:each={filteredProducts} for:item="product">
+              <article class="product-card" key={product.id}>
+                <template if:true={product.hasRealImage}>
+                  <div class="product-image"><img src={product.imageSrc} alt={product.name} /></div>
+                </template>
+                <template if:false={product.hasRealImage}>
+                  <div class={product.placeholderClass}>
+                    <span class="ph-brand">CorePress</span>
+                    <strong>{product.name}</strong>
+                  </div>
+                </template>
+                <div class="product-copy">
+                  <span class="family">{product.family}</span>
+                  <h2>{product.name}</h2>
+                  <p class="desc">{product.description}</p>
+                  <div class="price-row">
+                    <span class="price">{product.priceLabel}</span>
+                    <a class="detail-link" href={product.detailHref}>자세히 보기 <span>→</span></a>
+                  </div>
+                </div>
+              </article>
+            </template>
+          </section>
+        </template>
+        <template if:false={hasProducts}>
+          <p class="empty">해당 분류의 제품이 없습니다.</p>
+        </template>
+      </template>
+    </main>
+  </div>
+</template>

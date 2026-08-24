@@ -51,6 +51,7 @@ export default class CpPortalHome extends LightningElement {
   @api serviceListUrl = "service-list";
   @api rfpUrl = "rfp-rfq";
   @api quoteUrl = "quotes";
+  @api noticesUrl = "notices";
   logoUrl = logo;
   registeredIconUrl = registeredIcon;
   operatingIconUrl = operatingIcon;
@@ -120,10 +121,14 @@ export default class CpPortalHome extends LightningElement {
     const status = record.fields.Status?.value || "Registered";
     const stage = record.fields.Smart_Care_Stage__c?.value || "";
     const isRunning = status === "Installed" || status === "Registered";
-    const score = STAGE_SCORE[stage] || (isRunning ? 90 : 70);
+    const isObsolete = status === "Obsolete";
+    const score = STAGE_SCORE[stage] || (isObsolete ? 55 : isRunning ? 90 : 70);
     let label = "양호";
     let labelClass = "good";
-    if (score < 80) {
+    if (isObsolete) {
+      label = "교체 필요";
+      labelClass = "attention";
+    } else if (score < 80) {
       label = "점검 필요";
       labelClass = "attention";
     } else if (score < 90) {

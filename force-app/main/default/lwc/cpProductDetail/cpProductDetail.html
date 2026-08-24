@@ -1,0 +1,83 @@
+<template>
+  <div class="shell">
+    <header class="gnb">
+      <img class="brand" src={logoUrl} alt="CorePress" />
+      <div class="user"><a href={productsUrl} class="back-link">← 제품 카탈로그</a></div>
+    </header>
+
+    <main>
+      <template if:true={loadError}>
+        <aside class="data-notice error" role="alert">{loadError}</aside>
+      </template>
+
+      <template if:true={hasProduct}>
+        <section class="hero">
+          <div class="hero-visual">
+            <template if:true={hasRealImage}>
+              <img src={imageSrc} alt={product.name} />
+            </template>
+            <template if:false={hasRealImage}>
+              <div class={placeholderClass}>
+                <span class="ph-brand">CorePress</span>
+                <strong>{product.name}</strong>
+              </div>
+            </template>
+          </div>
+          <div class="hero-copy">
+            <span class="family">{product.family}</span>
+            <h1>{product.name}</h1>
+            <p class="tagline">{marketing.tagline}</p>
+            <p class="price"><small>Standard Pricebook 기준</small> {priceLabel}</p>
+            <a class="cta" href={inquiryHref}>카탈로그·도입 문의하기 <span>→</span></a>
+          </div>
+        </section>
+
+        <section class="highlights">
+          <template for:each={marketing.highlights} for:item="h">
+            <div class="highlight" key={h.label}>
+              <span class="icon" aria-hidden="true">{h.icon}</span>
+              <strong>{h.label}</strong>
+              <p>{h.value}</p>
+            </div>
+          </template>
+        </section>
+
+        <section class="detail-grid">
+          <article class="panel spec">
+            <header>
+              <p>02</p>
+              <h2>제품 정보</h2>
+            </header>
+            <dl>
+              <div><dt>제품군</dt><dd>{product.family}</dd></div>
+              <div><dt>예상 수명</dt><dd>{expectedLifeLabel}</dd></div>
+              <div><dt>오버홀 주기</dt><dd>{overhaulLabel}</dd></div>
+              <div><dt>소모품 여부</dt><dd>{consumableLabel}</dd></div>
+            </dl>
+            <p class="fine-print">위 항목은 CorePress 제품 데이터베이스에 등록된 실제 정보입니다.</p>
+          </article>
+
+          <article class="panel story">
+            <header>
+              <p>03</p>
+              <h2>도입 개요</h2>
+            </header>
+            <p class="story-text">{marketing.story}</p>
+            <div class="desc-block">
+              <small>제품 설명</small>
+              <p>{description}</p>
+            </div>
+          </article>
+        </section>
+
+        <footer class="cta-footer">
+          <div>
+            <strong>지금 필요한 정보가 아니신가요?</strong>
+            <p>담당 영업사원에게 카탈로그와 스펙 시트, 도입 사례를 요청하세요.</p>
+          </div>
+          <a class="cta secondary" href={inquiryHref}>카탈로그 요청하기 <span>→</span></a>
+        </footer>
+      </template>
+    </main>
+  </div>
+</template>

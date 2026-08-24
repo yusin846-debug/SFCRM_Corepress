@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "공지·기술자료",
+  "contentBody" : {
+    "activeViewId" : "notices",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-notices",
+    "urlPrefix" : "notices"
+  },
+  "urlName" : "notices"
+}

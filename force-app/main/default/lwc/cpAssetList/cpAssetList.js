@@ -27,69 +27,6 @@ import gridIconInactive from "@salesforce/resourceUrl/CorePressGridIconInactive"
 import listIconActive from "@salesforce/resourceUrl/CorePressListIconActive";
 import listIconInactive from "@salesforce/resourceUrl/CorePressListIconInactive";
 
-const ASSETS = [
-  {
-    id: "1",
-    model: "CP7100+",
-    name: "터보압축기 #1",
-    serial: "CP-2024-0847",
-    location: "여수 제2공장 A동",
-    status: "운전 중",
-    statusClass: "status running",
-    statusIcon: operatingIcon,
-    imageUrl: cp7100,
-    installDate: "2024.06.15",
-  },
-  {
-    id: "2",
-    model: "CP2100",
-    name: "압축기 #2",
-    serial: "CP-2024-0632",
-    location: "울산 공장 B동",
-    status: "운전 중",
-    statusClass: "status running",
-    statusIcon: operatingIcon,
-    imageUrl: cp2100,
-    installDate: "2024.03.28",
-  },
-  {
-    id: "3",
-    model: "CP100 Pro",
-    name: "압축기 #3",
-    serial: "CP-2024-0519",
-    location: "대산 공장 C동",
-    status: "운전 중",
-    statusClass: "status running",
-    statusIcon: operatingIcon,
-    imageUrl: cp100,
-    installDate: "2024.02.10",
-  },
-  {
-    id: "4",
-    model: "CP2100",
-    name: "압축기 #4",
-    serial: "CP-2024-0398",
-    location: "여수 제1공장 D동",
-    status: "운전 중",
-    statusClass: "status running",
-    statusIcon: operatingIcon,
-    imageUrl: cp2100,
-    installDate: "2024.01.18",
-  },
-  {
-    id: "5",
-    model: "CP7100+",
-    name: "압축기 #5",
-    serial: "CP-2024-0281",
-    location: "울산 공장 E동",
-    status: "점검 필요",
-    statusClass: "status attention",
-    statusIcon: warningIcon,
-    imageUrl: cp7100,
-    installDate: "2023.11.30",
-  },
-];
-
 const ASSET_FIELDS = [
   ASSET_ID,
   ASSET_NAME,
@@ -123,7 +60,7 @@ export default class CpAssetList extends LightningElement {
   viewMode = "grid";
   currentPage = 1;
   pageSize = 6;
-  assets = ASSETS;
+  assets = [];
   isPreview = true;
   isLoading = true;
   loadError = "";
@@ -175,19 +112,32 @@ export default class CpAssetList extends LightningElement {
     const model = getFieldValue(record, ASSET_PRODUCT_NAME) || "모델 미등록";
     const sourceStatus = getFieldValue(record, ASSET_STATUS) || "Registered";
     const isRunning = sourceStatus === "Installed" || sourceStatus === "Registered";
+    const isObsolete = sourceStatus === "Obsolete";
     const city = getFieldValue(record, ASSET_CITY);
     const street = getFieldValue(record, ASSET_STREET);
     const id = getFieldValue(record, ASSET_ID);
+    let displayStatus = "운전 중";
+    let statusClass = "status running";
+    let statusIcon = operatingIcon;
+    if (isObsolete) {
+      displayStatus = "교체 필요";
+      statusClass = "status attention";
+      statusIcon = warningIcon;
+    } else if (!isRunning) {
+      displayStatus = "점검 필요";
+      statusClass = "status attention";
+      statusIcon = warningIcon;
+    }
     return {
       id,
       model,
       name: getFieldValue(record, ASSET_NAME) || "설비명 미등록",
       serial: getFieldValue(record, ASSET_SERIAL) || "시리얼 미등록",
       location: [city, street].filter(Boolean).join(" ") || "설치 위치 미등록",
-      status: isRunning ? "운전 중" : "점검 필요",
+      status: displayStatus,
       sourceStatus,
-      statusClass: isRunning ? "status running" : "status attention",
-      statusIcon: isRunning ? operatingIcon : warningIcon,
+      statusClass,
+      statusIcon,
       imageUrl: this.resolveImage(model),
       installDate: this.formatDate(getFieldValue(record, ASSET_INSTALL_DATE)),
       detailUrl: `${this.detailUrl}?recordId=${id}`,
@@ -196,9 +146,10 @@ export default class CpAssetList extends LightningElement {
 
   resolveImage(model) {
     const normalized = model.trim().toUpperCase();
-    if (normalized === "CP7100+") return cp7100;
-    if (normalized === "CP2100") return cp2100;
-    return cp100;
+    if (normalized === "CP7100+" || normalized.startsWith("CP7100")) return cp7100;
+    if (normalized === "CP2100" || normalized.startsWith("CP21")) return cp2100;
+    if (normalized === "CP100 PRO" || normalized === "CP100") return cp100;
+    return cp7100;
   }
 
   formatDate(value) {
@@ -214,7 +165,9 @@ export default class CpAssetList extends LightningElement {
     const term = this.searchTerm.trim().toLowerCase();
     return this.assets.filter((asset) => {
       const matchesFilter =
-        this.activeFilter === "전체" || asset.status === this.activeFilter;
+        this.activeFilter === "전체" ||
+        (this.activeFilter === "운전 중" && asset.status === "운전 중") ||
+        (this.activeFilter === "이상" && asset.status !== "운전 중");
       const matchesTerm =
         !term ||
         `${asset.name} ${asset.serial} ${asset.model}`
@@ -227,6 +180,15 @@ export default class CpAssetList extends LightningElement {
   get showPreviewNotice() {
     return !this.isLoading && this.isPreview;
   }
+  get showSkeleton() {
+    return this.isLoading;
+  }
+  get showEmpty() {
+    return !this.isLoading && !this.loadError && this.filteredAssets.length === 0;
+  }
+  get skeletonRows() {
+    return [1, 2, 3];
+  }
 
   get resultsLabel() {
     return `총 ${this.filteredAssets.length}건`;
@@ -238,7 +200,7 @@ export default class CpAssetList extends LightningElement {
     return this.assets.filter((asset) => asset.status === "운전 중").length;
   }
   get attentionAssetCount() {
-    return this.assets.filter((asset) => asset.status === "점검 필요").length;
+    return this.assets.filter((asset) => asset.status !== "운전 중").length;
   }
   get totalPages() {
     return Math.max(1, Math.ceil(this.filteredAssets.length / this.pageSize));
@@ -274,7 +236,7 @@ export default class CpAssetList extends LightningElement {
     return this.selectedFilter === "운전 중" ? "filter active" : "filter";
   }
   get attentionFilterClass() {
-    return this.selectedFilter === "점검 필요" ? "filter active" : "filter";
+    return this.selectedFilter === "이상" ? "filter active" : "filter";
   }
   get gridButtonClass() {
     return this.viewMode === "grid" ? "view-button active" : "view-button";
@@ -301,7 +263,7 @@ export default class CpAssetList extends LightningElement {
     this.applyFilter("운전 중");
   }
   showAttention() {
-    this.applyFilter("점검 필요");
+    this.applyFilter("이상");
   }
   applyFilter(filter) {
     window.clearTimeout(this.filterTimer);

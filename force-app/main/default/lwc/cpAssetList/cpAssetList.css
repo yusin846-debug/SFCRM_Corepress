@@ -276,6 +276,29 @@ main {
   border-radius: 6px;
   background: #fff;
 }
+.asset-card.skeleton .skeleton-image {
+  height: 210px;
+  margin: 20px 10px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #eef2f6 0%, #f7f9fb 50%, #eef2f6 100%);
+  background-size: 200% 100%;
+  animation: cpSkeleton 1.4s ease-in-out infinite;
+}
+.asset-card.skeleton .asset-copy { padding: 26px 22px; gap: 14px; }
+.skeleton-line {
+  display: block;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #eef2f6 0%, #f7f9fb 50%, #eef2f6 100%);
+  background-size: 200% 100%;
+  animation: cpSkeleton 1.4s ease-in-out infinite;
+}
+.skeleton-line.short { width: 45%; }
+.skeleton-line.long { width: 82%; }
+@keyframes cpSkeleton {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
 .machine {
   min-width: 0;
   padding: 20px 10px;

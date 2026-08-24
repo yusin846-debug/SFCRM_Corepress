@@ -1,0 +1,55 @@
+<template>
+  <div class="shell">
+    <header class="gnb">
+      <img class="brand" src={logoUrl} alt="CorePress" />
+      <nav aria-label="고객 포털 주요 메뉴">
+        <a href={homeUrl}>홈</a>
+        <a href={assetListUrl}>보유 설비</a>
+        <a href={serviceUrl}>서비스 요청</a>
+        <a href={rfpUrl}>RFP·RFQ</a>
+        <a href={quoteUrl}>견적</a>
+      </nav>
+      <div class="user">대한케미컬<span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div>
+    </header>
+
+    <main>
+      <section class="page-heading">
+        <p>NOTICES</p>
+        <h1>공지·기술자료</h1>
+        <span>서비스 공지, 보증 만료 안내, CorePress 기술자료를 한곳에서 확인합니다.</span>
+      </section>
+
+      <nav class="tabs" role="tablist" aria-label="공지 분류">
+        <template for:each={categoryTabs} for:item="tab">
+          <button key={tab.key} class={tab.tabClass} data-key={tab.key} type="button" onclick={selectCategory}>
+            {tab.label} <b>{tab.count}</b>
+          </button>
+        </template>
+      </nav>
+
+      <template if:true={hasResults}>
+        <ul class="notice-list">
+          <template for:each={filteredNotices} for:item="notice">
+            <li key={notice.id} class={notice.itemClass}>
+              <button class="notice-head" type="button" data-id={notice.id} onclick={toggleNotice} aria-expanded={notice.isExpanded}>
+                <span class={notice.badgeClass}>{notice.categoryLabel}</span>
+                <strong>{notice.title}</strong>
+                <span class="date">{notice.date}</span>
+                <span class="chev" aria-hidden="true">▾</span>
+              </button>
+              <p class="notice-summary">{notice.summary}</p>
+              <template if:true={notice.isExpanded}>
+                <div class="notice-body">
+                  <p>{notice.body}</p>
+                </div>
+              </template>
+            </li>
+          </template>
+        </ul>
+      </template>
+      <template if:false={hasResults}>
+        <p class="empty">해당 분류의 공지가 없습니다.</p>
+      </template>
+    </main>
+  </div>
+</template>

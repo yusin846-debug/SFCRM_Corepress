@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "제품 상세",
+  "contentBody" : {
+    "activeViewId" : "product_detail",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-product-detail",
+    "urlPrefix" : "product-detail"
+  },
+  "urlName" : "product-detail"
+}

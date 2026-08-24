@@ -1,0 +1,58 @@
+:host {
+  --navy: #1b2a4a;
+  --navy-dark: #141e33;
+  --teal: #20b7ad;
+  --border: #dbe3eb;
+  --muted: #687b91;
+  display: block;
+  color: var(--navy);
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  background: radial-gradient(circle at 84% 4%, rgba(46, 196, 182, 0.05), transparent 32rem),
+    linear-gradient(180deg, #f8fafc 0%, #f4f7fa 55%, #f8fafb 100%);
+}
+* { box-sizing: border-box; }
+a { text-decoration: none; }
+.gnb { height: 64px; padding: 0 40px; display: grid; grid-template-columns: 240px 1fr 300px; align-items: center; color: #fff; background: var(--navy-dark); }
+.brand { width: 190px; }
+.gnb nav { height: 100%; display: flex; justify-content: center; gap: 40px; }
+.gnb nav a { position: relative; padding: 22px 0 18px; color: rgba(255, 255, 255, 0.76); font-size: 15px; }
+.gnb nav a:hover, .gnb nav .active { color: #fff; }
+.user { justify-self: end; display: flex; align-items: center; gap: 16px; color: rgba(255, 255, 255, 0.82); font-size: 13px; }
+.user > span { height: 20px; border-left: 1px solid rgba(255, 255, 255, 0.45); }
+.logout { padding: 5px 0; display: flex; align-items: center; gap: 7px; border: 0; color: #fff; font: 500 13px/1.2 inherit; cursor: pointer; background: transparent; }
+.logout img { width: 17px; height: 17px; object-fit: contain; }
+main { max-width: 1200px; min-height: calc(100vh - 64px); margin: auto; padding: 38px 44px 56px; }
+.page-heading > p { margin: 0 0 8px; color: #159c92; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; }
+.page-heading h1 { margin: 0; font-size: 31px; font-weight: 750; letter-spacing: -0.045em; }
+.page-heading > span { display: block; margin-top: 9px; color: #566b82; font-size: 13px; }
+
+.tabs { margin: 28px 0 18px; display: flex; gap: 6px; border-bottom: 1px solid var(--border); }
+.tab { height: 42px; padding: 0 18px; display: inline-flex; align-items: center; gap: 6px; border: 0; border-bottom: 3px solid transparent; color: #52677e; font: 600 13px inherit; cursor: pointer; background: transparent; transition: color 0.18s ease, border-color 0.18s ease; }
+.tab b { padding: 1px 7px; border-radius: 10px; background: #eef2f6; color: #52677e; font-size: 11px; font-weight: 700; }
+.tab.active { color: var(--navy); border-color: var(--teal); }
+.tab.active b { background: rgba(46, 196, 182, 0.14); color: #157d78; }
+
+.notice-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.notice { padding: 18px 22px; border: 1px solid var(--border); border-radius: 6px; background: #fff; transition: box-shadow 0.18s ease; }
+.notice.open { box-shadow: 0 6px 18px rgba(27, 42, 74, 0.06); }
+.notice-head { width: 100%; padding: 0; display: grid; grid-template-columns: 100px minmax(0, 1fr) 100px 20px; align-items: center; gap: 14px; border: 0; text-align: left; color: var(--navy); font-family: inherit; cursor: pointer; background: transparent; }
+.badge { padding: 4px 10px; border-radius: 3px; font-size: 10px; font-weight: 700; text-align: center; }
+.badge.notice { border: 1px solid #c9d4dc; color: #52677e; background: #f5f7f9; }
+.badge.warranty { border: 1px solid #e5c48d; color: #96631e; background: #fff8ea; }
+.badge.tech { border: 1px solid #a9dcd8; color: #157d78; background: #effaf9; }
+.notice-head strong { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+.date { color: var(--muted); font-size: 11px; text-align: right; font-variant-numeric: tabular-nums; }
+.chev { color: var(--muted); font-size: 14px; transition: transform 0.18s ease; }
+.notice.open .chev { transform: rotate(180deg); }
+.notice-summary { margin: 12px 0 0 114px; color: #53677c; font-size: 12px; line-height: 1.65; }
+.notice-body { margin-top: 16px; padding: 16px 18px; border-left: 3px solid var(--teal); background: #f2f8f8; color: #445775; font-size: 12px; line-height: 1.75; }
+.notice-body p { margin: 0; }
+.empty { padding: 60px 0; text-align: center; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 900px) {
+  main { padding: 24px 20px; }
+  .gnb nav { display: none; }
+  .notice-head { grid-template-columns: auto 1fr auto; gap: 10px; }
+  .notice-head .date { grid-column: 1 / -1; text-align: left; }
+  .notice-summary { margin-left: 0; }
+}

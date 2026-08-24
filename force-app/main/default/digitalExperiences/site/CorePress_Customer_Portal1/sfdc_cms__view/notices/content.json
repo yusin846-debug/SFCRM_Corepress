@@ -1,0 +1,76 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "공지·기술자료",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "dxpStyle" : { },
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"7a8b9c0d-1e2f-4a3b-4c5d-6e7f8a9b0c1d\",\"columns\":[{\"UUID\":\"8b9c0d1e-2f3a-4b4c-5d6e-7f8a9b0c1d2e\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : {
+                "assetListUrl" : "asset-list",
+                "dxpStyle" : { },
+                "homeUrl" : "portal-home",
+                "quoteUrl" : "quotes",
+                "rfpUrl" : "rfp-rfq",
+                "serviceUrl" : "service-request"
+              },
+              "definition" : "c:cpPortalNotices",
+              "id" : "9c0d1e2f-3a4b-4c5d-6e7f-8a9b0c1d2e3f",
+              "type" : "component"
+            } ],
+            "id" : "8b9c0d1e-2f3a-4b4c-5d6e-7f8a9b0c1d2e",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "7a8b9c0d-1e2f-4a3b-4c5d-6e7f8a9b0c1d",
+          "type" : "component"
+        } ],
+        "id" : "a0d1e2f3-4b5c-4d6e-7f8a-9b0c1d2e3f4a",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "dxpStyle" : { },
+            "pageTitle" : "공지·기술자료",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "b1e2f3a4-5c6d-4e7f-8a9b-0c1d2e3f4a5b",
+          "type" : "component"
+        } ],
+        "id" : "c2f3a4b5-6d7e-4f8a-9b0c-1d2e3f4a5b6c",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "d3a4b5c6-7e8f-4a9b-0c1d-2e3f4a5b6c7d",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "Inner",
+    "viewType" : "custom-notices"
+  },
+  "urlName" : "notices"
+}

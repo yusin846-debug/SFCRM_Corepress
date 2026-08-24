@@ -11,7 +11,7 @@
         <main>
             <header class="page-heading">
                 <h1>보유 설비</h1>
-                <p class="summary"><span><img src={registeredIconUrl} alt="" />등록 설비 {totalAssetCount}대</span><span><img src={summaryOperatingIconUrl} alt="" />운전 중 {runningAssetCount}대</span><span class="attention"><img src={summaryWarningIconUrl} alt="" />점검 필요 {attentionAssetCount}대</span></p>
+                <p class="summary"><span><img src={registeredIconUrl} alt="" />등록 설비 {totalAssetCount}대</span><span><img src={summaryOperatingIconUrl} alt="" />운전 중 {runningAssetCount}대</span><span class="attention"><img src={summaryWarningIconUrl} alt="" />점검/교체 필요 {attentionAssetCount}대</span></p>
             </header>
 
             <template if:true={showPreviewNotice}><aside class="data-notice preview" role="status"><strong>Builder 미리보기 데이터</strong><span>현재 사용자는 고객 Contact에 연결되어 있지 않아 예시 설비를 표시합니다. 실제 고객 로그인 시 해당 고객사의 설비만 조회됩니다.</span></aside></template>
@@ -19,26 +19,42 @@
 
             <section class="controls" aria-label="보유 설비 검색 및 필터">
                 <label class="search"><img src={searchIconUrl} alt="검색" /><input type="search" placeholder="설비명 또는 일련번호 검색" value={searchTerm} oninput={handleSearch} /></label>
-                <div class="filters"><button class={allFilterClass} onclick={showAll}>전체 <b>{totalAssetCount}</b></button><button class={runningFilterClass} onclick={showRunning}>운전 중 <b>{runningAssetCount}</b></button><button class={attentionFilterClass} onclick={showAttention}>점검 필요 <b>{attentionAssetCount}</b></button></div>
+                <div class="filters"><button class={allFilterClass} onclick={showAll}>전체 <b>{totalAssetCount}</b></button><button class={runningFilterClass} onclick={showRunning}>운전 중 <b>{runningAssetCount}</b></button><button class={attentionFilterClass} onclick={showAttention}>점검/교체 <b>{attentionAssetCount}</b></button></div>
                 <div class="view-toggle" aria-label="보기 방식"><button class={gridButtonClass} onclick={showGrid} aria-label="카드 보기" aria-pressed={isGridView}><img src={currentGridIconUrl} alt="" /></button><button class={listButtonClass} onclick={showList} aria-label="목록 보기" aria-pressed={isListView}><img src={currentListIconUrl} alt="" /></button></div>
             </section>
 
-            <section class={gridClass} aria-label="보유 설비 목록">
-                <template for:each={paginatedAssets} for:item="asset">
-                    <article class="asset-card" key={asset.id}>
-                        <div class="machine"><img src={asset.imageUrl} alt={asset.name} /></div>
-                        <div class="asset-copy">
-                            <span class="model">{asset.model}</span><h2>{asset.name}</h2><p class="serial">{asset.serial}</p>
-                            <p class="location"><img src={locationIconUrl} alt="" />{asset.location}</p>
-                            <span class={asset.statusClass}><img src={asset.statusIcon} alt="" />{asset.status}</span>
-                            <dl><dt>설치일</dt><dd>{asset.installDate}</dd></dl>
-                            <a class="detail-link" href={asset.detailUrl}>상세 보기 <span>→</span></a>
-                        </div>
-                    </article>
-                </template>
-            </section>
+            <template if:true={showSkeleton}>
+                <section class="asset-grid" aria-hidden="true">
+                    <template for:each={skeletonRows} for:item="row">
+                        <article class="asset-card skeleton" key={row}>
+                            <div class="skeleton-image"></div>
+                            <div class="asset-copy">
+                                <span class="skeleton-line short"></span>
+                                <span class="skeleton-line long"></span>
+                                <span class="skeleton-line short"></span>
+                            </div>
+                        </article>
+                    </template>
+                </section>
+            </template>
 
-            <template if:false={filteredAssets.length}><section class="empty"><h2>조건에 맞는 설비가 없습니다</h2><p>검색어나 상태 필터를 다시 확인해 주세요.</p></section></template>
+            <template if:false={showSkeleton}>
+                <section class={gridClass} aria-label="보유 설비 목록">
+                    <template for:each={paginatedAssets} for:item="asset">
+                        <article class="asset-card" key={asset.id}>
+                            <div class="machine"><img src={asset.imageUrl} alt={asset.name} /></div>
+                            <div class="asset-copy">
+                                <span class="model">{asset.model}</span><h2>{asset.name}</h2><p class="serial">{asset.serial}</p>
+                                <p class="location"><img src={locationIconUrl} alt="" />{asset.location}</p>
+                                <span class={asset.statusClass}><img src={asset.statusIcon} alt="" />{asset.status}</span>
+                                <dl><dt>설치일</dt><dd>{asset.installDate}</dd></dl>
+                                <a class="detail-link" href={asset.detailUrl}>상세 보기 <span>→</span></a>
+                            </div>
+                        </article>
+                    </template>
+                </section>
+                <template if:true={showEmpty}><section class="empty"><h2>조건에 맞는 설비가 없습니다</h2><p>검색어나 상태 필터를 다시 확인해 주세요.</p></section></template>
+            </template>
             <footer class="pagination" aria-label="페이지 이동">
                 <label><span class="assistive-text">현재 페이지</span><input type="number" min="1" max={totalPages} value={currentPage} onchange={handlePageChange} onblur={handlePageChange} /></label>
                 <span>/ {totalPages}페이지</span><b>{resultsLabel}</b>

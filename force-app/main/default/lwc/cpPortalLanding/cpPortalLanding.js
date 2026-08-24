@@ -17,6 +17,7 @@ export default class CpPortalLanding extends LightningElement {
     @api heroDescription =
         '설치부터 보증, 현장 서비스까지\n압축기의 전체 수명주기를 한곳에서 관리합니다.';
     @api loginUrl = 'login';
+    @api productsUrl = 'products';
     @api catalogUrl;
 
     coverImageUrl = coverImage;
@@ -37,6 +38,30 @@ export default class CpPortalLanding extends LightningElement {
     @wire(getEquipmentProducts)
     wiredEquipmentProducts({ data }) {
         this.equipmentProducts = data || [];
+    }
+
+    connectedCallback() {
+        try {
+            const params = new URL(window.location.href).searchParams;
+            const requested = params.get('inquiry');
+            if (requested) {
+                this.pendingInquiryProduct = requested;
+                window.requestAnimationFrame(() => this.openCatalogModal());
+            }
+        } catch (error) {
+            // URL parse failure is non-fatal; the modal simply opens empty when the user clicks the button.
+        }
+    }
+
+    renderedCallback() {
+        if (this.pendingInquiryProduct && this.isCatalogModalOpen) {
+            const select = this.template.querySelector('.catalog-modal [name="product"]');
+            if (select) {
+                const match = this.equipmentProducts.find((p) => p.name === this.pendingInquiryProduct);
+                select.value = match ? this.pendingInquiryProduct : '전체 제품';
+                this.pendingInquiryProduct = '';
+            }
+        }
     }
 
     get hasCatalogUrl() {
