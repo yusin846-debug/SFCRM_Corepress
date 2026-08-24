@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>CorePress Service Detail Access</label>
-    <description>서비스 요청 상세 화면(cpServiceDetail)에 필요한 Case 커스텀 필드 읽기 권한</description>
+    <description>서비스 요청 상세 화면(cpServiceDetail)에 필요한 Case 필드 권한 - 승인 상태/승인 일시만 고객이 직접 편집(승인·반려), 나머지는 읽기 전용</description>
     <fieldPermissions><editable>false</editable><field>Case.Status</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Case.Warranty_Determination__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Case.Determination_Basis__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Case.Billable_Reason__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Case.Quoted_Amount__c</field><readable>true</readable></fieldPermissions>
-    <fieldPermissions><editable>false</editable><field>Case.Approval_Status__c</field><readable>true</readable></fieldPermissions>
-    <fieldPermissions><editable>false</editable><field>Case.Approved_At__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Case.Approval_Status__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Case.Approved_At__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Case.Scheduled_Visit__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Case.Engineer_Name__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Case.Engineer_Phone__c</field><readable>true</readable></fieldPermissions>

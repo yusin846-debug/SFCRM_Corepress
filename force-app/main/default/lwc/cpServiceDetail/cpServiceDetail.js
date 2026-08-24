@@ -1,9 +1,12 @@
 import { LightningElement, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
-import { getRecord, getFieldValue } from "lightning/uiRecordApi";
+import { getRecord, getFieldValue, updateRecord } from "lightning/uiRecordApi";
 import USER_ID from "@salesforce/user/Id";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
+import CASE_ID_FIELD from "@salesforce/schema/Case.Id";
+import CASE_APPROVAL_STATUS_FIELD from "@salesforce/schema/Case.Approval_Status__c";
+import CASE_APPROVED_AT_FIELD from "@salesforce/schema/Case.Approved_At__c";
 import headerLogo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutWhiteIcon";
 
@@ -45,6 +48,8 @@ export default class CpServiceDetail extends LightningElement {
   recordId;
   caseRecord;
   loadError = "";
+  isSubmittingApproval = false;
+  approvalActionError = "";
 
   @wire(getRecord, { recordId: USER_ID, fields: [USER_CONTACT_ID] })
   userRecord;
@@ -155,6 +160,9 @@ export default class CpServiceDetail extends LightningElement {
   get approvalStatus() {
     return getFieldValue(this.caseRecord, "Case.Approval_Status__c") || "";
   }
+  get showApprovalActions() {
+    return this.approvalStatus === "승인 대기";
+  }
   get hasScheduledVisit() {
     return Boolean(getFieldValue(this.caseRecord, "Case.Scheduled_Visit__c"));
   }
@@ -191,6 +199,26 @@ export default class CpServiceDetail extends LightningElement {
       .format(new Date(value))
       .replace(/\. /g, ".")
       .replace(/\.$/, "");
+  }
+
+  async handleApprovalAction(event) {
+    const decision = event.currentTarget.dataset.decision;
+    this.approvalActionError = "";
+    this.isSubmittingApproval = true;
+    try {
+      const fields = {
+        [CASE_ID_FIELD.fieldApiName]: this.recordId,
+        [CASE_APPROVAL_STATUS_FIELD.fieldApiName]: decision,
+      };
+      if (decision === "승인") {
+        fields[CASE_APPROVED_AT_FIELD.fieldApiName] = new Date().toISOString();
+      }
+      await updateRecord({ fields });
+    } catch (error) {
+      this.approvalActionError = error?.body?.message || error?.message || "승인 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+    } finally {
+      this.isSubmittingApproval = false;
+    }
   }
 
   handleLogout() {
