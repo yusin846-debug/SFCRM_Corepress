@@ -8,15 +8,14 @@
         ><a href={quoteUrl}>견적</a>
       </nav>
       <div class="user">
-        대한케미컬 · 김유신 <span></span
+        {headerLabel} <span></span
         ><button class="logout" type="button" onclick={handleLogout}
           ><img src={logoutIconUrl} alt="" />로그아웃</button
         >
       </div>
     </header>
     <main class="cp-page" id="home">
-      <h1>대한케미컬 설비 운영 현황</h1>
-      <p class="date">2026.08.18</p>
+      <h1>{pageTitle}</h1>
       <section class="overview" id="assets">
         <div class="status">
           <h2>
@@ -25,15 +24,15 @@
           </h2>
           <p>
             <i><img src={registeredIconUrl} alt="" /></i>등록 설비
-            <strong>5<small>대</small></strong>
+            <strong>{totalAssetCount}<small>대</small></strong>
           </p>
           <p>
             <i><img src={operatingIconUrl} alt="" /></i>운전 중
-            <strong>4<small>대</small></strong>
+            <strong>{runningAssetCount}<small>대</small></strong>
           </p>
           <p>
             <i><img src={warningIconUrl} alt="" /></i>점검 필요
-            <strong>1<small>대</small></strong>
+            <strong>{attentionAssetCount}<small>대</small></strong>
           </p>
         </div>
         <div class="health">
@@ -41,9 +40,10 @@
             설비 건강도
             <img class="info-icon" src={infoIconUrl} alt="설비 건강도 안내" />
           </h2>
-          <div class="ring">
+          <div class="ring" style={ringStyle}>
             <div>
-              <small>설비 건강도</small><strong>98%</strong><span>양호</span>
+              <small>설비 건강도</small><strong>{healthPercent}</strong
+              ><span>{healthLabel}</span>
             </div>
           </div>
           <ul>
@@ -96,11 +96,19 @@
             <a href={assetListUrl}>설비 전체 보기 <span>→</span></a>
           </header>
           <ul>
-            <li><span class="asset-name"><b>터보압축기 #1</b><small>CP7100+</small></span><span class="score-track"><i class="score-98"></i></span><strong>98</strong><em class="good">양호</em></li>
-            <li><span class="asset-name"><b>압축기 #2</b><small>CP2100</small></span><span class="score-track"><i class="score-94"></i></span><strong>94</strong><em class="good">양호</em></li>
-            <li><span class="asset-name"><b>압축기 #3</b><small>CP100 Pro</small></span><span class="score-track"><i class="score-92"></i></span><strong>92</strong><em class="good">양호</em></li>
-            <li><span class="asset-name"><b>압축기 #4</b><small>CP2100</small></span><span class="score-track"><i class="score-89"></i></span><strong>89</strong><em class="watch">관찰</em></li>
-            <li><span class="asset-name"><b>압축기 #5</b><small>CP7100+</small></span><span class="score-track"><i class="score-76"></i></span><strong>76</strong><em class="attention">점검 필요</em></li>
+            <template for:each={topAssets} for:item="asset">
+              <li key={asset.id}>
+                <span class="asset-name"
+                  ><b>{asset.name}</b><small>{asset.model}</small></span
+                ><span class="score-track"
+                  ><i class={asset.barClass} style={asset.scoreStyle}></i></span
+                ><strong>{asset.score}</strong
+                ><em class={asset.labelClass}>{asset.label}</em>
+              </li>
+            </template>
+            <template if:false={hasAssets}>
+              <li class="empty-row">등록된 설비가 없습니다.</li>
+            </template>
           </ul>
         </div>
       </section>
@@ -115,22 +123,22 @@
         </h2>
         <div class="step">
           <i><img src={requestIconUrl} alt="" /></i
-          ><span>접수<strong>2</strong></span>
+          ><span>접수<strong>{newCaseCount}</strong></span>
         </div>
         <b></b>
         <div class="step">
           <i><img src={assignedIconUrl} alt="" /></i
-          ><span>배정<strong>1</strong></span>
+          ><span>배정<strong>{assignedCaseCount}</strong></span>
         </div>
         <b></b>
         <div class="step">
           <i><img src={workIconUrl} alt="" /></i
-          ><span>작업 중<strong>1</strong></span>
+          ><span>작업 중<strong>{progressCaseCount}</strong></span>
         </div>
         <b></b>
         <div class="step">
           <i><img src={completeIconUrl} alt="" /></i
-          ><span>완료<strong>8</strong></span>
+          ><span>완료<strong>{doneCaseCount}</strong></span>
         </div>
         <div class="step-actions">
           <a class="service-request-button" href={serviceListUrl}
@@ -155,30 +163,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>CS-2026-0147</td>
-                <td>터보압축기 #1</td>
-                <td>이상 진동·소음</td>
-                <td><span class="badge new">접수</span></td>
-                <td>2026.08.18 09:21</td>
-                <td>08.20 14:00</td>
-              </tr>
-              <tr>
-                <td>CS-2026-0146</td>
-                <td>CPA3100 #2</td>
-                <td>냉각수 온도 상승</td>
-                <td><span class="badge assigned">배정</span></td>
-                <td>2026.08.17 16:45</td>
-                <td>08.19 10:00</td>
-              </tr>
-              <tr>
-                <td>CS-2026-0145</td>
-                <td>CP2100 #1</td>
-                <td>오일 필터 교체 요청</td>
-                <td><span class="badge progress">작업 중</span></td>
-                <td>2026.08.16 11:03</td>
-                <td>08.18 15:00</td>
-              </tr>
+              <template for:each={recentCases} for:item="request">
+                <tr key={request.id}>
+                  <td>{request.number}</td>
+                  <td>{request.assetName}</td>
+                  <td>{request.subject}</td>
+                  <td><span class={request.badgeClass}>{request.status}</span></td>
+                  <td>{request.createdDate}</td>
+                  <td>{request.visitDate}</td>
+                </tr>
+              </template>
+              <template if:false={hasRecentCases}>
+                <tr>
+                  <td colspan="6" class="empty-row">등록된 서비스 요청이 없습니다.</td>
+                </tr>
+              </template>
             </tbody>
           </table>
           <a class="link" href={serviceUrl}>서비스 요청 등록하기 →</a>

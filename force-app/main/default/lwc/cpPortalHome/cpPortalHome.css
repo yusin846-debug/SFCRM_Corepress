@@ -425,20 +425,7 @@ h2 {
   border-radius: 3px;
   background: linear-gradient(90deg, #2ec4b6, #72d7cd);
 }
-.score-98 {
-  width: 98%;
-}
-.score-94 {
-  width: 94%;
-}
-.score-92 {
-  width: 92%;
-}
-.score-89 {
-  width: 89%;
-}
-.score-76 {
-  width: 76%;
+.score-bar.attention {
   background: linear-gradient(90deg, #d4a36b, #c78036) !important;
 }
 .asset-health li > strong {
@@ -591,6 +578,17 @@ th {
   color: #237e88;
   border-color: #b7dce0;
   background: #f2fafb;
+}
+.done {
+  color: #5b6b73;
+  border-color: #d5dde1;
+  background: #f6f8f9;
+}
+.empty-row {
+  padding: 20px 0;
+  color: var(--cp-text-caption);
+  font-size: 12px;
+  text-align: center;
 }
 .link {
   display: inline-block;
