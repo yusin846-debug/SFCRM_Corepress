@@ -1,10 +1,8 @@
 import { LightningElement, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import getProductDetail from "@salesforce/apex/CpProductCatalogController.getProductDetail";
+import { resolveProductImage } from "c/cpProductImages";
 import headerLogo from "@salesforce/resourceUrl/CorePressHeaderLogo";
-import cp100 from "@salesforce/resourceUrl/CorePressCP100";
-import cp2100 from "@salesforce/resourceUrl/CorePressCP2100";
-import cp7100 from "@salesforce/resourceUrl/CorePressCP7100";
 
 const MARKETING_COPY = {
   compressor: {
@@ -26,14 +24,6 @@ const MARKETING_COPY = {
     story: "터보압축기와 함께 도입 시 시스템 전체 응축수 트러블을 근본적으로 억제합니다. 흡착식 라인은 반도체·의약품 등 초고청정 공정에, 냉동식은 일반 산업용 공기 공급에 적합합니다."
   }
 };
-
-function resolveImage(name) {
-  const normalized = (name || "").trim().toUpperCase();
-  if (normalized.startsWith("CP7100")) return { type: "image", src: cp7100 };
-  if (normalized.startsWith("CP21")) return { type: "image", src: cp2100 };
-  if (normalized === "CP100 PRO" || normalized === "CP100") return { type: "image", src: cp100 };
-  return { type: "placeholder", src: null };
-}
 
 export default class CpProductDetail extends LightningElement {
   @api homeUrl = "/corepress";
@@ -86,7 +76,7 @@ export default class CpProductDetail extends LightningElement {
     return MARKETING_COPY[this.familyKey];
   }
   get imageInfo() {
-    return resolveImage(this.product?.name);
+    return resolveProductImage(this.product?.name, this.product?.family);
   }
   get hasRealImage() {
     return this.imageInfo.type === "image";

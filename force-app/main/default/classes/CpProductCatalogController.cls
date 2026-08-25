@@ -5,7 +5,11 @@
  * non-sensitive product names for active equipment lines.
  */
 public without sharing class CpProductCatalogController {
-    private static final List<String> EQUIPMENT_FAMILIES = new List<String>{ '압축기', '드라이어' };
+    // Families visible in the customer-facing catalog list. Includes the parts
+    // line so 필터·부품 cards can render with matching photos.
+    private static final List<String> EQUIPMENT_FAMILIES = new List<String>{ '압축기', '드라이어', '필터·부품' };
+    // Inquiry form's product picklist stays limited to compressors/dryers only.
+    private static final List<String> INQUIRY_FAMILIES = new List<String>{ '압축기', '드라이어' };
 
     /**
      * Returns active equipment Product2 records (compressors and dryers) for
@@ -17,7 +21,7 @@ public without sharing class CpProductCatalogController {
     public static List<ProductOption> getEquipmentProducts() {
         List<ProductOption> options = new List<ProductOption>();
         for (Product2 product : Database.query(
-            'SELECT Id, Name, Family FROM Product2 WHERE IsActive = true AND Family IN :EQUIPMENT_FAMILIES ORDER BY Family, Name',
+            'SELECT Id, Name, Family FROM Product2 WHERE IsActive = true AND Family IN :INQUIRY_FAMILIES ORDER BY Family, Name',
             AccessLevel.SYSTEM_MODE
         )) {
             options.add(new ProductOption(product));

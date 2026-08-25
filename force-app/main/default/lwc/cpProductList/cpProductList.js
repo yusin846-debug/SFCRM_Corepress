@@ -1,20 +1,15 @@
 import { LightningElement, api, wire } from "lwc";
 import getEquipmentCatalog from "@salesforce/apex/CpProductCatalogController.getEquipmentCatalog";
+import { resolveProductImage } from "c/cpProductImages";
 import headerLogo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutWhiteIcon";
-import cp100 from "@salesforce/resourceUrl/CorePressCP100";
-import cp2100 from "@salesforce/resourceUrl/CorePressCP2100";
-import cp7100 from "@salesforce/resourceUrl/CorePressCP7100";
 
-const FAMILY_TABS = ["전체", "압축기", "드라이어"];
-
-function resolveImage(name) {
-  const normalized = (name || "").trim().toUpperCase();
-  if (normalized.startsWith("CP7100")) return { type: "image", src: cp7100 };
-  if (normalized.startsWith("CP21")) return { type: "image", src: cp2100 };
-  if (normalized === "CP100 PRO" || normalized === "CP100") return { type: "image", src: cp100 };
-  return { type: "placeholder", src: null };
-}
+const FAMILY_TABS = [
+  { key: "전체", label: "전체" },
+  { key: "압축기", label: "압축기" },
+  { key: "드라이어", label: "드라이어" },
+  { key: "필터·부품", label: "부품" }
+];
 
 export default class CpProductList extends LightningElement {
   @api homeUrl = "/corepress";
@@ -41,7 +36,7 @@ export default class CpProductList extends LightningElement {
   }
 
   mapProduct(p) {
-    const img = resolveImage(p.name);
+    const img = resolveProductImage(p.name, p.family);
     return {
       id: p.id,
       name: p.name,
@@ -64,10 +59,10 @@ export default class CpProductList extends LightningElement {
   }
   get tabButtons() {
     return FAMILY_TABS.map((tab) => ({
-      key: tab,
-      label: tab,
-      count: tab === "전체" ? this.products.length : this.products.filter((p) => p.family === tab).length,
-      tabClass: this.activeFamily === tab ? "tab active" : "tab"
+      key: tab.key,
+      label: tab.label,
+      count: tab.key === "전체" ? this.products.length : this.products.filter((p) => p.family === tab.key).length,
+      tabClass: this.activeFamily === tab.key ? "tab active" : "tab"
     }));
   }
   get resultsLabel() {

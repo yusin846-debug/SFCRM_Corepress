@@ -16,6 +16,7 @@ import logo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import cp100 from "@salesforce/resourceUrl/CorePressCP100";
 import cp2100 from "@salesforce/resourceUrl/CorePressCP2100";
 import cp7100 from "@salesforce/resourceUrl/CorePressCP7100";
+import { resolveProductImage } from "c/cpProductImages";
 import locationIcon from "@salesforce/resourceUrl/CorePressLocationIcon";
 import operatingIcon from "@salesforce/resourceUrl/CorePressSummaryOperatingIcon";
 import warningIcon from "@salesforce/resourceUrl/CorePressSummaryWarningIcon";
@@ -145,7 +146,10 @@ export default class CpAssetList extends LightningElement {
   }
 
   resolveImage(model) {
-    const normalized = model.trim().toUpperCase();
+    const resolved = resolveProductImage(model, "압축기");
+    if (resolved.type === "image") return resolved.src;
+    // Legacy fallback (shouldn't hit — resolver always returns an image for CP*)
+    const normalized = (model || "").trim().toUpperCase();
     if (normalized === "CP7100+" || normalized.startsWith("CP7100")) return cp7100;
     if (normalized === "CP2100" || normalized.startsWith("CP21")) return cp2100;
     if (normalized === "CP100 PRO" || normalized === "CP100") return cp100;

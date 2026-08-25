@@ -22,6 +22,7 @@ import cp7100 from "@salesforce/resourceUrl/CorePressCP7100Detail";
 import cp2100 from "@salesforce/resourceUrl/CorePressCP2100";
 import cp100 from "@salesforce/resourceUrl/CorePressCP100";
 import blueprint from "@salesforce/resourceUrl/CorePressCP7100Blueprint";
+import { resolveProductImage } from "c/cpProductImages";
 import locationIcon from "@salesforce/resourceUrl/CorePressLocationIcon";
 import operatingIcon from "@salesforce/resourceUrl/CorePressSummaryOperatingIcon";
 import warningIcon from "@salesforce/resourceUrl/CorePressSummaryWarningIcon";
@@ -90,6 +91,8 @@ export default class CpAssetDetail extends LightningElement {
 
   get model() { return getFieldValue(this.assetRecord, ASSET_PRODUCT_NAME) || "모델 미등록"; }
   get heroImageUrl() {
+    const resolved = resolveProductImage(this.model, "압축기");
+    if (resolved.type === "image") return resolved.src;
     const normalized = this.model.trim().toUpperCase();
     if (normalized === "CP7100+") return cp7100;
     if (normalized === "CP2100") return cp2100;
