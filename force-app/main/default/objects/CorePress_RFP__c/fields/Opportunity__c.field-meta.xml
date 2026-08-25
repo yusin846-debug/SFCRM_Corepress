@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Opportunity__c</fullName><deleteConstraint
+  >SetNull</deleteConstraint><description
+  >Links the RFP to the Opportunity created by shortlist selection.</description><inlineHelpText
+  >Populated automatically after shortlist selection.</inlineHelpText><label
+  >연결 Opportunity</label><referenceTo
+  >Opportunity</referenceTo><relationshipLabel
+  >CorePress RFP</relationshipLabel><relationshipName
+  >CorePress_RFPs</relationshipName><required>false</required><type
+  >Lookup</type></CustomField>

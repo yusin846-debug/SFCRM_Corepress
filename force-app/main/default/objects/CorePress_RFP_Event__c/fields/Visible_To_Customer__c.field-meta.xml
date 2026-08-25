@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Visible_To_Customer__c</fullName><defaultValue
+  >true</defaultValue><description
+  >Controls whether the event is safe to display in the customer portal.</description><inlineHelpText
+  >Clear this only for internal activity that must not appear in the portal.</inlineHelpText><label
+  >고객 공개</label><type>Checkbox</type></CustomField>

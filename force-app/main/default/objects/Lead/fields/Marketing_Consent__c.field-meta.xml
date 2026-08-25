@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Marketing_Consent__c</fullName><defaultValue>false</defaultValue><description
+  >Records whether the catalog requester optionally agreed to marketing information use.</description><inlineHelpText
+  >Select only when the requester explicitly agrees to marketing information use.</inlineHelpText><label
+  >마케팅 정보 활용 동의</label><type>Checkbox</type></CustomField>

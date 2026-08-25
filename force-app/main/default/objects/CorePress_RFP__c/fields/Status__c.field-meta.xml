@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Status__c</fullName><description
+  >Tracks the customer-visible lifecycle state of the RFP.</description><inlineHelpText
+  >Updated automatically as the request moves through proposal and shortlist stages.</inlineHelpText><label
+  >RFP 상태</label><length>40</length><required>true</required><type
+  >Text</type></CustomField>

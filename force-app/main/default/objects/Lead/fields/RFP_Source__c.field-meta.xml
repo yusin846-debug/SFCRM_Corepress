@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >RFP_Source__c</fullName><description
+  >Identifies whether the RFP arrived through the portal or email intake.</description><inlineHelpText
+  >Choose the channel through which the RFP was received.</inlineHelpText><label
+  >RFP 접수 경로</label><length>40</length><required>false</required><type
+  >Text</type></CustomField>

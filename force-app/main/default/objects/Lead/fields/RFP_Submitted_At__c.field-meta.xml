@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >RFP_Submitted_At__c</fullName><description
+  >Records when the RFP was submitted to CorePress.</description><inlineHelpText
+  >Populated automatically for portal submissions or manually for email intake.</inlineHelpText><label
+  >RFP 제출 일시</label><required>false</required><type
+  >DateTime</type></CustomField>

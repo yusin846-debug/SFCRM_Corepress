@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Submitted_At__c</fullName><description
+  >Records when the customer submitted the RFP.</description><inlineHelpText
+  >Populated automatically for portal submissions.</inlineHelpText><label
+  >제출 일시</label><required>true</required><type>DateTime</type></CustomField>

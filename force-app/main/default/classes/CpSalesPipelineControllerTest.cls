@@ -1,161 +1,295 @@
 @IsTest
 private class CpSalesPipelineControllerTest {
+  private static final String COMPANY = '시나리오 테스트 기업';
+  private static final String EMAIL = 'buyer@scenario.example.com';
+  private static final String EQUIPMENT = 'CP7100+';
 
-    private static Contact insertContact(Account acct) {
-        Contact c = new Contact(
-            AccountId = acct.Id,
-            LastName = '김재혁',
-            FirstName = '테스트',
-            Email = 'jaehyuk.test@daehan-corepress-poc.com',
-            Phone = '010-0000-0000'
-        );
-        insert c;
-        return c;
+  @TestSetup
+  static void setupData() {
+    Account account = TestDataFactory.createAccount(COMPANY, true);
+    TestDataFactory.createContact(account.Id, EMAIL, true);
+    TestDataFactory.createCatalogLead(COMPANY, EMAIL, EQUIPMENT, true);
+  }
+
+  @IsTest
+  static void shouldCreateRfpAndAdvanceExactLead_WhenPortalRfpSubmitted() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead lead = [SELECT Id FROM Lead WHERE Company = :COMPANY LIMIT 1];
+
+    Test.startTest();
+    Id rfpId = CpSalesPipelineController.submitRfp(
+      buildSubmission(account.Id, contact.Id, lead.Id)
+    );
+    Test.stopTest();
+
+    Lead updatedLead = [
+      SELECT Status, RFP_Title__c, RFP_Source__c, Requested_Delivery_Date__c
+      FROM Lead
+      WHERE Id = :lead.Id
+    ];
+    CorePress_RFP__c rfp = [
+      SELECT Account__c, Contact__c, Lead__c, Status__c, Interested_Equipment__c
+      FROM CorePress_RFP__c
+      WHERE Id = :rfpId
+    ];
+    Assert.areEqual(
+      'RFP접수',
+      updatedLead.Status,
+      'The selected Lead should advance to RFP received'
+    );
+    Assert.areEqual(
+      '제2공장 CP7100+ 도입 RFP',
+      updatedLead.RFP_Title__c,
+      'RFP title should be copied to the Lead'
+    );
+    Assert.areEqual(
+      '포털',
+      updatedLead.RFP_Source__c,
+      'Portal intake should be recorded'
+    );
+    Assert.areEqual(
+      account.Id,
+      rfp.Account__c,
+      'RFP must stay scoped to the customer Account'
+    );
+    Assert.areEqual(
+      contact.Id,
+      rfp.Contact__c,
+      'RFP must retain the submitting Contact'
+    );
+    Assert.areEqual(
+      lead.Id,
+      rfp.Lead__c,
+      'RFP must link the explicitly selected Lead'
+    );
+    Assert.areEqual(
+      EQUIPMENT,
+      rfp.Interested_Equipment__c,
+      'Exact equipment should be retained'
+    );
+    Assert.areEqual(
+      1,
+      [
+        SELECT COUNT()
+        FROM CorePress_RFP_Event__c
+        WHERE RFP__c = :rfpId AND Event_Type__c = 'RFP접수'
+      ],
+      'RFP receipt should create one public event'
+    );
+  }
+
+  @IsTest
+  static void shouldRejectRfp_WhenLeadBelongsToAnotherCompany() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead otherLead = TestDataFactory.createCatalogLead(
+      '다른 기업',
+      EMAIL,
+      EQUIPMENT,
+      true
+    );
+    CpSalesPipelineController.RfpSubmission submission = buildSubmission(
+      account.Id,
+      contact.Id,
+      otherLead.Id
+    );
+
+    Test.startTest();
+    try {
+      CpSalesPipelineController.submitRfp(submission);
+      Assert.fail('Cross-account Lead selection must be rejected');
+    } catch (AuraHandledException expected) {
+      Assert.isNotNull(
+        expected.getMessage(),
+        'The customer should receive a safe error'
+      );
     }
+    Test.stopTest();
+  }
 
-    private static Account insertAccount(String name) {
-        Account a = new Account(Name = name, ShippingStreet = '테스트로 1');
-        insert a;
-        return a;
-    }
+  @IsTest
+  static void shouldConvertOnceToNewInstallation_WhenShortlistedTwice() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead lead = [SELECT Id FROM Lead WHERE Company = :COMPANY LIMIT 1];
+    Id rfpId = CpSalesPipelineController.submitRfp(
+      buildSubmission(account.Id, contact.Id, lead.Id)
+    );
 
-    @IsTest
-    static void advanceLeadForRfpAdvancesExistingLead() {
-        insert new Lead(Company = '대한케미컬 테스트', LastName = '김재혁', Email = 'jaehyuk@test.com', LeadSource = '포털 RFP', Privacy_Consent__c = true, Status = '신규 문의');
+    Test.startTest();
+    Id firstOpportunityId = CpSalesPipelineController.selectShortlist(
+      rfpId,
+      account.Id,
+      contact.Id
+    );
+    Id secondOpportunityId = CpSalesPipelineController.selectShortlist(
+      rfpId,
+      account.Id,
+      contact.Id
+    );
+    Test.stopTest();
 
-        Test.startTest();
-        Id leadId = CpSalesPipelineController.advanceLeadForRfp('대한케미컬 테스트', null);
-        Test.stopTest();
+    Opportunity opportunity = [
+      SELECT
+        AccountId,
+        Owner.Username,
+        RecordType.DeveloperName,
+        Type,
+        StageName
+      FROM Opportunity
+      WHERE Id = :firstOpportunityId
+    ];
+    Assert.areEqual(
+      firstOpportunityId,
+      secondOpportunityId,
+      'Repeated shortlist clicks must return the same Opportunity'
+    );
+    Assert.areEqual(
+      account.Id,
+      opportunity.AccountId,
+      'Converted Opportunity must use the existing Account'
+    );
+    Assert.areEqual(
+      'New_Installation',
+      opportunity.RecordType.DeveloperName,
+      'Scenario must use the new-installation Record Type'
+    );
+    Assert.areEqual(
+      'New Business',
+      opportunity.Type,
+      'Scenario must be classified as new business'
+    );
+    Assert.areEqual(
+      '숏리스트 선정',
+      opportunity.StageName,
+      'Initial stage must match the new-installation sales process'
+    );
+    Assert.areEqual(
+      1,
+      [
+        SELECT COUNT()
+        FROM CorePress_RFP_Event__c
+        WHERE RFP__c = :rfpId AND Event_Type__c = '숏리스트 선정'
+      ],
+      'Idempotent selection must create one shortlist event'
+    );
+  }
 
-        Lead updated = [SELECT Status FROM Lead WHERE Id = :leadId];
-        System.assertEquals('RFP접수', updated.Status, 'Existing Lead should advance to RFP접수');
-    }
+  @IsTest
+  static void shouldAdvanceSameOpportunity_WhenRfqSubmittedAfterShortlist() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead lead = [SELECT Id FROM Lead WHERE Company = :COMPANY LIMIT 1];
+    Id rfpId = CpSalesPipelineController.submitRfp(
+      buildSubmission(account.Id, contact.Id, lead.Id)
+    );
+    Id opportunityId = CpSalesPipelineController.selectShortlist(
+      rfpId,
+      account.Id,
+      contact.Id
+    );
 
-    @IsTest
-    static void advanceLeadForRfpCreatesLeadWhenNoneMatches() {
-        Account acct = insertAccount('신규 고객사');
-        Contact c = insertContact(acct);
+    Test.startTest();
+    Id updatedOpportunityId = CpSalesPipelineController.submitRfq(
+      rfpId,
+      contact.Id,
+      'CP7100+ RFQ',
+      Date.today().addDays(45),
+      '결제조건 30/40/30'
+    );
+    Test.stopTest();
 
-        Test.startTest();
-        Id leadId = CpSalesPipelineController.advanceLeadForRfp('신규 고객사', c.Id);
-        Test.stopTest();
+    Opportunity opportunity = [
+      SELECT Name, StageName, Description
+      FROM Opportunity
+      WHERE Id = :updatedOpportunityId
+    ];
+    Assert.areEqual(
+      opportunityId,
+      updatedOpportunityId,
+      'RFQ must update the shortlist Opportunity instead of creating another'
+    );
+    Assert.areEqual(
+      'RFQ 접수',
+      opportunity.StageName,
+      'RFQ submission must advance the existing Opportunity'
+    );
+    Assert.areEqual(
+      'CP7100+ RFQ',
+      opportunity.Name,
+      'Customer RFQ title should be retained'
+    );
+  }
 
-        Lead created = [SELECT Company, Status, LastName, Email FROM Lead WHERE Id = :leadId];
-        System.assertEquals('신규 고객사', created.Company);
-        System.assertEquals('RFP접수', created.Status, 'A newly-created Lead should immediately move to RFP접수');
-        System.assertEquals('김재혁', created.LastName);
-        System.assertEquals('jaehyuk.test@daehan-corepress-poc.com', created.Email);
-    }
+  @IsTest
+  static void shouldRecordProposalDownloadAndReturnTimeline() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead lead = [SELECT Id FROM Lead WHERE Company = :COMPANY LIMIT 1];
+    Id rfpId = CpSalesPipelineController.submitRfp(
+      buildSubmission(account.Id, contact.Id, lead.Id)
+    );
 
-    @IsTest
-    static void advanceLeadForRfpIsIdempotentPastFirstStage() {
-        insert new Lead(Company = '이미 진행 중', LastName = '테스트', Email = 'test@test.com', LeadSource = '포털 RFP', Privacy_Consent__c = true, Status = '제안 진행');
+    Test.startTest();
+    CpSalesPipelineController.recordProposalDownload(rfpId, contact.Id);
+    List<CpSalesPipelineController.TimelineEntry> timeline = CpSalesPipelineController.getTimeline(
+      rfpId
+    );
+    Test.stopTest();
 
-        Test.startTest();
-        Id leadId = CpSalesPipelineController.advanceLeadForRfp('이미 진행 중', null);
-        Test.stopTest();
+    Assert.areEqual(
+      2,
+      timeline.size(),
+      'Timeline should include receipt and proposal download'
+    );
+    Assert.areEqual(
+      '제안서 다운로드',
+      timeline[1].eventType,
+      'Download should be visible as an actual customer event'
+    );
+  }
 
-        Lead unchanged = [SELECT Status FROM Lead WHERE Id = :leadId];
-        System.assertEquals('제안 진행', unchanged.Status, 'Later-stage Leads must not be downgraded to RFP접수');
-    }
-
-    @IsTest
-    static void convertLeadForRfqConvertsExistingLeadToOpportunity() {
-        Account acct = insertAccount('컨버전 테스트 계정');
-        Contact c = insertContact(acct);
-        Lead lead = new Lead(Company = '컨버전 테스트 계정', LastName = '김재혁', Email = 'convert@test.com', LeadSource = '포털 RFP', Privacy_Consent__c = true, Status = 'RFP접수');
-        insert lead;
-
-        Test.startTest();
-        Id oppId = CpSalesPipelineController.convertLeadForRfq(
-            '컨버전 테스트 계정',
-            acct.Id,
-            c.Id,
-            '테스트 RFQ 견적 요청',
-            Date.today().addDays(45),
-            '결제 조건: 30/40/30'
-        );
-        Test.stopTest();
-
-        Opportunity created = [SELECT Name, AccountId, StageName, Description FROM Opportunity WHERE Id = :oppId];
-        System.assertEquals('테스트 RFQ 견적 요청', created.Name);
-        System.assertEquals(acct.Id, created.AccountId, 'Opportunity must attach to the existing Account, not a new one');
-        System.assertEquals('Proposal/Quote', created.StageName);
-        System.assertEquals('결제 조건: 30/40/30', created.Description);
-
-        Lead converted = [SELECT IsConverted, ConvertedAccountId, ConvertedContactId FROM Lead WHERE Id = :lead.Id];
-        System.assertEquals(true, converted.IsConverted);
-        System.assertEquals(acct.Id, converted.ConvertedAccountId, 'Lead conversion must attach to the existing Account');
-        System.assertEquals(c.Id, converted.ConvertedContactId, 'Lead conversion must attach to the existing Contact');
-    }
-
-    @IsTest
-    static void convertLeadForRfqCreatesLeadThenConvertsWhenNoneMatches() {
-        Account acct = insertAccount('신규 RFQ 고객');
-        Contact c = insertContact(acct);
-
-        Test.startTest();
-        Id oppId = CpSalesPipelineController.convertLeadForRfq(
-            '신규 RFQ 고객',
-            acct.Id,
-            c.Id,
-            'RFQ 신규 요청',
-            Date.today().addDays(30),
-            null
-        );
-        Test.stopTest();
-
-        Opportunity opp = [SELECT AccountId, StageName FROM Opportunity WHERE Id = :oppId];
-        System.assertEquals(acct.Id, opp.AccountId);
-        System.assertEquals('Proposal/Quote', opp.StageName);
-
-        Lead created = [SELECT IsConverted FROM Lead WHERE Company = '신규 RFQ 고객'];
-        System.assertEquals(true, created.IsConverted, 'A synthesized Lead must end up converted');
-    }
-
-    @IsTest
-    static void convertLeadForRfqRejectsMissingRequiredInputs() {
-        Account acct = insertAccount('입력 검증 계정');
-        Contact c = insertContact(acct);
-
-        Test.startTest();
-        try {
-            CpSalesPipelineController.convertLeadForRfq('입력 검증 계정', null, c.Id, 'RFQ 제목', Date.today(), null);
-            System.assert(false, 'Missing accountId should throw');
-        } catch (AuraHandledException expected) {
-            // expected
-        }
-        try {
-            CpSalesPipelineController.convertLeadForRfq('입력 검증 계정', acct.Id, c.Id, '', Date.today(), null);
-            System.assert(false, 'Blank rfqTitle should throw');
-        } catch (AuraHandledException expected) {
-            // expected
-        }
-        Test.stopTest();
-    }
-
-    @IsTest
-    static void getLeadsForAccountReturnsLeadsForCompany() {
-        insert new Lead(Company = '조회 대상 회사', LastName = 'A', Email = 'a@test.com', LeadSource = '포털 RFP', Privacy_Consent__c = true, Status = 'RFP접수');
-        insert new Lead(Company = '조회 대상 회사', LastName = 'B', Email = 'b@test.com', LeadSource = '포털 RFP', Privacy_Consent__c = true, Status = '신규 문의');
-        insert new Lead(Company = '다른 회사', LastName = 'C', Email = 'c@test.com', LeadSource = '포털 RFP', Privacy_Consent__c = true, Status = '신규 문의');
-
-        Test.startTest();
-        List<CpSalesPipelineController.LeadSummary> leads = CpSalesPipelineController.getLeadsForAccount('조회 대상 회사');
-        Test.stopTest();
-
-        System.assertEquals(2, leads.size(), 'Should return only Leads whose Company matches');
-        for (CpSalesPipelineController.LeadSummary summary : leads) {
-            System.assertEquals('조회 대상 회사', summary.company);
-        }
-    }
-
-    @IsTest
-    static void getLeadsForAccountReturnsEmptyForBlankName() {
-        Test.startTest();
-        List<CpSalesPipelineController.LeadSummary> leads = CpSalesPipelineController.getLeadsForAccount('');
-        Test.stopTest();
-
-        System.assertEquals(0, leads.size(), 'Blank account name should short-circuit to empty list');
-    }
+  private static CpSalesPipelineController.RfpSubmission buildSubmission(
+    Id accountId,
+    Id contactId,
+    Id leadId
+  ) {
+    CpSalesPipelineController.RfpSubmission submission = new CpSalesPipelineController.RfpSubmission();
+    submission.accountId = accountId;
+    submission.contactId = contactId;
+    submission.leadId = leadId;
+    submission.title = '제2공장 CP7100+ 도입 RFP';
+    submission.equipment = EQUIPMENT;
+    submission.introductionType = '신규 도입';
+    submission.requestedDeliveryDate = Date.today().addDays(90);
+    submission.specifications = '토출압력 7.5 barG, 대유량 오일프리';
+    submission.source = '포털';
+    return submission;
+  }
 }

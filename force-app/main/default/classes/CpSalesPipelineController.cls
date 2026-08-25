@@ -1,227 +1,553 @@
-/**
- * Drives the sales pipeline from portal activity in two ordered stages:
- * (1) submit an RFP → the customer's Lead is advanced to the RFP-received
- * stage, no Opportunity yet; (2) submit an RFQ → the Lead is converted to
- * an Opportunity attached to the customer's existing Account and Contact.
- *
- * Runs without sharing because it touches Lead/Opportunity records the portal
- * user has no direct access to. Never returns raw Lead/Opportunity data on
- * mutation paths — read paths return only the wrapper types below.
- */
+/** Coordinates the portal-driven new-installation journey from RFP through RFQ. */
 public without sharing class CpSalesPipelineController {
-    private static final String RFP_SUBMITTED_STATUS = 'RFP접수';
-    private static final String DEFAULT_LEAD_STATUS = '신규 문의';
-    private static final String RFQ_OPPORTUNITY_STAGE = 'Proposal/Quote';
-    private static final String LEAD_SOURCE_PORTAL = '포털 RFP';
-    private static final String DEFAULT_LAST_NAME = '미입력';
-    private static final String SALES_OWNER_USERNAME = 'saleskim@corepress.demo';
+  private static final String RFP_STATUS = 'RFP접수';
+  private static final String SHORTLIST_STATUS = '숏리스트 선정';
+  private static final String RFQ_STATUS = 'RFQ 접수';
+  private static final String NEW_INSTALLATION_RECORD_TYPE = 'New_Installation';
+  private static final String NEW_BUSINESS_TYPE = 'New Business';
+  private static final String SALES_OWNER_USERNAME = 'saleskim@corepress.demo';
+  private static final String PROPOSAL_KEY = 'CP7100_PLUS';
 
-    /**
-     * Advances (or creates) the customer's Lead to `RFP접수`. No Opportunity
-     * is created at this stage — that happens on RFQ conversion. Idempotent:
-     * a Lead already past `신규 문의` is left alone.
-     *
-     * @param accountName Name of the submitting customer's Account (Lead.Company).
-     * @param contactId Submitting user's Contact Id, used to seed a new Lead if none matches.
-     * @return Id of the affected Lead.
-     */
-    @AuraEnabled
-    public static Id advanceLeadForRfp(String accountName, Id contactId) {
-        Lead lead = findOrCreateLead(accountName, contactId);
-        if (lead.Status == DEFAULT_LEAD_STATUS) {
-            lead.Status = RFP_SUBMITTED_STATUS;
-            Id salesOwnerId = getSalesOwnerId();
-            if (salesOwnerId != null) {
-                lead.OwnerId = salesOwnerId;
-            }
-            Database.update(lead, AccessLevel.SYSTEM_MODE);
-        }
-        return lead.Id;
+  /** @param submission Customer RFP payload. @return Created RFP Id. */
+  @AuraEnabled
+  public static Id submitRfp(RfpSubmission submission) {
+    validateSubmission(submission);
+    Contact contact = getValidatedContact(
+      submission.contactId,
+      submission.accountId
+    );
+    Account account = [
+      SELECT Id, Name
+      FROM Account
+      WHERE Id = :submission.accountId
+      LIMIT 1
+    ];
+    Lead lead = [
+      SELECT Id, Company, Email, Status, IsConverted, Interested_Equipment__c
+      FROM Lead
+      WHERE Id = :submission.leadId
+      LIMIT 1
+    ];
+    if (lead.IsConverted || lead.Company != account.Name) {
+      throw new AuraHandledException(
+        '선택한 카탈로그 문의를 이 고객사의 RFP로 연결할 수 없습니다.'
+      );
     }
-
-    /**
-     * Converts the customer's Lead into an Opportunity, attached to the given
-     * Account and Contact so a portal user never ends up with duplicate
-     * customer records. If no Lead matches yet, one is created at RFP접수
-     * first so every Opportunity has a Lead trail behind it. On success, the
-     * resulting Opportunity is stamped with Proposal/Quote stage, the RFQ
-     * title/description, and reassigned to the sales team lead backup owner.
-     *
-     * @param accountName Customer's Account name (Lead.Company).
-     * @param accountId Existing Account to attach the converted Lead to.
-     * @param contactId Existing Contact to attach the converted Lead to.
-     * @param rfqTitle Opportunity name to apply after conversion.
-     * @param closeDate Opportunity close date.
-     * @param description Opportunity description (payment terms etc).
-     * @return Id of the created Opportunity.
-     */
-    @AuraEnabled
-    public static Id convertLeadForRfq(
-        String accountName,
-        Id accountId,
-        Id contactId,
-        String rfqTitle,
-        Date closeDate,
-        String description
+    if (
+      String.isNotBlank(lead.Email) &&
+      String.isNotBlank(contact.Email) &&
+      lead.Email.toLowerCase() != contact.Email.toLowerCase()
     ) {
-        if (accountId == null || contactId == null) {
-            throw new AuraHandledException('고객 계정 정보가 없어 RFQ를 접수할 수 없습니다.');
-        }
-        if (String.isBlank(rfqTitle)) {
-            throw new AuraHandledException('RFQ 요청 제목을 입력해 주세요.');
-        }
+      throw new AuraHandledException(
+        '로그인 담당자와 카탈로그 문의 이메일이 일치하지 않습니다.'
+      );
+    }
+    Datetime submittedAt = System.now();
+    lead.Status = RFP_STATUS;
+    lead.RFP_Title__c = submission.title.trim();
+    lead.RFP_Submitted_At__c = submittedAt;
+    lead.RFP_Source__c = String.isBlank(submission.source)
+      ? '포털'
+      : submission.source.trim();
+    lead.Requested_Delivery_Date__c = submission.requestedDeliveryDate;
+    lead.Interested_Equipment__c = submission.equipment.trim();
+    Id salesOwnerId = getSalesOwnerId();
+    if (salesOwnerId != null)
+      lead.OwnerId = salesOwnerId;
+    Database.update(lead, AccessLevel.SYSTEM_MODE);
 
-        Lead lead = findOrCreateLead(accountName, contactId);
-        if (lead.Status == DEFAULT_LEAD_STATUS) {
-            lead.Status = RFP_SUBMITTED_STATUS;
-            Database.update(lead, AccessLevel.SYSTEM_MODE);
-        }
+    CorePress_RFP__c rfp = new CorePress_RFP__c(
+      Account__c = account.Id,
+      Contact__c = contact.Id,
+      Lead__c = lead.Id,
+      Title__c = submission.title.trim(),
+      Interested_Equipment__c = submission.equipment.trim(),
+      Introduction_Type__c = String.isBlank(submission.introductionType)
+        ? '신규 도입'
+        : submission.introductionType.trim(),
+      Requested_Delivery_Date__c = submission.requestedDeliveryDate,
+      Specifications__c = submission.specifications,
+      Status__c = RFP_STATUS,
+      Submitted_At__c = submittedAt,
+      Source__c = String.isBlank(submission.source)
+        ? '포털'
+        : submission.source.trim(),
+      Proposal_Key__c = PROPOSAL_KEY
+    );
+    Database.insert(rfp, AccessLevel.SYSTEM_MODE);
+    insertEvent(rfp.Id, null, contact.Id, RFP_STATUS, 'RFP가 접수되었습니다.');
+    return rfp.Id;
+  }
 
-        Database.LeadConvert lc = new Database.LeadConvert();
-        lc.setLeadId(lead.Id);
-        lc.setConvertedStatus(getConvertedStatusLabel());
-        lc.setAccountId(accountId);
-        lc.setContactId(contactId);
-        lc.setOpportunityName(rfqTitle);
-        Database.LeadConvertResult result = Database.convertLead(lc);
-        if (!result.isSuccess()) {
-            throw new AuraHandledException('Lead 변환에 실패했습니다: ' + result.getErrors()[0].getMessage());
-        }
+  /** @param rfpId RFP whose proposal was downloaded. @param contactId Downloading Contact. */
+  @AuraEnabled
+  public static void recordProposalDownload(Id rfpId, Id contactId) {
+    CorePress_RFP__c rfp = getRfpForContact(rfpId, contactId);
+    insertEvent(
+      rfp.Id,
+      rfp.Opportunity__c,
+      contactId,
+      '제안서 다운로드',
+      'CP7100+ 기술 제안서를 다운로드했습니다.'
+    );
+  }
 
-        Opportunity opp = new Opportunity(
-            Id = result.getOpportunityId(),
-            StageName = RFQ_OPPORTUNITY_STAGE,
-            CloseDate = closeDate == null ? Date.today().addDays(30) : closeDate,
-            Description = description
+  /** @param rfpId Selected RFP. @param accountId Customer Account. @param contactId Customer Contact. @return Opportunity Id. */
+  @AuraEnabled
+  public static Id selectShortlist(Id rfpId, Id accountId, Id contactId) {
+    getValidatedContact(contactId, accountId);
+    CorePress_RFP__c rfp = [
+      SELECT
+        Id,
+        Account__c,
+        Contact__c,
+        Lead__c,
+        Opportunity__c,
+        Interested_Equipment__c,
+        Requested_Delivery_Date__c
+      FROM CorePress_RFP__c
+      WHERE Id = :rfpId
+      LIMIT 1
+      FOR UPDATE
+    ];
+    if (rfp.Account__c != accountId || rfp.Contact__c != contactId)
+      throw new AuraHandledException(
+        '이 RFP를 숏리스트로 선정할 권한이 없습니다.'
+      );
+    if (rfp.Opportunity__c != null)
+      return rfp.Opportunity__c;
+
+    Lead lead = [
+      SELECT Id, IsConverted, ConvertedOpportunityId
+      FROM Lead
+      WHERE Id = :rfp.Lead__c
+      LIMIT 1
+    ];
+    Id opportunityId;
+    if (lead.IsConverted && lead.ConvertedOpportunityId != null) {
+      opportunityId = lead.ConvertedOpportunityId;
+    } else {
+      Database.LeadConvert conversion = new Database.LeadConvert();
+      conversion.setLeadId(lead.Id);
+      conversion.setConvertedStatus(getConvertedStatusApiName());
+      conversion.setAccountId(accountId);
+      conversion.setContactId(contactId);
+      conversion.setOpportunityName(rfp.Interested_Equipment__c + ' 신규 도입');
+      Database.LeadConvertResult conversionResult = Database.convertLead(
+        conversion,
+        false
+      );
+      if (!conversionResult.isSuccess())
+        throw new AuraHandledException('숏리스트 선정 처리에 실패했습니다.');
+      opportunityId = conversionResult.getOpportunityId();
+    }
+    RecordType newInstallation = [
+      SELECT Id
+      FROM RecordType
+      WHERE
+        SObjectType = 'Opportunity'
+        AND DeveloperName = :NEW_INSTALLATION_RECORD_TYPE
+        AND IsActive = TRUE
+      LIMIT 1
+    ];
+    Opportunity opportunity = new Opportunity(
+      Id = opportunityId,
+      RecordTypeId = newInstallation.Id,
+      Type = NEW_BUSINESS_TYPE,
+      StageName = SHORTLIST_STATUS,
+      CloseDate = rfp.Requested_Delivery_Date__c == null
+        ? Date.today().addDays(90)
+        : rfp.Requested_Delivery_Date__c
+    );
+    Id salesOwnerId = getSalesOwnerId();
+    if (salesOwnerId != null)
+      opportunity.OwnerId = salesOwnerId;
+    Database.update(opportunity, AccessLevel.SYSTEM_MODE);
+    rfp.Opportunity__c = opportunityId;
+    rfp.Status__c = SHORTLIST_STATUS;
+    Database.update(rfp, AccessLevel.SYSTEM_MODE);
+    insertEvent(
+      rfp.Id,
+      opportunityId,
+      contactId,
+      SHORTLIST_STATUS,
+      '고객이 제안서를 숏리스트로 선정했습니다.'
+    );
+    return opportunityId;
+  }
+
+  /** @param rfpId RFP. @param contactId Contact. @param title RFQ title. @param requestedDeliveryDate Delivery date. @param description Terms. @return Opportunity Id. */
+  @AuraEnabled
+  public static Id submitRfq(
+    Id rfpId,
+    Id contactId,
+    String title,
+    Date requestedDeliveryDate,
+    String description
+  ) {
+    CorePress_RFP__c rfp = getRfpForContact(rfpId, contactId);
+    if (rfp.Opportunity__c == null)
+      throw new AuraHandledException('먼저 제안서를 숏리스트로 선정해 주세요.');
+    Opportunity opportunity = new Opportunity(
+      Id = rfp.Opportunity__c,
+      Name = String.isBlank(title) ? rfp.Title__c : title.trim(),
+      StageName = RFQ_STATUS,
+      CloseDate = requestedDeliveryDate == null
+        ? Date.today().addDays(60)
+        : requestedDeliveryDate,
+      Description = description
+    );
+    Database.update(opportunity, AccessLevel.SYSTEM_MODE);
+    rfp.Status__c = RFQ_STATUS;
+    Database.update(rfp, AccessLevel.SYSTEM_MODE);
+    insertEvent(
+      rfp.Id,
+      opportunity.Id,
+      contactId,
+      RFQ_STATUS,
+      'RFQ가 접수되어 견적 검토를 시작했습니다.'
+    );
+    return opportunity.Id;
+  }
+
+  /** @param accountId Customer Account. @return RFP rows. */
+  @AuraEnabled(cacheable=true)
+  public static List<RfpSummary> getRfpsForAccount(Id accountId) {
+    List<RfpSummary> summaries = new List<RfpSummary>();
+    if (accountId == null)
+      return summaries;
+    enforceCurrentUserAccount(accountId, null);
+    for (CorePress_RFP__c rfp : [
+      SELECT
+        Id,
+        Name,
+        Lead__c,
+        Opportunity__c,
+        Title__c,
+        Interested_Equipment__c,
+        Status__c,
+        Submitted_At__c,
+        Proposal_Key__c
+      FROM CorePress_RFP__c
+      WHERE Account__c = :accountId
+      ORDER BY Submitted_At__c DESC
+      LIMIT 50
+    ])
+      summaries.add(new RfpSummary(rfp));
+    return summaries;
+  }
+
+  /** @param accountName Customer company. @return Matching unconverted catalog Leads. */
+  @AuraEnabled(cacheable=true)
+  public static List<LeadSummary> getLeadsForAccount(String accountName) {
+    List<LeadSummary> summaries = new List<LeadSummary>();
+    if (String.isBlank(accountName))
+      return summaries;
+    enforceCurrentUserAccount(null, accountName);
+    for (Lead lead : [
+      SELECT
+        Id,
+        Name,
+        Company,
+        Email,
+        Status,
+        Interested_Equipment__c,
+        Product_Interest__c,
+        Description,
+        CreatedDate
+      FROM Lead
+      WHERE Company = :accountName AND IsConverted = FALSE
+      ORDER BY CreatedDate DESC
+      LIMIT 50
+    ])
+      summaries.add(new LeadSummary(lead));
+    return summaries;
+  }
+
+  /** @param rfpId RFP. @return Customer-visible timeline. */
+  @AuraEnabled(cacheable=true)
+  public static List<TimelineEntry> getTimeline(Id rfpId) {
+    List<TimelineEntry> entries = new List<TimelineEntry>();
+    if (rfpId == null)
+      return entries;
+    for (CorePress_RFP_Event__c eventRecord : [
+      SELECT Event_Type__c, Detail__c, Occurred_At__c
+      FROM CorePress_RFP_Event__c
+      WHERE RFP__c = :rfpId AND Visible_To_Customer__c = TRUE
+      ORDER BY Occurred_At__c ASC
+    ])
+      entries.add(
+        new TimelineEntry(
+          eventRecord.Event_Type__c,
+          eventRecord.Detail__c,
+          eventRecord.Occurred_At__c
+        )
+      );
+    CorePress_RFP__c rfp = [
+      SELECT Account__c, Contact__c, Opportunity__c
+      FROM CorePress_RFP__c
+      WHERE Id = :rfpId
+      LIMIT 1
+    ];
+    enforceCurrentUserContact(rfp.Contact__c, rfp.Account__c);
+    if (rfp.Opportunity__c != null) {
+      for (OpportunityHistory history : [
+        SELECT StageName, CreatedDate
+        FROM OpportunityHistory
+        WHERE OpportunityId = :rfp.Opportunity__c
+        ORDER BY CreatedDate ASC
+      ]) {
+        entries.add(
+          new TimelineEntry(
+            '영업 단계 변경',
+            history.StageName,
+            history.CreatedDate
+          )
         );
-        Id salesOwnerId = getSalesOwnerId();
-        if (salesOwnerId != null) {
-            opp.OwnerId = salesOwnerId;
-        }
-        Database.update(opp, AccessLevel.SYSTEM_MODE);
-
-        return opp.Id;
+      }
     }
+    entries.sort();
+    return entries;
+  }
 
-    /**
-     * Returns Leads (converted or not) whose Company matches the customer's
-     * Account name, ordered newest first. Powers the "내 RFP 현황" tab, which
-     * shows the pre-conversion side of the sales pipeline.
-     */
-    @AuraEnabled(cacheable=true)
-    public static List<LeadSummary> getLeadsForAccount(String accountName) {
-        List<LeadSummary> result = new List<LeadSummary>();
-        if (String.isBlank(accountName)) {
-            return result;
-        }
-        for (Lead lead : [
-            SELECT Id, Name, Company, Status, Product_Interest__c, Description, LeadSource, CreatedDate, IsConverted, ConvertedOpportunityId
-            FROM Lead
-            WHERE Company = :accountName.trim()
-            ORDER BY CreatedDate DESC
-            LIMIT 50
-        ]) {
-            result.add(new LeadSummary(lead));
-        }
-        return result;
-    }
-
-    private static Lead findOrCreateLead(String accountName, Id contactId) {
-        String cleanName = String.isBlank(accountName) ? '' : accountName.trim();
-        if (String.isBlank(cleanName)) {
-            throw new AuraHandledException('고객사 이름이 없어 Lead를 조회할 수 없습니다.');
-        }
-        List<Lead> matches = [
-            SELECT Id, Status, OwnerId
-            FROM Lead
-            WHERE IsConverted = false AND Company = :cleanName
-            ORDER BY CreatedDate DESC
-            LIMIT 1
-        ];
-        if (!matches.isEmpty()) {
-            return matches[0];
-        }
-
-        Lead newLead = new Lead(
-            Company = cleanName,
-            LeadSource = LEAD_SOURCE_PORTAL,
-            Status = DEFAULT_LEAD_STATUS,
-            Privacy_Consent__c = true
+  private static void validateSubmission(RfpSubmission submission) {
+    if (
+      submission == null ||
+      submission.accountId == null ||
+      submission.contactId == null ||
+      submission.leadId == null
+    )
+      throw new AuraHandledException('RFP 연결 정보가 누락되었습니다.');
+    if (
+      String.isBlank(submission.title) || String.isBlank(submission.equipment)
+    )
+      throw new AuraHandledException('RFP 제목과 관심 장비를 입력해 주세요.');
+  }
+  private static Contact getValidatedContact(Id contactId, Id accountId) {
+    enforceCurrentUserContact(contactId, accountId);
+    List<Contact> contacts = [
+      SELECT Id, AccountId, Email
+      FROM Contact
+      WHERE Id = :contactId
+      LIMIT 1
+    ];
+    if (contacts.isEmpty() || contacts[0].AccountId != accountId)
+      throw new AuraHandledException(
+        '로그인 담당자와 고객사 정보가 일치하지 않습니다.'
+      );
+    return contacts[0];
+  }
+  private static CorePress_RFP__c getRfpForContact(Id rfpId, Id contactId) {
+    List<CorePress_RFP__c> requests = [
+      SELECT Id, Account__c, Contact__c, Opportunity__c, Title__c
+      FROM CorePress_RFP__c
+      WHERE Id = :rfpId
+      LIMIT 1
+    ];
+    if (requests.isEmpty() || requests[0].Contact__c != contactId)
+      throw new AuraHandledException('이 RFP에 접근할 권한이 없습니다.');
+    enforceCurrentUserContact(contactId, requests[0].Account__c);
+    return requests[0];
+  }
+  private static void enforceCurrentUserContact(Id contactId, Id accountId) {
+    User currentUser = [
+      SELECT UserType, ContactId, Contact.AccountId
+      FROM User
+      WHERE Id = :UserInfo.getUserId()
+      LIMIT 1
+    ];
+    if (currentUser.ContactId == null) {
+      if (currentUser.UserType != 'Standard')
+        throw new AuraHandledException(
+          '로그인 고객 정보를 확인할 수 없습니다.'
         );
-        if (contactId != null) {
-            List<Contact> contacts = [SELECT LastName, FirstName, Email, Phone FROM Contact WHERE Id = :contactId LIMIT 1];
-            if (!contacts.isEmpty()) {
-                Contact c = contacts[0];
-                newLead.LastName = String.isBlank(c.LastName) ? DEFAULT_LAST_NAME : c.LastName;
-                newLead.FirstName = c.FirstName;
-                newLead.Email = c.Email;
-                newLead.Phone = c.Phone;
-            } else {
-                newLead.LastName = DEFAULT_LAST_NAME;
-            }
-        } else {
-            newLead.LastName = DEFAULT_LAST_NAME;
-        }
-        Id salesOwnerId = getSalesOwnerId();
-        if (salesOwnerId != null) {
-            newLead.OwnerId = salesOwnerId;
-        }
-        Database.DMLOptions dml = new Database.DMLOptions();
-        dml.DuplicateRuleHeader.AllowSave = true;
-        Database.SaveResult saveResult = Database.insert(newLead, dml);
-        if (!saveResult.isSuccess()) {
-            throw new AuraHandledException('Lead 생성에 실패했습니다: ' + saveResult.getErrors()[0].getMessage());
-        }
-        return newLead;
+      return;
     }
-
-    private static String getConvertedStatusLabel() {
-        // Database.convertLead.setConvertedStatus() takes the LeadStatus.ApiName, not the
-        // localized MasterLabel — verified in this org (MasterLabel '숏리스트 선정' has
-        // ApiName 'Converted' and only 'Converted' is accepted). We prefer that specific
-        // status per the SAL pipeline design, and fall back to any IsConverted status.
-        List<LeadStatus> preferred = [SELECT ApiName FROM LeadStatus WHERE IsConverted = true AND MasterLabel = '숏리스트 선정' LIMIT 1];
-        if (!preferred.isEmpty()) {
-            return preferred[0].ApiName;
-        }
-        List<LeadStatus> fallback = [SELECT ApiName FROM LeadStatus WHERE IsConverted = true ORDER BY SortOrder ASC NULLS LAST LIMIT 1];
-        if (!fallback.isEmpty()) {
-            return fallback[0].ApiName;
-        }
-        throw new AuraHandledException('전환 완료 상태로 지정된 Lead Status가 없습니다. 관리자에게 문의해 주세요.');
+    if (
+      currentUser.ContactId != contactId ||
+      currentUser.Contact.AccountId != accountId
+    ) {
+      throw new AuraHandledException(
+        '다른 고객사의 정보에는 접근할 수 없습니다.'
+      );
     }
-
-    private static Id getSalesOwnerId() {
-        List<User> owners = [SELECT Id FROM User WHERE Username = :SALES_OWNER_USERNAME AND IsActive = true LIMIT 1];
-        return owners.isEmpty() ? null : owners[0].Id;
+  }
+  private static void enforceCurrentUserAccount(
+    Id accountId,
+    String accountName
+  ) {
+    User currentUser = [
+      SELECT UserType, ContactId, Contact.AccountId, Contact.Account.Name
+      FROM User
+      WHERE Id = :UserInfo.getUserId()
+      LIMIT 1
+    ];
+    if (currentUser.ContactId == null) {
+      if (currentUser.UserType != 'Standard')
+        throw new AuraHandledException(
+          '로그인 고객 정보를 확인할 수 없습니다.'
+        );
+      return;
     }
+    Boolean idMismatch =
+      accountId != null &&
+      currentUser.Contact.AccountId != accountId;
+    Boolean nameMismatch =
+      accountName != null &&
+      currentUser.Contact.Account.Name != accountName;
+    if (idMismatch || nameMismatch)
+      throw new AuraHandledException(
+        '다른 고객사의 정보에는 접근할 수 없습니다.'
+      );
+  }
+  private static String getConvertedStatusApiName() {
+    List<LeadStatus> statuses = [
+      SELECT ApiName
+      FROM LeadStatus
+      WHERE IsConverted = TRUE
+      ORDER BY SortOrder ASC
+      LIMIT 1
+    ];
+    if (statuses.isEmpty())
+      throw new AuraHandledException('전환 완료 Lead 상태가 없습니다.');
+    return statuses[0].ApiName;
+  }
+  private static Id getSalesOwnerId() {
+    List<User> owners = [
+      SELECT Id
+      FROM User
+      WHERE Username = :SALES_OWNER_USERNAME AND IsActive = TRUE
+      LIMIT 1
+    ];
+    return owners.isEmpty() ? null : owners[0].Id;
+  }
+  private static void insertEvent(
+    Id rfpId,
+    Id opportunityId,
+    Id contactId,
+    String eventType,
+    String detail
+  ) {
+    Database.insert(
+      new CorePress_RFP_Event__c(
+        RFP__c = rfpId,
+        Opportunity__c = opportunityId,
+        Contact__c = contactId,
+        Event_Type__c = eventType,
+        Occurred_At__c = System.now(),
+        Detail__c = detail,
+        Visible_To_Customer__c = true
+      ),
+      AccessLevel.SYSTEM_MODE
+    );
+  }
 
-    /**
-     * Portal-facing view of a single Lead for the RFP status tab.
-     */
-    public class LeadSummary {
-        @AuraEnabled public Id id;
-        @AuraEnabled public String name;
-        @AuraEnabled public String company;
-        @AuraEnabled public String status;
-        @AuraEnabled public String productInterest;
-        @AuraEnabled public String description;
-        @AuraEnabled public String leadSource;
-        @AuraEnabled public Datetime createdDate;
-        @AuraEnabled public Boolean isConverted;
-        @AuraEnabled public Id convertedOpportunityId;
-
-        public LeadSummary(Lead lead) {
-            this.id = lead.Id;
-            this.name = lead.Name;
-            this.company = lead.Company;
-            this.status = lead.Status;
-            this.productInterest = lead.Product_Interest__c;
-            this.description = lead.Description;
-            this.leadSource = lead.LeadSource;
-            this.createdDate = lead.CreatedDate;
-            this.isConverted = lead.IsConverted;
-            this.convertedOpportunityId = lead.ConvertedOpportunityId;
-        }
+  /** Portal RFP payload. */
+  public class RfpSubmission {
+    @AuraEnabled
+    public Id accountId { get; set; }
+    @AuraEnabled
+    public Id contactId { get; set; }
+    @AuraEnabled
+    public Id leadId { get; set; }
+    @AuraEnabled
+    public String title { get; set; }
+    @AuraEnabled
+    public String equipment { get; set; }
+    @AuraEnabled
+    public String introductionType { get; set; }
+    @AuraEnabled
+    public Date requestedDeliveryDate { get; set; }
+    @AuraEnabled
+    public String specifications { get; set; }
+    @AuraEnabled
+    public String source { get; set; }
+  }
+  /** Portal-safe Lead row. */
+  public class LeadSummary {
+    @AuraEnabled
+    public Id id;
+    @AuraEnabled
+    public String name;
+    @AuraEnabled
+    public String company;
+    @AuraEnabled
+    public String email;
+    @AuraEnabled
+    public String status;
+    @AuraEnabled
+    public String equipment;
+    @AuraEnabled
+    public String productInterest;
+    @AuraEnabled
+    public String description;
+    @AuraEnabled
+    public Datetime createdDate;
+    public LeadSummary(Lead lead) {
+      id = lead.Id;
+      name = lead.Name;
+      company = lead.Company;
+      email = lead.Email;
+      status = lead.Status;
+      equipment = lead.Interested_Equipment__c;
+      productInterest = lead.Product_Interest__c;
+      description = lead.Description;
+      createdDate = lead.CreatedDate;
     }
+  }
+  /** Portal-safe RFP row. */
+  public class RfpSummary {
+    @AuraEnabled
+    public Id id;
+    @AuraEnabled
+    public String numberValue;
+    @AuraEnabled
+    public Id leadId;
+    @AuraEnabled
+    public Id opportunityId;
+    @AuraEnabled
+    public String title;
+    @AuraEnabled
+    public String equipment;
+    @AuraEnabled
+    public String status;
+    @AuraEnabled
+    public Datetime submittedAt;
+    @AuraEnabled
+    public Boolean shortlistComplete;
+    @AuraEnabled
+    public Boolean hasProposal;
+    public RfpSummary(CorePress_RFP__c rfp) {
+      id = rfp.Id;
+      numberValue = rfp.Name;
+      leadId = rfp.Lead__c;
+      opportunityId = rfp.Opportunity__c;
+      title = rfp.Title__c;
+      equipment = rfp.Interested_Equipment__c;
+      status = rfp.Status__c;
+      submittedAt = rfp.Submitted_At__c;
+      shortlistComplete = rfp.Opportunity__c != null;
+      hasProposal = rfp.Proposal_Key__c == PROPOSAL_KEY;
+    }
+  }
+  /** Portal-safe timeline row. */
+  public class TimelineEntry implements Comparable {
+    @AuraEnabled
+    public String eventType;
+    @AuraEnabled
+    public String detail;
+    @AuraEnabled
+    public Datetime occurredAt;
+    public TimelineEntry(String eventType, String detail, Datetime occurredAt) {
+      this.eventType = eventType;
+      this.detail = detail;
+      this.occurredAt = occurredAt;
+    }
+    public Integer compareTo(Object other) {
+      TimelineEntry compared = (TimelineEntry) other;
+      if (occurredAt == compared.occurredAt)
+        return 0;
+      return occurredAt < compared.occurredAt ? -1 : 1;
+    }
+  }
 }

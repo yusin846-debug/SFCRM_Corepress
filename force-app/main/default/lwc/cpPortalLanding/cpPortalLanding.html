@@ -1,84 +1,285 @@
 <template>
-    <main class="portal" id="main-content">
-        <header class="site-header">
-            <a class="brand" href="#main-content" aria-label="CorePress 홈">
-                <img src={headerLogoUrl} alt="CorePress" width="600" height="120" />
-            </a>
-            <nav class="site-nav" aria-label="주요 메뉴">
-                <a href={productsUrl}>제품</a><a href={servicesUrl}>서비스</a>
-                <a href={noticesUrl}>기술자료</a><a href={aboutUrl}>회사소개</a>
-            </nav>
-            <div class="utility-nav">
-                <span class="locale">KR · EN</span>
-                <a class="portal-link" href={loginUrl}><img src={portalUserIconUrl} alt="" />고객 포털</a>
-            </div>
-        </header>
+  <main class="portal" id="main-content">
+    <header class="site-header">
+      <a class="brand" href="#main-content" aria-label="CorePress 홈">
+        <img src={headerLogoUrl} alt="CorePress" width="600" height="120" />
+      </a>
+      <nav class="site-nav" aria-label="주요 메뉴">
+        <a href={productsUrl}>제품</a
+        ><span class="disabled" aria-disabled="true">서비스</span
+        ><span class="disabled" aria-disabled="true">기술자료</span
+        ><span class="disabled" aria-disabled="true">회사소개</span>
+      </nav>
+      <div class="utility-nav">
+        <span class="locale">KR · EN</span>
+        <a class="portal-link" href={loginUrl}
+          ><img src={portalUserIconUrl} alt="" />고객 포털</a
+        >
+      </div>
+    </header>
 
-        <section class="hero" aria-labelledby="hero-title">
-            <img class="hero-image" src={coverImageUrl} alt="CorePress 압축기 설비를 점검하는 현장 엔지니어" width="1536" height="1024" />
-            <div class="hero-overlay" aria-hidden="true"></div>
-            <div class="hero-copy">
-                <p class="eyebrow">DIGITAL SERVICE SOLUTION</p>
-                <h1 id="hero-title">{heroTitle}</h1>
-                <p class="hero-description">{heroDescription}</p>
-                <div class="hero-actions">
-                    <a class="button button-outline" href={loginUrl}>고객 포털 접속 <span aria-hidden="true">→</span></a>
-                    <button class="text-action catalog-trigger" type="button" onclick={openCatalogModal}>카탈로그 보기 <span aria-hidden="true">→</span></button>
-                </div>
-            </div>
-            <div class="hero-metrics" aria-label="서비스 상태 요약">
-                <div class="metric metric-health"><span class="metric-symbol"><img src={healthIconUrl} alt="진동 파형" /></span><p><small>ASSET HEALTH</small><strong>98%</strong></p></div>
-                <div class="metric metric-support"><span class="metric-symbol"><img src={supportIconUrl} alt="고객센터 상담원" /></span><p><strong>24/7</strong><small>REMOTE SUPPORT</small></p></div>
-                <div class="metric metric-maintenance"><span class="metric-symbol"><img src={maintenanceIconUrl} alt="예지 정비" /></span><p><small>PREDICTIVE</small><strong>MAINTENANCE</strong></p></div>
-            </div>
-        </section>
+    <section class="hero" aria-labelledby="hero-title">
+      <img
+        class="hero-image"
+        src={coverImageUrl}
+        alt="CorePress 압축기 설비를 점검하는 현장 엔지니어"
+        width="1536"
+        height="1024"
+      />
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow">DIGITAL SERVICE SOLUTION</p>
+        <h1 id="hero-title">{heroTitle}</h1>
+        <p class="hero-description">{heroDescription}</p>
+        <div class="hero-actions">
+          <a class="button button-outline" href={loginUrl}
+            >고객 포털 접속 <span aria-hidden="true">→</span></a
+          >
+          <button
+            class="text-action catalog-trigger"
+            type="button"
+            onclick={openCatalogModal}
+          >
+            카탈로그 보기 <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+      <div class="hero-metrics" aria-label="서비스 상태 요약">
+        <div class="metric metric-health">
+          <span class="metric-symbol"
+            ><img src={healthIconUrl} alt="진동 파형"
+          /></span>
+          <p><small>ASSET HEALTH</small><strong>98%</strong></p>
+        </div>
+        <div class="metric metric-support">
+          <span class="metric-symbol"
+            ><img src={supportIconUrl} alt="고객센터 상담원"
+          /></span>
+          <p><strong>24/7</strong><small>REMOTE SUPPORT</small></p>
+        </div>
+        <div class="metric metric-maintenance">
+          <span class="metric-symbol"
+            ><img src={maintenanceIconUrl} alt="예지 정비"
+          /></span>
+          <p><small>PREDICTIVE</small><strong>MAINTENANCE</strong></p>
+        </div>
+      </div>
+    </section>
 
-        <section class="product-section" id="products" aria-labelledby="product-title">
-            <div class="section-heading">
-                <div><p class="section-kicker">PRODUCT LINEUP</p><h2 id="product-title">공정 환경에 최적화된 압축기 솔루션</h2></div>
-                <a class="all-products" href={productsUrl}>전체 제품 보기 <span aria-hidden="true">→</span></a>
-            </div>
-            <div class="product-grid">
-                <article>
-                    <div class="product-image"><img src={cp100ImageUrl} alt="CP100 Pro 압축기" width="1024" height="1024" loading="lazy" /></div>
-                    <div><p class="product-code">CP100 Pro</p><small>HIGH EFFICIENCY</small><p>고효율과 안정성을 갖춘 표준형 모델</p><a href={productsUrl}>제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
-                </article>
-                <article>
-                    <div class="product-image"><img src={cp2100ImageUrl} alt="CP2100 압축기" width="1024" height="1024" loading="lazy" /></div>
-                    <div><p class="product-code">CP2100</p><small>COMPACT · LOW FLOW</small><p>좁은 공간에도 설치 가능한 컴팩트 모델</p><a href={productsUrl}>제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
-                </article>
-                <article>
-                    <div class="product-image"><img src={cp7100ImageUrl} alt="CP7100+ 압축기" width="1024" height="1024" loading="lazy" /></div>
-                    <div><p class="product-code">CP7100+</p><small>HIGH FLOW</small><p>대유량 공정에 최적화된 고효율 모델</p><a href={productsUrl}>제품 자세히 보기 <span aria-hidden="true">→</span></a></div>
-                </article>
-            </div>
-        </section>
-    </main>
+    <section
+      class="product-section"
+      id="products"
+      aria-labelledby="product-title"
+    >
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">PRODUCT LINEUP</p>
+          <h2 id="product-title">공정 환경에 최적화된 압축기 솔루션</h2>
+        </div>
+        <a class="all-products" href={productsUrl}
+          >전체 제품 보기 <span aria-hidden="true">→</span></a
+        >
+      </div>
+      <div class="product-grid">
+        <article>
+          <div class="product-image">
+            <img
+              src={cp100ImageUrl}
+              alt="CP100 Pro 압축기"
+              width="1024"
+              height="1024"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <p class="product-code">CP100 Pro</p>
+            <small>HIGH EFFICIENCY</small>
+            <p>고효율과 안정성을 갖춘 표준형 모델</p>
+            <a href={productsUrl}
+              >제품 자세히 보기 <span aria-hidden="true">→</span></a
+            >
+          </div>
+        </article>
+        <article>
+          <div class="product-image">
+            <img
+              src={cp2100ImageUrl}
+              alt="CP2100 압축기"
+              width="1024"
+              height="1024"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <p class="product-code">CP2100</p>
+            <small>COMPACT · LOW FLOW</small>
+            <p>좁은 공간에도 설치 가능한 컴팩트 모델</p>
+            <a href={productsUrl}
+              >제품 자세히 보기 <span aria-hidden="true">→</span></a
+            >
+          </div>
+        </article>
+        <article>
+          <div class="product-image">
+            <img
+              src={cp7100ImageUrl}
+              alt="CP7100+ 압축기"
+              width="1024"
+              height="1024"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <p class="product-code">CP7100+</p>
+            <small>HIGH FLOW</small>
+            <p>대유량 공정에 최적화된 고효율 모델</p>
+            <a href={productsUrl}
+              >제품 자세히 보기 <span aria-hidden="true">→</span></a
+            >
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
 
-    <template if:true={isCatalogModalOpen}>
-        <section class="modal-backdrop" role="presentation" onclick={handleBackdropClick} onkeydown={handleModalKeydown}>
-            <div class="catalog-modal" role="dialog" aria-modal="true" aria-label="카탈로그 문의">
-                <button class="modal-close" type="button" aria-label="닫기" onclick={closeCatalogModal}>×</button>
-                <template if:false={isCatalogSubmitted}>
-                    <header class="modal-heading"><p>PRODUCT CATALOG</p><h2>카탈로그 문의</h2><span>관심 제품과 연락처를 남겨 주시면 제품 카탈로그를 안내해 드립니다.</span></header>
-                    <form onsubmit={submitCatalogInquiry} novalidate>
-                        <div class="form-grid">
-                            <label><span>회사명 <em>필수</em></span><input class="first-field" name="company" type="text" autocomplete="organization" required /></label>
-                            <label><span>담당자명 <em>필수</em></span><input name="name" type="text" autocomplete="name" required /></label>
-                            <label><span>이메일 <em>필수</em></span><input name="email" type="email" autocomplete="email" required /></label>
-                            <label><span>연락처 <em>필수</em></span><input name="phone" type="tel" autocomplete="tel" pattern="[0-9+() -]{8,20}" required /></label>
-                            <label class="full"><span>관심 제품 <em>필수</em></span><select name="product" required><option value="">제품을 선택해 주세요</option><template for:each={equipmentProducts} for:item="product"><option key={product.name} value={product.name}>{product.name}</option></template><option>전체 제품</option></select></label>
-                            <label class="full">문의 내용<textarea name="message" rows="3" placeholder="적용 공정이나 필요한 사양을 입력해 주세요."></textarea></label>
-                        </div>
-                        <label class="consent"><input name="consent" type="checkbox" required /><span>카탈로그 제공을 위한 개인정보 수집 및 이용에 동의합니다. <em>필수</em></span></label>
-                        <template if:true={catalogError}><p class="catalog-error" role="alert">{catalogError}</p></template>
-                        <div class="modal-actions"><button class="cancel" type="button" onclick={closeCatalogModal} disabled={isSubmittingCatalog}>취소</button><button class="submit" type="submit" disabled={isSubmittingCatalog}>문의 후 다운로드 <span aria-hidden="true">→</span></button></div>
-                    </form>
-                </template>
-                <template if:true={isCatalogSubmitted}>
-                    <div class="success-state"><span class="success-mark">✓</span><p>REQUEST COMPLETE</p><h2>문의가 접수되었습니다</h2><div>아래 버튼을 눌러 제품 카탈로그를 내려받을 수 있습니다.</div><template if:true={hasCatalogUrl}><a class="download" href={resolvedCatalogUrl} target="_blank" rel="noopener" download>카탈로그 다운로드 <span aria-hidden="true">↓</span></a></template><button class="close-complete" type="button" onclick={closeCatalogModal}>닫기</button></div>
-                </template>
+  <template if:true={isCatalogModalOpen}>
+    <section
+      class="modal-backdrop"
+      role="presentation"
+      onclick={handleBackdropClick}
+      onkeydown={handleModalKeydown}
+    >
+      <div
+        class="catalog-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label="카탈로그 문의"
+      >
+        <button
+          class="modal-close"
+          type="button"
+          aria-label="닫기"
+          onclick={closeCatalogModal}
+        >
+          ×
+        </button>
+        <template if:false={isCatalogSubmitted}>
+          <header class="modal-heading">
+            <p>PRODUCT CATALOG</p>
+            <h2>카탈로그 문의</h2>
+            <span
+              >관심 제품과 연락처를 남겨 주시면 제품 카탈로그를 안내해
+              드립니다.</span
+            >
+          </header>
+          <form onsubmit={submitCatalogInquiry} novalidate>
+            <div class="form-grid">
+              <label
+                ><span>회사명 <em>필수</em></span
+                ><input
+                  class="first-field"
+                  name="company"
+                  type="text"
+                  autocomplete="organization"
+                  required
+              /></label>
+              <label
+                ><span>담당자명 <em>필수</em></span
+                ><input name="name" type="text" autocomplete="name" required
+              /></label>
+              <label
+                ><span>이메일 <em>필수</em></span
+                ><input name="email" type="email" autocomplete="email" required
+              /></label>
+              <label
+                ><span>연락처 <em>필수</em></span
+                ><input
+                  name="phone"
+                  type="tel"
+                  autocomplete="tel"
+                  pattern="[0-9+() -]{8,20}"
+                  required
+              /></label>
+              <label class="full"
+                ><span>관심 제품 <em>필수</em></span
+                ><select name="product" required>
+                  <option value="">제품을 선택해 주세요</option>
+                  <template for:each={equipmentProducts} for:item="product"
+                    ><option key={product.name} value={product.name}>
+                      {product.name}
+                    </option></template
+                  >
+                  <option>전체 제품</option>
+                </select></label
+              >
+              <label class="full"
+                >문의 내용<textarea
+                  name="message"
+                  rows="3"
+                  placeholder="적용 공정이나 필요한 사양을 입력해 주세요."
+                ></textarea>
+              </label>
             </div>
-        </section>
-    </template>
+            <label class="consent"
+              ><input name="consent" type="checkbox" required /><span
+                >카탈로그 제공을 위한 개인정보 수집 및 이용에 동의합니다.
+                <em>필수</em></span
+              ></label
+            >
+            <label class="consent"
+              ><input name="marketingConsent" type="checkbox" /><span
+                >제품·서비스 안내를 위한 마케팅 정보 수신 및 활용에 동의합니다.
+                <em>선택</em></span
+              ></label
+            >
+            <template if:true={catalogError}
+              ><p class="catalog-error" role="alert">
+                {catalogError}
+              </p></template
+            >
+            <div class="modal-actions">
+              <button
+                class="cancel"
+                type="button"
+                onclick={closeCatalogModal}
+                disabled={isSubmittingCatalog}
+              >
+                취소</button
+              ><button
+                class="submit"
+                type="submit"
+                disabled={isSubmittingCatalog}
+              >
+                문의 후 다운로드 <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+        </template>
+        <template if:true={isCatalogSubmitted}>
+          <div class="success-state">
+            <span class="success-mark">✓</span>
+            <p>REQUEST COMPLETE</p>
+            <h2>문의가 접수되었습니다</h2>
+            <div>아래 버튼을 눌러 제품 카탈로그를 내려받을 수 있습니다.</div>
+            <template if:true={hasCatalogUrl}
+              ><a
+                class="download"
+                href={resolvedCatalogUrl}
+                target="_blank"
+                rel="noopener"
+                download
+                >카탈로그 다운로드 <span aria-hidden="true">↓</span></a
+              ></template
+            ><button
+              class="close-complete"
+              type="button"
+              onclick={closeCatalogModal}
+            >
+              닫기
+            </button>
+          </div>
+        </template>
+      </div>
+    </section>
+  </template>
 </template>

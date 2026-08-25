@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Contact__c</fullName><deleteConstraint>SetNull</deleteConstraint><description
+  >Identifies the customer contact who performed the event.</description><inlineHelpText
+  >Populated for customer actions such as proposal download and shortlist selection.</inlineHelpText><label
+  >실행 담당자</label><referenceTo>Contact</referenceTo><relationshipLabel
+  >RFP 활동</relationshipLabel><relationshipName
+  >RFP_Activities</relationshipName><required>false</required><type
+  >Lookup</type></CustomField>

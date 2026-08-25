@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Introduction_Type__c</fullName><description
+  >Classifies the RFP as a new installation or equipment replacement.</description><inlineHelpText
+  >Select 신규 도입 for the catalog-driven scenario.</inlineHelpText><label
+  >도입 유형</label><length>40</length><required>false</required><type
+  >Text</type></CustomField>

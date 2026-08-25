@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Marketing_Consent_Source__c</fullName><description
+  >Identifies the channel where optional marketing consent was captured.</description><inlineHelpText
+  >Enter the consent channel, such as 공개 랜딩.</inlineHelpText><label
+  >마케팅 동의 경로</label><length>80</length><required>false</required><type
+  >Text</type></CustomField>

@@ -20,12 +20,33 @@ _Avoid_: 실데이터 라벨, 로그인 정보 표시
 포털의 데이터 조회 범위는 항상 로그인 사용자의 Contact → 그 Contact가 속한 Account 기준이다.
 _Avoid_: 고객, 계정 (Account/User 구분이 흐려짐)
 
-**김재혁 / 김설비**:
+**김도입 / 김설비**:
 대한케미컬(고객사) 소속 두 페르소나. 시나리오상 등장 시점이 다르므로 별개 포털 로그인 유저다.
-- **김재혁**(설비관리팀 차장, `kim.jaehyuk@daehan-corepress-poc.com`): 시나리오 1(카탈로그 요청·신규 설비 도입) 담당. RFP/RFQ 제출, 견적 조회를 시연한다.
+
+- **김도입**(기존 이름 김재혁, 설비관리팀 차장): 시나리오 1(카탈로그 요청·신규 설비 도입) 담당. 고객 포털에서 RFP를 제출하고 제안서를 검토한 뒤 숏리스트를 선정한다.
 - **김설비**(설비관리팀 팀장, `kim.seolbi@daehan-corepress-poc.com`): 시나리오 2·3(정례 서비스, 노후 설비 교체) 담당. 서비스 요청 등록, 진단 견적 승인, 교체 요청을 시연한다.
-둘 다 Customer Community Plus Login 라이선스 포털 유저이며 같은 4개 permission set(포털 접근, 오포튜니티 포털, 서비스 상세, 견적 포털)을 부여받는다. 비밀번호는 데모 편의상 동일(`CorePress2026!`).
-_Avoid_: 하나의 페르소나로 두 시나리오 시연 (스토리 훼손)
+  둘 다 Customer Community Plus Login 라이선스 포털 유저이며 같은 4개 permission set(포털 접근, 오포튜니티 포털, 서비스 상세, 견적 포털)을 부여받는다. 비밀번호는 데모 편의상 동일(`CorePress2026!`).
+  _Avoid_: 하나의 페르소나로 두 시나리오 시연 (스토리 훼손)
+
+**숏리스트 선정**:
+고객사 담당자가 고객 포털에서 제안서를 검토한 뒤 선택 의사를 확정하는 행위. 선택 결과는 CorePress 내부 영업사원 소유 Lead에 반영되며 신규 도입 Opportunity 전환을 시작한다.
+_Avoid_: RFQ 제출, 내부 영업사원의 승인
+
+**신규 설비 도입**:
+카탈로그 문의에서 시작해 RFP와 숏리스트 선정을 거쳐 새로운 설비를 구매하는 영업 흐름. 기존 설비 교체와 별개의 Opportunity 프로세스이며, 시나리오에서 새로 생성되는 영업기회는 반드시 이 흐름에 속한다.
+_Avoid_: 노후화 설비 교체, 기존 Business
+
+**시나리오 우선 원칙**:
+CorePress 데모에서 합의된 고객 여정과 상태 전이가 기존 샘플 데이터나 과거 구현보다 우선하는 기준이다. 기존 영업 데이터는 보존하고, 새로 생성되는 데이터와 코드의 동작을 시나리오에 맞춘다.
+_Avoid_: 기존 데이터에 맞추기 위해 시나리오를 변경
+
+**RFP 요청**:
+고객사 담당자가 관심 장비에 관해 제출한 제안 요청으로, 카탈로그 문의 Lead와 연결되고 숏리스트 선정 후 신규 설비 도입 Opportunity에도 연결된다. Lead에는 영업 진행용 요약을, RFP 요청에는 상세 내용·파일·활동 이력을 보존한다.
+_Avoid_: Lead 설명란만으로 관리, RFQ
+
+**RFP 활동 이벤트**:
+RFP 접수, 제안서 다운로드, 숏리스트 선정처럼 고객에게 공개할 수 있는 실제 진행 사건의 기록. 내부 영업 활동이나 비공개 Task와 구분한다.
+_Avoid_: 화면 전시용 가짜 타임라인, 내부 활동 전체 공개
 
 **김영업(SALES_OWNER)**:
 포털에서 접수된 Lead와 Opportunity의 소유자로 지정되는 CorePress 내부 영업사원 유저(`saleskim@corepress.demo`). 두 컨트롤러(`CpCatalogLeadController`, `CpSalesPipelineController`)의 `SALES_OWNER_USERNAME` 상수로 참조되며, 이 유저가 없거나 비활성이면 소유권 재할당은 조용히 스킵된다. 프로필은 Minimum Access - Salesforce라 Lead/Opportunity 접근은 별도 permission set `CorePress_Sales_Owner`로 부여된다.

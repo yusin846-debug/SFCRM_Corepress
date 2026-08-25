@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Opportunity__c</fullName><deleteConstraint
+  >SetNull</deleteConstraint><description
+  >Links the event to the converted Opportunity when available.</description><inlineHelpText
+  >Populated automatically after shortlist selection.</inlineHelpText><label
+  >연결 Opportunity</label><referenceTo
+  >Opportunity</referenceTo><relationshipLabel
+  >RFP 이벤트</relationshipLabel><relationshipName
+  >RFP_Events</relationshipName><required>false</required><type
+  >Lookup</type></CustomField>

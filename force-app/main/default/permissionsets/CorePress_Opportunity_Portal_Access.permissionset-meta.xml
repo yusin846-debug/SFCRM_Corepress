@@ -1,10 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>CorePress Opportunity Portal Access</label>
-    <description>RFP/RFQ 포털 제출 시 로그인 고객 Account에 Opportunity를 생성·조회하고, 제안서 파일과 Lead 파이프라인 동기화 Apex를 실행할 수 있도록 부여하는 권한</description>
-    <classAccesses><apexClass>CpSalesPipelineController</apexClass><enabled>true</enabled></classAccesses>
-    <objectPermissions><allowCreate>true</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Opportunity</object><viewAllRecords>false</viewAllRecords></objectPermissions>
-    <objectPermissions><allowCreate>false</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>ContentDocumentLink</object><viewAllRecords>false</viewAllRecords></objectPermissions>
-    <fieldPermissions><editable>true</editable><field>Opportunity.Type</field><readable>true</readable></fieldPermissions>
-    <fieldPermissions><editable>true</editable><field>Opportunity.Description</field><readable>true</readable></fieldPermissions>
+    <description
+  >RFP/RFQ 포털 제출 시 로그인 고객 Account에 Opportunity를 생성·조회하고, 제안서 파일과 Lead 파이프라인 동기화 Apex를 실행할 수 있도록 부여하는 권한</description>
+    <classAccesses><apexClass>CpSalesPipelineController</apexClass><enabled
+    >true</enabled></classAccesses>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete
+    >false</allowDelete><allowEdit>false</allowEdit><allowRead
+    >true</allowRead><modifyAllRecords>false</modifyAllRecords><object
+    >Opportunity</object><viewAllRecords
+    >false</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>false</allowCreate><allowDelete
+    >false</allowDelete><allowEdit>false</allowEdit><allowRead
+    >true</allowRead><modifyAllRecords>false</modifyAllRecords><object
+    >ContentDocumentLink</object><viewAllRecords
+    >false</viewAllRecords></objectPermissions>
+    <fieldPermissions><editable>true</editable><field
+    >Opportunity.Type</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field
+    >Opportunity.Description</field><readable>true</readable></fieldPermissions>
+    <recordTypeVisibilities><recordType
+    >Opportunity.New_Installation</recordType><visible
+    >true</visible></recordTypeVisibilities>
 </PermissionSet>

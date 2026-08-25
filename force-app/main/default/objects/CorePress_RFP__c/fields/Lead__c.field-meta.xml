@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Lead__c</fullName><deleteConstraint>SetNull</deleteConstraint><description
+  >Links the RFP to the catalog inquiry Lead that enters the sales process.</description><inlineHelpText
+  >Select the matching unconverted catalog inquiry Lead.</inlineHelpText><label
+  >연결 Lead</label><referenceTo>Lead</referenceTo><relationshipLabel
+  >CorePress RFP</relationshipLabel><relationshipName
+  >CorePress_RFPs</relationshipName><required>false</required><type
+  >Lookup</type></CustomField>

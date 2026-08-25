@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Requested_Delivery_Date__c</fullName><description
+  >Stores the delivery date requested in the RFP.</description><inlineHelpText
+  >Enter the customer's preferred equipment delivery date.</inlineHelpText><label
+  >희망 납기일</label><required>false</required><type>Date</type></CustomField>

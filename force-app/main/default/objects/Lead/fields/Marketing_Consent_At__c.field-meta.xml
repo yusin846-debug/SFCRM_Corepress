@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata"><fullName
+  >Marketing_Consent_At__c</fullName><description
+  >Records when the requester granted optional marketing consent.</description><inlineHelpText
+  >Leave blank when marketing consent was not granted.</inlineHelpText><label
+  >마케팅 동의 일시</label><required>false</required><type
+  >DateTime</type></CustomField>
