@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "서비스",
+  "contentBody" : {
+    "activeViewId" : "services",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-services",
+    "urlPrefix" : "service-overview"
+  },
+  "urlName" : "services"
+}

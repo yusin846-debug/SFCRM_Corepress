@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>CorePress About Company</masterLabel>
+    <description>CorePress 회사소개 페이지</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="homeUrl" type="String" default="/corepress" label="랜딩 URL" />
+            <property name="productsUrl" type="String" default="products" label="제품 URL" />
+            <property name="servicesUrl" type="String" default="service-overview" label="서비스 URL" />
+            <property name="noticesUrl" type="String" default="notices" label="공지 URL" />
+            <property name="inquiryUrl" type="String" default="/corepress" label="문의 랜딩 URL" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

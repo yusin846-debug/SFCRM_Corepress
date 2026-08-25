@@ -18,6 +18,9 @@ export default class CpPortalLanding extends LightningElement {
         '설치부터 보증, 현장 서비스까지\n압축기의 전체 수명주기를 한곳에서 관리합니다.';
     @api loginUrl = 'login';
     @api productsUrl = 'products';
+    @api servicesUrl = 'service-overview';
+    @api noticesUrl = 'notices';
+    @api aboutUrl = 'about-us';
     @api catalogUrl;
 
     coverImageUrl = coverImage;

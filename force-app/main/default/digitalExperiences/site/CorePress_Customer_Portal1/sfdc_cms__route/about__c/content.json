@@ -1,0 +1,12 @@
+{
+  "type" : "sfdc_cms__route",
+  "title" : "회사소개",
+  "contentBody" : {
+    "activeViewId" : "about",
+    "configurationTags" : [ ],
+    "pageAccess" : "UseParent",
+    "routeType" : "custom-about",
+    "urlPrefix" : "about-us"
+  },
+  "urlName" : "about"
+}
