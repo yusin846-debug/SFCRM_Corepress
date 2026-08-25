@@ -8,7 +8,7 @@ public without sharing class CpCatalogLeadController {
     private static final String LEAD_SOURCE = '카탈로그 문의';
     private static final String DEFAULT_LAST_NAME = '미입력';
     private static final String DEFAULT_PRODUCT_INTEREST = '압축기';
-    private static final String SALES_OWNER_USERNAME = 'test.teamlead.backup@corepress.demo';
+    private static final String SALES_OWNER_USERNAME = 'saleskim@corepress.demo';
     // Product_Interest__c is a restricted picklist keyed to Product2.Family, not to
     // individual model names, so only these exact values may be written to it.
     private static final Set<String> VALID_PRODUCT_INTERESTS = new Set<String>{ '압축기', '드라이어', '필터·부품', '서비스' };

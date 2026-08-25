@@ -38,8 +38,8 @@ private class CpCatalogLeadControllerTest {
     }
 
     @IsTest
-    static void shouldAssignSalesOwner_WhenBackupUserExists() {
-        List<User> owners = [SELECT Id FROM User WHERE Username = 'test.teamlead.backup@corepress.demo' AND IsActive = true LIMIT 1];
+    static void shouldAssignSalesOwner_WhenSalesUserExists() {
+        List<User> owners = [SELECT Id FROM User WHERE Username = 'saleskim@corepress.demo' AND IsActive = true LIMIT 1];
         if (owners.isEmpty()) {
             return; // Org-specific demo user not present in this environment; nothing to assert.
         }
@@ -51,7 +51,7 @@ private class CpCatalogLeadControllerTest {
         Test.stopTest();
 
         Lead lead = [SELECT OwnerId FROM Lead WHERE Id = :leadId];
-        Assert.areEqual(owners[0].Id, lead.OwnerId, 'New Lead should be owned by the sales team lead backup account');
+        Assert.areEqual(owners[0].Id, lead.OwnerId, 'New Lead should be owned by the 김영업 sales rep');
     }
 
     @IsTest

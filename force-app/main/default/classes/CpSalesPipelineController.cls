@@ -14,7 +14,7 @@ public without sharing class CpSalesPipelineController {
     private static final String RFQ_OPPORTUNITY_STAGE = 'Proposal/Quote';
     private static final String LEAD_SOURCE_PORTAL = '포털 RFP';
     private static final String DEFAULT_LAST_NAME = '미입력';
-    private static final String SALES_OWNER_USERNAME = 'test.teamlead.backup@corepress.demo';
+    private static final String SALES_OWNER_USERNAME = 'saleskim@corepress.demo';
 
     /**
      * Advances (or creates) the customer's Lead to `RFP접수`. No Opportunity
