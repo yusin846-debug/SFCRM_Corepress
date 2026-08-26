@@ -67,7 +67,7 @@ export default class CpRfpPortal extends LightningElement {
   rfpRecords = [];
   timeline = [];
   isSelectingShortlist = false;
-  proposalUrl = cp7100Proposal;
+  proposalFallbackUrl = cp7100Proposal;
   selectedRfpId = "";
   selectedRfqId = "";
 
@@ -284,8 +284,37 @@ export default class CpRfpPortal extends LightningElement {
       this.rfpRequests[0]
     );
   }
+  get proposalUrl() {
+    const cdlId = this.selectedRfp?.proposalContentDocumentId;
+    return cdlId
+      ? `/sfc/servlet.shepherd/document/download/${cdlId}`
+      : this.proposalFallbackUrl;
+  }
+  get proposalReady() {
+    return Boolean(this.selectedRfp?.hasProposal);
+  }
+  get timelineDisplay() {
+    const events = [...this.timeline];
+    const hasSubmitEvent = events.some((e) => e.eventType === "제안서 제출");
+    if (this.selectedRfp?.hasProposal && !hasSubmitEvent) {
+      const cdlId = this.selectedRfp.proposalContentDocumentId;
+      const title = this.selectedRfp.proposalTitle;
+      const uploadedAt =
+        this.selectedRfp.proposalUploadedAt || this.selectedRfp.submittedAt;
+      events.push({
+        eventType: "제안서 제출",
+        detail: cdlId
+          ? `${title || "제안서 파일"} 첨부 완료 — 다운로드 가능`
+          : "CorePress 영업담당자가 제안서를 등록했습니다.",
+        occurredAt: uploadedAt,
+        displayDate: this.formatDateTime(uploadedAt)
+      });
+      events.sort((a, b) => new Date(a.occurredAt) - new Date(b.occurredAt));
+    }
+    return events;
+  }
   get hasTimeline() {
-    return this.timeline.length > 0;
+    return this.timelineDisplay.length > 0;
   }
   get leadOptions() {
     return this.leads;

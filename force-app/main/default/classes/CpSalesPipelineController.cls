@@ -292,7 +292,16 @@ public without sharing class CpSalesPipelineController {
         Interested_Equipment__c,
         Status__c,
         Submitted_At__c,
-        Proposal_Key__c
+        Proposal_Key__c,
+        (
+          SELECT
+            ContentDocumentId,
+            ContentDocument.Title,
+            ContentDocument.LatestPublishedVersionId
+          FROM ContentDocumentLinks
+          ORDER BY SystemModstamp DESC
+          LIMIT 1
+        )
       FROM CorePress_RFP__c
       WHERE Account__c = :accountId
       ORDER BY Submitted_At__c DESC
@@ -588,6 +597,12 @@ public without sharing class CpSalesPipelineController {
     public Boolean shortlistComplete;
     @AuraEnabled
     public Boolean hasProposal;
+    @AuraEnabled
+    public Id proposalContentDocumentId;
+    @AuraEnabled
+    public String proposalTitle;
+    @AuraEnabled
+    public Datetime proposalUploadedAt;
     public RfpSummary(CorePress_RFP__c rfp) {
       id = rfp.Id;
       numberValue = rfp.Name;
@@ -598,7 +613,14 @@ public without sharing class CpSalesPipelineController {
       status = rfp.Status__c;
       submittedAt = rfp.Submitted_At__c;
       shortlistComplete = rfp.Opportunity__c != null;
-      hasProposal = rfp.Proposal_Key__c == PROPOSAL_KEY;
+      Boolean hasSeededProposal = rfp.Proposal_Key__c == PROPOSAL_KEY;
+      Boolean hasAttachedFile = !rfp.ContentDocumentLinks.isEmpty();
+      hasProposal = hasSeededProposal || hasAttachedFile;
+      if (hasAttachedFile) {
+        proposalContentDocumentId = rfp.ContentDocumentLinks[0]
+          .ContentDocumentId;
+        proposalTitle = rfp.ContentDocumentLinks[0].ContentDocument.Title;
+      }
     }
   }
   /** Portal-safe timeline row. */

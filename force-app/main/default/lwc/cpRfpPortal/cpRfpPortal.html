@@ -372,12 +372,18 @@
                 {selectedRfp.equipment}</span
               >
               <div class="proposal-actions">
-                <button
-                  type="button"
-                  class="secondary"
-                  onclick={downloadProposal}
-                >
-                  제안서 다운로드 ↓</button
+                <template if:true={proposalReady}
+                  ><button
+                    type="button"
+                    class="secondary"
+                    onclick={downloadProposal}
+                  >
+                    제안서 다운로드 ↓
+                  </button></template
+                ><template if:false={proposalReady}
+                  ><button type="button" class="secondary" disabled>
+                    제안서 준비 중
+                  </button></template
                 ><button
                   type="button"
                   onclick={handleShortlist}
@@ -388,7 +394,7 @@
               </div>
               <div class="timeline">
                 <h3>진행 이력</h3>
-                <template for:each={timeline} for:item="entry"
+                <template for:each={timelineDisplay} for:item="entry"
                   ><div key={entry.occurredAt} class="timeline-row">
                     <span></span>
                     <div>
