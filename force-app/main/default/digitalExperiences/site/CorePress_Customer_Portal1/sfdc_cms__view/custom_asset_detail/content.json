@@ -1,71 +1,96 @@
 {
-  "type" : "sfdc_cms__view",
-  "title" : "보유 설비 상세",
-  "contentBody" : {
-    "component" : {
-      "children" : [ {
-        "children" : [ {
-          "attributes" : {
-            "backgroundImageConfig" : "",
-            "backgroundImageOverlay" : "rgba(0,0,0,0)",
-            "componentSpacerSize" : "",
-            "dxpStyle" : { },
-            "layoutDirectionDesktop" : "row",
-            "layoutDirectionMobile" : "column",
-            "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
-            "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"72b8d601-1afe-4b46-961e-a807e26d5ce4\",\"columns\":[{\"UUID\":\"bd6bcee5-40f4-453a-b96b-7ccb807d2325\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
-            "sectionMinHeight" : "",
-            "sectionVerticalAlign" : "flex-start"
-          },
-          "children" : [ {
-            "children" : [ {
-              "attributes" : {
-                "dxpStyle" : { }
+  "type": "sfdc_cms__view",
+  "title": "보유 설비 상세",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "dxpStyle": {},
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"72b8d601-1afe-4b46-961e-a807e26d5ce4\",\"columns\":[{\"UUID\":\"bd6bcee5-40f4-453a-b96b-7ccb807d2325\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
               },
-              "definition" : "c:cpAssetDetail",
-              "id" : "2e7d6503-1145-417c-b60c-d3bd5220257e",
-              "type" : "component"
-            } ],
-            "id" : "bd6bcee5-40f4-453a-b96b-7ccb807d2325",
-            "name" : "col1",
-            "title" : "Column 1",
-            "type" : "region"
-          } ],
-          "definition" : "community_layout:section",
-          "id" : "72b8d601-1afe-4b46-961e-a807e26d5ce4",
-          "type" : "component"
-        } ],
-        "id" : "28e1c580-2b16-4500-b911-0885ab3447e3",
-        "name" : "content",
-        "title" : "Content",
-        "type" : "region"
-      }, {
-        "children" : [ {
-          "attributes" : {
-            "customHeadTags" : "",
-            "description" : "",
-            "dxpStyle" : { },
-            "pageTitle" : "보유 설비 상세",
-            "recordId" : "{!recordId}"
-          },
-          "definition" : "community_builder:seoAssistant",
-          "id" : "d3700ef2-7ffe-4da9-a332-79c8ec9af5b6",
-          "type" : "component"
-        } ],
-        "id" : "3e5b8058-4db7-40c5-a750-9fb8647ffec1",
-        "name" : "sfdcHiddenRegion",
-        "title" : "sfdcHiddenRegion",
-        "type" : "region"
-      } ],
-      "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "2afacb83-a0c6-4037-a999-33d029f1c418",
-      "type" : "component"
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": {
+                        "dxpStyle": {}
+                      },
+                      "definition": "c:cpAssetDetail",
+                      "id": "2e7d6503-1145-417c-b60c-d3bd5220257e",
+                      "type": "component"
+                    },
+                    {
+                      "attributes": {
+                        "clientVersion": "WebV2",
+                        "deploymentName": "CorePress_Agent_Web",
+                        "dxpStyle": {},
+                        "hideChatButtonOnLoad": "Default",
+                        "isExpSiteAuthMode": false,
+                        "scrtUrl": "https://trailsignup-783b48e7f9b1eb.my.salesforce-scrt.com",
+                        "siteEndpoint": "https://trailsignup-783b48e7f9b1eb.my.site.com/ESWCorePressAgentWeb1787644157621"
+                      },
+                      "definition": "experience_messaging:embeddedMessaging",
+                      "id": "f1ce1931-d471-473e-8dd3-5cd4257ac231",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "bd6bcee5-40f4-453a-b96b-7ccb807d2325",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "72b8d601-1afe-4b46-961e-a807e26d5ce4",
+              "type": "component"
+            }
+          ],
+          "id": "28e1c580-2b16-4500-b911-0885ab3447e3",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "dxpStyle": {},
+                "pageTitle": "보유 설비 상세",
+                "recordId": "{!recordId}"
+              },
+              "definition": "community_builder:seoAssistant",
+              "id": "d3700ef2-7ffe-4da9-a332-79c8ec9af5b6",
+              "type": "component"
+            }
+          ],
+          "id": "3e5b8058-4db7-40c5-a750-9fb8647ffec1",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "2afacb83-a0c6-4037-a999-33d029f1c418",
+      "type": "component"
     },
-    "dataProviders" : [ ],
-    "themeLayoutType" : "Inner",
-    "viewType" : "custom-asset-detail"
+    "dataProviders": [],
+    "themeLayoutType": "Inner",
+    "viewType": "custom-asset-detail"
   },
-  "urlName" : "보유-설비-상세"
+  "urlName": "보유-설비-상세"
 }

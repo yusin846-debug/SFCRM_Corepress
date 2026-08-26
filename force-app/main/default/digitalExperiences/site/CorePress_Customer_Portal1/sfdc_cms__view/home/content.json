@@ -1,85 +1,99 @@
 {
-  "type" : "sfdc_cms__view",
-  "title" : "Home",
-  "contentBody" : {
-    "component" : {
-      "children" : [ {
-        "children" : [ {
-          "attributes" : {
-            "backgroundImageConfig" : "",
-            "backgroundImageOverlay" : "rgba(0,0,0,0)",
-            "componentSpacerSize" : "",
-            "dxpStyle" : { },
-            "layoutDirectionDesktop" : "row",
-            "layoutDirectionMobile" : "column",
-            "layoutDirectionTablet" : "column",
-            "maxContentWidth" : "",
-            "sectionColumnGutterWidth" : "",
-            "sectionConfig" : "{\"UUID\":\"d7507f6f-b664-42a4-ae15-333323adc919\",\"columns\":[{\"UUID\":\"dcedc46e-9547-427e-b143-b20417132eb0\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
-            "sectionMinHeight" : "",
-            "sectionVerticalAlign" : "flex-start"
-          },
-          "children" : [ {
-            "children" : [ {
-              "attributes" : {
-                "dxpStyle" : { },
-                "heroDescription" : "현장 조건에 최적화된 맞춤 설계·제작·설치부터, 설비 전 수명주기를 책임지는 디지털 통합 관리까지 — CorePress.",
-                "heroTitle" : "첨단공정을 숨 쉬게 하는  Oil-free 압축장비",
-                "loginUrl" : "login"
+  "type": "sfdc_cms__view",
+  "title": "Home",
+  "contentBody": {
+    "component": {
+      "children": [
+        {
+          "children": [
+            {
+              "attributes": {
+                "backgroundImageConfig": "",
+                "backgroundImageOverlay": "rgba(0,0,0,0)",
+                "componentSpacerSize": "",
+                "dxpStyle": {},
+                "layoutDirectionDesktop": "row",
+                "layoutDirectionMobile": "column",
+                "layoutDirectionTablet": "column",
+                "maxContentWidth": "",
+                "sectionColumnGutterWidth": "",
+                "sectionConfig": "{\"UUID\":\"d7507f6f-b664-42a4-ae15-333323adc919\",\"columns\":[{\"UUID\":\"dcedc46e-9547-427e-b143-b20417132eb0\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+                "sectionMinHeight": "",
+                "sectionVerticalAlign": "flex-start"
               },
-              "definition" : "c:cpPortalLanding",
-              "id" : "6a0360a4-5375-41aa-bcba-6eda61cfe44a",
-              "type" : "component"
-            }, {
-              "attributes" : {
-                "clientVersion" : "WebV1",
-                "dxpStyle" : { },
-                "hideChatButtonOnLoad" : "Default",
-                "isExpSiteAuthMode" : false,
-                "scrtUrl" : "https://trailsignup-783b48e7f9b1eb.my.salesforce-scrt.com"
+              "children": [
+                {
+                  "children": [
+                    {
+                      "attributes": {
+                        "dxpStyle": {},
+                        "heroDescription": "현장 조건에 최적화된 맞춤 설계·제작·설치부터, 설비 전 수명주기를 책임지는 디지털 통합 관리까지 — CorePress.",
+                        "heroTitle": "첨단공정을 숨 쉬게 하는  Oil-free 압축장비",
+                        "loginUrl": "/corepress/login"
+                      },
+                      "definition": "c:cpPortalLanding",
+                      "id": "6a0360a4-5375-41aa-bcba-6eda61cfe44a",
+                      "type": "component"
+                    },
+                    {
+                      "attributes": {
+                        "clientVersion": "WebV2",
+                        "deploymentName": "CorePress_Agent_Web",
+                        "dxpStyle": {},
+                        "hideChatButtonOnLoad": "Default",
+                        "isExpSiteAuthMode": false,
+                        "scrtUrl": "https://trailsignup-783b48e7f9b1eb.my.salesforce-scrt.com",
+                        "siteEndpoint": "https://trailsignup-783b48e7f9b1eb.my.site.com/ESWCorePressAgentWeb1787644157621"
+                      },
+                      "definition": "experience_messaging:embeddedMessaging",
+                      "id": "84a36f9f-e9c5-4ad6-b4a9-206116cf6ffa",
+                      "type": "component"
+                    }
+                  ],
+                  "id": "dcedc46e-9547-427e-b143-b20417132eb0",
+                  "name": "col1",
+                  "title": "Column 1",
+                  "type": "region"
+                }
+              ],
+              "definition": "community_layout:section",
+              "id": "d7507f6f-b664-42a4-ae15-333323adc919",
+              "type": "component"
+            }
+          ],
+          "id": "bd6e655a-ce44-4044-8c56-96e81d24fe2d",
+          "name": "content",
+          "title": "Content",
+          "type": "region"
+        },
+        {
+          "children": [
+            {
+              "attributes": {
+                "customHeadTags": "",
+                "description": "",
+                "dxpStyle": {},
+                "pageTitle": "Home",
+                "recordId": "{!recordId}"
               },
-              "definition" : "experience_messaging:embeddedMessaging",
-              "id" : "84a36f9f-e9c5-4ad6-b4a9-206116cf6ffa",
-              "type" : "component"
-            } ],
-            "id" : "dcedc46e-9547-427e-b143-b20417132eb0",
-            "name" : "col1",
-            "title" : "Column 1",
-            "type" : "region"
-          } ],
-          "definition" : "community_layout:section",
-          "id" : "d7507f6f-b664-42a4-ae15-333323adc919",
-          "type" : "component"
-        } ],
-        "id" : "bd6e655a-ce44-4044-8c56-96e81d24fe2d",
-        "name" : "content",
-        "title" : "Content",
-        "type" : "region"
-      }, {
-        "children" : [ {
-          "attributes" : {
-            "customHeadTags" : "",
-            "description" : "",
-            "dxpStyle" : { },
-            "pageTitle" : "Home",
-            "recordId" : "{!recordId}"
-          },
-          "definition" : "community_builder:seoAssistant",
-          "id" : "cddf32e1-43a2-4470-b951-0169b7a38cdd",
-          "type" : "component"
-        } ],
-        "id" : "8ea2135c-2b2c-41aa-a234-65ff8ceeb6e1",
-        "name" : "sfdcHiddenRegion",
-        "title" : "sfdcHiddenRegion",
-        "type" : "region"
-      } ],
-      "definition" : "community_layout:sldsFlexibleLayout",
-      "id" : "b1d8dd6a-3b25-4e7e-b7fc-7e4a645e3e2a",
-      "type" : "component"
+              "definition": "community_builder:seoAssistant",
+              "id": "cddf32e1-43a2-4470-b951-0169b7a38cdd",
+              "type": "component"
+            }
+          ],
+          "id": "8ea2135c-2b2c-41aa-a234-65ff8ceeb6e1",
+          "name": "sfdcHiddenRegion",
+          "title": "sfdcHiddenRegion",
+          "type": "region"
+        }
+      ],
+      "definition": "community_layout:sldsFlexibleLayout",
+      "id": "b1d8dd6a-3b25-4e7e-b7fc-7e4a645e3e2a",
+      "type": "component"
     },
-    "dataProviders" : [ ],
-    "themeLayoutType" : "Inner",
-    "viewType" : "home"
+    "dataProviders": [],
+    "themeLayoutType": "Inner",
+    "viewType": "home"
   },
-  "urlName" : "home"
+  "urlName": "home"
 }
