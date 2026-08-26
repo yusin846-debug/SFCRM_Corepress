@@ -3,6 +3,9 @@
 #
 
 **/staticresources/**
+**/aiAuthoringBundles/**
+**/genAiPlannerBundles/**
+**/bots/**
 .localdevserver
 .sfdx
 .sf

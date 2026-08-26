@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<MessagingChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customParameters>
+        <externalParameterName>AssetId</externalParameterName>
+        <masterLabel>Asset ID</masterLabel>
+        <maxLength>18</maxLength>
+        <name>AssetId</name>
+        <parameterDataType>String</parameterDataType>
+    </customParameters>
+    <customParameters>
+        <externalParameterName>AssetName</externalParameterName>
+        <masterLabel>Asset Name</masterLabel>
+        <maxLength>255</maxLength>
+        <name>AssetName</name>
+        <parameterDataType>String</parameterDataType>
+    </customParameters>
+    <customParameters>
+        <externalParameterName>AssetSerialNumber</externalParameterName>
+        <masterLabel>Asset Serial Number</masterLabel>
+        <maxLength>80</maxLength>
+        <name>AssetSerialNumber</name>
+        <parameterDataType>String</parameterDataType>
+    </customParameters>
+    <customParameters>
+        <externalParameterName>AssetProductName</externalParameterName>
+        <masterLabel>Asset Product Name</masterLabel>
+        <maxLength>255</maxLength>
+        <name>AssetProductName</name>
+        <parameterDataType>String</parameterDataType>
+    </customParameters>
+    <customParameters>
+        <externalParameterName>InquirySource</externalParameterName>
+        <masterLabel>Inquiry Source</masterLabel>
+        <maxLength>80</maxLength>
+        <name>InquirySource</name>
+        <parameterDataType>String</parameterDataType>
+    </customParameters>
+    <embeddedConfig>
+        <allowedFileTypes
+    >bmp,csv,doc,docx,gif,jpg,pdf,png,tiff,txt,xls,xml</allowedFileTypes>
+        <anonymousUserJwtExpirationTime>360</anonymousUserJwtExpirationTime>
+        <authMode>UnAuth</authMode>
+        <chatAbandonmentTimeout>5</chatAbandonmentTimeout>
+        <isAbandonedChatsEnabled>false</isAbandonedChatsEnabled>
+        <isAttachmentUploadEnabled>true</isAttachmentUploadEnabled>
+        <isEstimatedWaitTimeEnabled>false</isEstimatedWaitTimeEnabled>
+        <isFallbackMessageEnabled>false</isFallbackMessageEnabled>
+        <isFileAttachmentExtUnrestricted>false</isFileAttachmentExtUnrestricted>
+        <isSaveTranscriptEnabled>true</isSaveTranscriptEnabled>
+        <maxFileSize>5</maxFileSize>
+    </embeddedConfig>
+    <endUserIdleTimeOut>5</endUserIdleTimeOut>
+    <isEstimatedWaitTimeEnabled>false</isEstimatedWaitTimeEnabled>
+    <isQueuePositionEnabled>false</isQueuePositionEnabled>
+    <isSynchronousChatEnabled>false</isSynchronousChatEnabled>
+    <isVoiceModeEnabled>false</isVoiceModeEnabled>
+    <masterLabel>CorePress Web Messaging</masterLabel>
+    <messagingChannelType>EmbeddedMessaging</messagingChannelType>
+    <messagingKeywords>
+        <keyword>cancel</keyword>
+        <keyword>end</keyword>
+        <keyword>quit</keyword>
+        <keyword>stop</keyword>
+        <keyword>stopall</keyword>
+        <keyword>unsubscribe</keyword>
+        <keywordType>OptOut</keywordType>
+        <language>en_US</language>
+    </messagingKeywords>
+    <messagingKeywords>
+        <keyword>help</keyword>
+        <keywordType>Help</keywordType>
+        <language>en_US</language>
+    </messagingKeywords>
+    <sessionHandlerAsa>CorePress_Support_Agent</sessionHandlerAsa>
+    <sessionHandlerQueue>CorePress_Agent_Escalation</sessionHandlerQueue>
+    <sessionHandlerType>AgentforceServiceAgent</sessionHandlerType>
+</MessagingChannel>

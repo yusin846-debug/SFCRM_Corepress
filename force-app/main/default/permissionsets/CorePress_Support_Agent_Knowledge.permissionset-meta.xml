@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description
+  >Grants the CorePress Support Agent Einstein Agent User read access to Knowledge articles and the fields indexed by the Help_Agent_Knowledge data library.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>CorePress Support Agent Knowledge</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>AllowViewKnowledge</name>
+    </userPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead>
+        <allowCreate>false</allowCreate>
+        <allowEdit>false</allowEdit>
+        <allowDelete>false</allowDelete>
+        <viewAllRecords>true</viewAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Knowledge__kav</object>
+    </objectPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.Summary</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Knowledge__kav.AssignmentNote</field>
+        <readable>true</readable>
+    </fieldPermissions>
+</PermissionSet>
