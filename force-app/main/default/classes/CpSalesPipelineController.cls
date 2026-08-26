@@ -198,6 +198,7 @@ public without sharing class CpSalesPipelineController {
       Description = description
     );
     Database.update(opportunity, AccessLevel.SYSTEM_MODE);
+    ensureRfqQuote(opportunity.Id, rfp.Interested_Equipment__c);
     rfp.Status__c = RFQ_STATUS;
     Database.update(rfp, AccessLevel.SYSTEM_MODE);
     insertEvent(
@@ -208,6 +209,70 @@ public without sharing class CpSalesPipelineController {
       'RFQ가 접수되어 견적 검토를 시작했습니다.'
     );
     return opportunity.Id;
+  }
+
+  private static void ensureRfqQuote(Id opportunityId, String equipmentName) {
+    if ([SELECT COUNT() FROM Quote WHERE OpportunityId = :opportunityId] > 0)
+      return;
+    Opportunity opp = [
+      SELECT Id, Name, Pricebook2Id
+      FROM Opportunity
+      WHERE Id = :opportunityId
+      LIMIT 1
+    ];
+    List<Pricebook2> books = [
+      SELECT Id
+      FROM Pricebook2
+      WHERE IsStandard = TRUE
+      LIMIT 1
+    ];
+    if (books.isEmpty())
+      return;
+    Pricebook2 standardBook = books[0];
+    if (opp.Pricebook2Id == null) {
+      opp.Pricebook2Id = standardBook.Id;
+      Database.update(opp, AccessLevel.SYSTEM_MODE);
+    }
+    String model = String.isBlank(equipmentName)
+      ? 'CP7100+'
+      : equipmentName.trim();
+    List<Product2> products = [
+      SELECT Id, Name
+      FROM Product2
+      WHERE Name = :model AND IsActive = TRUE
+      LIMIT 1
+    ];
+    if (products.isEmpty())
+      return;
+    List<PricebookEntry> entries = [
+      SELECT Id, UnitPrice
+      FROM PricebookEntry
+      WHERE
+        Pricebook2Id = :standardBook.Id
+        AND Product2Id = :products[0].Id
+        AND IsActive = TRUE
+      LIMIT 1
+    ];
+    if (entries.isEmpty())
+      return;
+    Quote quote = new Quote(
+      Name = opp.Name + ' 견적서',
+      OpportunityId = opp.Id,
+      Pricebook2Id = standardBook.Id,
+      Status = 'Draft',
+      ExpirationDate = Date.today().addDays(30)
+    );
+    Database.insert(quote, AccessLevel.SYSTEM_MODE);
+    Database.insert(
+      new QuoteLineItem(
+        QuoteId = quote.Id,
+        PricebookEntryId = entries[0].Id,
+        Quantity = 1,
+        UnitPrice = entries[0].UnitPrice,
+        Description = model + ' 신규 도입 패키지'
+      ),
+      AccessLevel.SYSTEM_MODE
+    );
   }
 
   /** @param accountId Customer Account. @return RFP rows. */
@@ -339,7 +404,13 @@ public without sharing class CpSalesPipelineController {
   }
   private static CorePress_RFP__c getRfpForContact(Id rfpId, Id contactId) {
     List<CorePress_RFP__c> requests = [
-      SELECT Id, Account__c, Contact__c, Opportunity__c, Title__c
+      SELECT
+        Id,
+        Account__c,
+        Contact__c,
+        Opportunity__c,
+        Title__c,
+        Interested_Equipment__c
       FROM CorePress_RFP__c
       WHERE Id = :rfpId
       LIMIT 1

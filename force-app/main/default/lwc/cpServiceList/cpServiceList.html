@@ -1,58 +1,123 @@
 <template>
-    <div class="shell">
-        <header class="gnb">
-            <img class="brand" src={logoUrl} alt="CorePress" />
-            <nav aria-label="고객 포털 주요 메뉴">
-                <a href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a><a class="active" href={detailUrl}>서비스 요청</a><a href={rfpUrl}>RFP·RFQ</a><a href={quoteUrl}>견적</a>
-            </nav>
-            <div class="user">대한케미컬<span></span><button class="logout" type="button" onclick={handleLogout}><img src={logoutIconUrl} alt="" />로그아웃</button></div>
-        </header>
+  <div class="shell">
+    <header class="gnb">
+      <img class="brand" src={logoUrl} alt="CorePress" />
+      <nav aria-label="고객 포털 주요 메뉴">
+        <a href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a
+        ><a class="active" href={detailUrl}>서비스 요청</a
+        ><a href={rfpUrl}>RFP·RFQ</a><a href={quoteUrl}>견적</a>
+      </nav>
+      <div class="user">
+        {accountName}<span></span
+        ><button class="logout" type="button" onclick={handleLogout}>
+          <img src={logoutIconUrl} alt="" />로그아웃
+        </button>
+      </div>
+    </header>
 
-        <main>
-            <header class="page-heading">
-                <h1>서비스 요청</h1>
-                <p class="summary"><span>진행 중 {openCount}건</span><span>완료 {doneCount}건</span></p>
-            </header>
+    <main>
+      <header class="page-heading">
+        <h1>서비스 요청</h1>
+        <p class="summary">
+          <span>진행 중 {openCount}건</span><span>완료 {doneCount}건</span>
+        </p>
+      </header>
 
-            <template if:true={showPreviewNotice}><aside class="data-notice preview" role="status"><strong>Builder 미리보기 데이터</strong><span>현재 사용자는 고객 Contact에 연결되어 있지 않아 목록을 표시할 수 없습니다. 실제 고객 로그인 시 해당 고객사의 서비스 요청만 조회됩니다.</span></aside></template>
-            <template if:true={loadError}><aside class="data-notice error" role="alert"><strong>조회 오류</strong><span>{loadError}</span></aside></template>
-            <template if:true={showAssetFilterNotice}><aside class="data-notice" role="status"><strong>설비 필터 적용됨</strong><span>선택한 설비의 서비스 요청만 표시 중입니다.</span><button type="button" onclick={clearAssetFilter}>필터 해제</button></aside></template>
+      <template if:true={showPreviewNotice}
+        ><aside class="data-notice preview" role="status">
+          <strong>Builder 미리보기 데이터</strong
+          ><span
+            >현재 사용자는 고객 Contact에 연결되어 있지 않아 목록을 표시할 수
+            없습니다. 실제 고객 로그인 시 해당 고객사의 서비스 요청만
+            조회됩니다.</span
+          >
+        </aside></template
+      >
+      <template if:true={loadError}
+        ><aside class="data-notice error" role="alert">
+          <strong>조회 오류</strong><span>{loadError}</span>
+        </aside></template
+      >
+      <template if:true={showAssetFilterNotice}
+        ><aside class="data-notice" role="status">
+          <strong>설비 필터 적용됨</strong
+          ><span>선택한 설비의 서비스 요청만 표시 중입니다.</span
+          ><button type="button" onclick={clearAssetFilter}>필터 해제</button>
+        </aside></template
+      >
 
-            <section class="controls" aria-label="서비스 요청 검색 및 필터">
-                <label class="search"><img src={searchIconUrl} alt="검색" /><input type="search" placeholder="접수번호, 제목 또는 설비명 검색" value={searchTerm} oninput={handleSearch} /></label>
-                <div class="filters"><button class={allFilterClass} onclick={showAll}>전체</button><button class={openFilterClass} onclick={showOpen}>진행 중 <b>{openCount}</b></button><button class={doneFilterClass} onclick={showDone}>완료 <b>{doneCount}</b></button></div>
-            </section>
+      <section class="controls" aria-label="서비스 요청 검색 및 필터">
+        <label class="search"
+          ><img src={searchIconUrl} alt="검색" /><input
+            type="search"
+            placeholder="접수번호, 제목 또는 설비명 검색"
+            value={searchTerm}
+            oninput={handleSearch}
+        /></label>
+        <div class="filters">
+          <button class={allFilterClass} onclick={showAll}>전체</button
+          ><button class={openFilterClass} onclick={showOpen}>
+            진행 중 <b>{openCount}</b></button
+          ><button class={doneFilterClass} onclick={showDone}>
+            완료 <b>{doneCount}</b>
+          </button>
+        </div>
+      </section>
 
-            <section class="request-table" aria-label="서비스 요청 목록">
-                <template if:true={hasRequests}>
-                    <table>
-                        <thead>
-                            <tr><th>접수번호</th><th>제목</th><th>설비</th><th>상태</th><th>담당 엔지니어</th><th>방문 예정</th><th>접수일</th></tr>
-                        </thead>
-                        <tbody>
-                            <template for:each={paginatedRequests} for:item="request">
-                                <tr key={request.id}>
-                                    <td><a href={request.detailHref}>{request.number}</a></td>
-                                    <td>{request.subject}</td>
-                                    <td>{request.assetName}</td>
-                                    <td><span class={request.statusClass}>{request.status}</span></td>
-                                    <td>{request.engineer}</td>
-                                    <td>{request.visitDate}</td>
-                                    <td>{request.createdDate}</td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </template>
-                <template if:false={hasRequests}><div class="empty"><h2>조건에 맞는 서비스 요청이 없습니다</h2><p>검색어나 필터를 다시 확인해 주세요.</p></div></template>
-            </section>
+      <section class="request-table" aria-label="서비스 요청 목록">
+        <template if:true={hasRequests}>
+          <table>
+            <thead>
+              <tr>
+                <th>접수번호</th>
+                <th>제목</th>
+                <th>설비</th>
+                <th>상태</th>
+                <th>담당 엔지니어</th>
+                <th>방문 예정</th>
+                <th>접수일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template for:each={paginatedRequests} for:item="request">
+                <tr key={request.id}>
+                  <td><a href={request.detailHref}>{request.number}</a></td>
+                  <td>{request.subject}</td>
+                  <td>{request.assetName}</td>
+                  <td>
+                    <span class={request.statusClass}>{request.status}</span>
+                  </td>
+                  <td>{request.engineer}</td>
+                  <td>{request.visitDate}</td>
+                  <td>{request.createdDate}</td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </template>
+        <template if:false={hasRequests}
+          ><div class="empty">
+            <h2>조건에 맞는 서비스 요청이 없습니다</h2>
+            <p>검색어나 필터를 다시 확인해 주세요.</p>
+          </div></template
+        >
+      </section>
 
-            <footer class="pagination" aria-label="페이지 이동">
-                <label><span class="assistive-text">현재 페이지</span><input type="number" min="1" max={totalPages} value={currentPage} onchange={handlePageChange} onblur={handlePageChange} /></label>
-                <span>/ {totalPages}페이지</span><b>{resultsLabel}</b>
-            </footer>
+      <footer class="pagination" aria-label="페이지 이동">
+        <label
+          ><span class="assistive-text">현재 페이지</span
+          ><input
+            type="number"
+            min="1"
+            max={totalPages}
+            value={currentPage}
+            onchange={handlePageChange}
+            onblur={handlePageChange}
+        /></label>
+        <span>/ {totalPages}페이지</span><b>{resultsLabel}</b>
+      </footer>
 
-            <a class="link" href={serviceUrl}>서비스 요청 등록하기 →</a>
-        </main>
-    </div>
+      <a class="link" href={serviceUrl}>서비스 요청 등록하기 →</a>
+    </main>
+  </div>
 </template>

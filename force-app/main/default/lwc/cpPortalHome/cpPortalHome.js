@@ -4,7 +4,7 @@ import { getRelatedListRecords } from "lightning/uiRelatedListApi";
 import USER_ID from "@salesforce/user/Id";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
-import ACCOUNT_NAME from "@salesforce/schema/Account.Name";
+import CONTACT_ACCOUNT_NAME from "@salesforce/schema/Contact.Account.Name";
 import logo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import registeredIcon from "@salesforce/resourceUrl/CorePressRegisteredIcon";
 import operatingIcon from "@salesforce/resourceUrl/CorePressOperatingIcon";
@@ -23,8 +23,7 @@ const ASSET_FIELDS = [
   "Asset.Id",
   "Asset.Name",
   "Asset.Status",
-  "Asset.Smart_Care_Stage__c",
-  "Asset.Product2.Name",
+  "Asset.Product2.Name"
 ];
 
 const CASE_FIELDS = [
@@ -32,9 +31,7 @@ const CASE_FIELDS = [
   "Case.CaseNumber",
   "Case.Subject",
   "Case.Status",
-  "Case.CreatedDate",
-  "Case.Scheduled_Visit__c",
-  "Case.Asset.Name",
+  "Case.CreatedDate"
 ];
 
 const NEW_STATUSES = ["신규접수", "판정완료"];
@@ -76,7 +73,10 @@ export default class CpPortalHome extends LightningElement {
     return getFieldValue(this.userRecord.data, USER_CONTACT_ID);
   }
 
-  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_ACCOUNT_ID, ACCOUNT_NAME] })
+  @wire(getRecord, {
+    recordId: "$contactId",
+    fields: [CONTACT_ACCOUNT_ID, CONTACT_ACCOUNT_NAME]
+  })
   contactRecord;
 
   get accountId() {
@@ -84,11 +84,13 @@ export default class CpPortalHome extends LightningElement {
   }
 
   get accountName() {
-    return getFieldValue(this.contactRecord.data, ACCOUNT_NAME) || "";
+    return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_NAME) || "";
   }
 
   get pageTitle() {
-    return this.accountName ? `${this.accountName} 설비 운영 현황` : "설비 운영 현황";
+    return this.accountName
+      ? `${this.accountName} 설비 운영 현황`
+      : "설비 운영 현황";
   }
 
   @wire(getRelatedListRecords, {
@@ -96,7 +98,7 @@ export default class CpPortalHome extends LightningElement {
     relatedListId: "Assets",
     fields: ASSET_FIELDS,
     sortBy: ["Asset.Name"],
-    pageSize: 199,
+    pageSize: 199
   })
   wiredAssets({ data }) {
     if (data) {
@@ -109,7 +111,7 @@ export default class CpPortalHome extends LightningElement {
     relatedListId: "Cases",
     fields: CASE_FIELDS,
     sortBy: ["-Case.CreatedDate"],
-    pageSize: 199,
+    pageSize: 199
   })
   wiredCases({ data }) {
     if (data) {
@@ -119,7 +121,7 @@ export default class CpPortalHome extends LightningElement {
 
   mapAsset(record) {
     const status = record.fields.Status?.value || "Registered";
-    const stage = record.fields.Smart_Care_Stage__c?.value || "";
+    const stage = "";
     const isRunning = status === "Installed" || status === "Registered";
     const isObsolete = status === "Obsolete";
     const score = STAGE_SCORE[stage] || (isObsolete ? 55 : isRunning ? 90 : 70);
@@ -138,13 +140,15 @@ export default class CpPortalHome extends LightningElement {
     return {
       id: record.fields.Id?.value || record.id,
       name: record.fields.Name?.value || "설비명 미등록",
-      model: record.fields.Product2?.value?.fields?.Name?.value || "모델 미등록",
+      model:
+        record.fields.Product2?.value?.fields?.Name?.value ||
+        this.modelFromName(record.fields.Name?.value),
       isRunning,
       score,
       label,
       labelClass,
       scoreStyle: `width:${score}%`,
-      barClass: labelClass === "attention" ? "score-bar attention" : "score-bar",
+      barClass: labelClass === "attention" ? "score-bar attention" : "score-bar"
     };
   }
 
@@ -153,13 +157,20 @@ export default class CpPortalHome extends LightningElement {
     return {
       id: record.fields.Id?.value || record.id,
       number: record.fields.CaseNumber?.value || "-",
-      assetName: record.fields.Asset?.value?.fields?.Name?.value || "설비 미지정",
+      assetName: "설비 연결",
       subject: record.fields.Subject?.value || "내용 미등록",
       status,
       badgeClass: this.badgeClass(status),
       createdDate: this.formatDateTime(record.fields.CreatedDate?.value),
-      visitDate: this.formatDateTime(record.fields.Scheduled_Visit__c?.value) || "미정",
+      visitDate: "일정 확인"
     };
+  }
+
+  modelFromName(name) {
+    return (
+      (name || "").match(/(?:CP\d+(?:\s+Pro|\+)?|CD7000)/i)?.[0] ||
+      "모델 미등록"
+    );
   }
 
   badgeClass(status) {
@@ -177,7 +188,7 @@ export default class CpPortalHome extends LightningElement {
       day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false,
+      hour12: false
     })
       .format(new Date(value))
       .replace(/\. /g, ".")
@@ -220,16 +231,20 @@ export default class CpPortalHome extends LightningElement {
   }
 
   get newCaseCount() {
-    return this.cases.filter((item) => NEW_STATUSES.includes(item.status)).length;
+    return this.cases.filter((item) => NEW_STATUSES.includes(item.status))
+      .length;
   }
   get assignedCaseCount() {
-    return this.cases.filter((item) => ASSIGNED_STATUSES.includes(item.status)).length;
+    return this.cases.filter((item) => ASSIGNED_STATUSES.includes(item.status))
+      .length;
   }
   get progressCaseCount() {
-    return this.cases.filter((item) => PROGRESS_STATUSES.includes(item.status)).length;
+    return this.cases.filter((item) => PROGRESS_STATUSES.includes(item.status))
+      .length;
   }
   get doneCaseCount() {
-    return this.cases.filter((item) => DONE_STATUSES.includes(item.status)).length;
+    return this.cases.filter((item) => DONE_STATUSES.includes(item.status))
+      .length;
   }
   get recentCases() {
     return this.cases.slice(0, 3);

@@ -3,15 +3,15 @@
     <header class="cp-gnb">
       <img src={logoUrl} alt="CorePress" />
       <nav>
-        <a class="active" href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a
-        ><a href={serviceUrl}>서비스 요청</a><a href={rfpUrl}>RFP·RFQ</a
-        ><a href={quoteUrl}>견적</a>
+        <a class="active" href={homeUrl}>홈</a
+        ><a href={assetListUrl}>보유 설비</a><a href={serviceUrl}>서비스 요청</a
+        ><a href={rfpUrl}>RFP·RFQ</a><a href={quoteUrl}>견적</a>
       </nav>
       <div class="user">
-        대한케미컬<span></span
-        ><button class="logout" type="button" onclick={handleLogout}
-          ><img src={logoutIconUrl} alt="" />로그아웃</button
-        >
+        {accountName}<span></span
+        ><button class="logout" type="button" onclick={handleLogout}>
+          <img src={logoutIconUrl} alt="" />로그아웃
+        </button>
       </div>
     </header>
     <main class="cp-page" id="home">
@@ -68,11 +68,7 @@
         <div class="maintenance">
           <h2>
             예방정비 주기
-            <img
-              class="info-icon"
-              src={infoIconUrl}
-              alt="예방정비 주기 안내"
-            />
+            <img class="info-icon" src={infoIconUrl} alt="예방정비 주기 안내" />
           </h2>
           <p>다음 권장 정비까지</p>
           <strong>132<small>일</small></strong>
@@ -92,7 +88,14 @@
         </div>
         <div class="asset-health">
           <header>
-            <h2>설비별 건강도 <img class="info-icon" src={infoIconUrl} alt="설비별 건강도 안내" /></h2>
+            <h2>
+              설비별 건강도
+              <img
+                class="info-icon"
+                src={infoIconUrl}
+                alt="설비별 건강도 안내"
+              />
+            </h2>
             <a href={assetListUrl}>설비 전체 보기 <span>→</span></a>
           </header>
           <ul>
@@ -168,14 +171,18 @@
                   <td>{request.number}</td>
                   <td>{request.assetName}</td>
                   <td>{request.subject}</td>
-                  <td><span class={request.badgeClass}>{request.status}</span></td>
+                  <td>
+                    <span class={request.badgeClass}>{request.status}</span>
+                  </td>
                   <td>{request.createdDate}</td>
                   <td>{request.visitDate}</td>
                 </tr>
               </template>
               <template if:false={hasRecentCases}>
                 <tr>
-                  <td colspan="6" class="empty-row">등록된 서비스 요청이 없습니다.</td>
+                  <td colspan="6" class="empty-row">
+                    등록된 서비스 요청이 없습니다.
+                  </td>
                 </tr>
               </template>
             </tbody>

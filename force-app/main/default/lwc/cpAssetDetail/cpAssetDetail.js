@@ -28,9 +28,35 @@ import operatingIcon from "@salesforce/resourceUrl/CorePressSummaryOperatingIcon
 import warningIcon from "@salesforce/resourceUrl/CorePressSummaryWarningIcon";
 import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutWhiteIcon";
 
-const ASSET_FIELDS = [ASSET_NAME, ASSET_SERIAL, ASSET_STATUS, ASSET_INSTALL_DATE, ASSET_CITY, ASSET_STREET, ASSET_PRODUCT_NAME, ASSET_RUNTIME, ASSET_RUNTIME_DATE, ASSET_OVERHAUL, ASSET_SMART_CARE, ASSET_REPLACEMENT_DATE];
-const CASE_FIELDS = ["Case.CaseNumber", "Case.Subject", "Case.Status", "Case.CreatedDate", "Case.ClosedDate", "Case.Engineer_Name__c"];
-const WARRANTY_FIELDS = ["AssetWarranty.StartDate", "AssetWarranty.EndDate", "AssetWarranty.PartsCovered", "AssetWarranty.LaborCovered", "AssetWarranty.ExpensesCovered"];
+const ASSET_FIELDS = [
+  ASSET_NAME,
+  ASSET_SERIAL,
+  ASSET_STATUS,
+  ASSET_INSTALL_DATE,
+  ASSET_CITY,
+  ASSET_STREET,
+  ASSET_PRODUCT_NAME,
+  ASSET_RUNTIME,
+  ASSET_RUNTIME_DATE,
+  ASSET_OVERHAUL,
+  ASSET_SMART_CARE,
+  ASSET_REPLACEMENT_DATE
+];
+const CASE_FIELDS = [
+  "Case.CaseNumber",
+  "Case.Subject",
+  "Case.Status",
+  "Case.CreatedDate",
+  "Case.ClosedDate",
+  "Case.Engineer_Name__c"
+];
+const WARRANTY_FIELDS = [
+  "AssetWarranty.StartDate",
+  "AssetWarranty.EndDate",
+  "AssetWarranty.PartsCovered",
+  "AssetWarranty.LaborCovered",
+  "AssetWarranty.ExpensesCovered"
+];
 
 export default class CpAssetDetail extends LightningElement {
   @api homeUrl = "portal-home";
@@ -48,14 +74,20 @@ export default class CpAssetDetail extends LightningElement {
   cases = [];
   warrantyRecord;
   loadError = "";
+  agentMessage = "";
+  agentMessageIsError = false;
 
   @wire(getRecord, { recordId: USER_ID, fields: [USER_CONTACT_ID] })
   userRecord;
-  get contactId() { return getFieldValue(this.userRecord.data, USER_CONTACT_ID); }
+  get contactId() {
+    return getFieldValue(this.userRecord.data, USER_CONTACT_ID);
+  }
 
   @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_ACCOUNT_ID] })
   contactRecord;
-  get accountId() { return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID); }
+  get accountId() {
+    return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID);
+  }
 
   @wire(CurrentPageReference)
   setPageReference(pageReference) {
@@ -64,32 +96,64 @@ export default class CpAssetDetail extends LightningElement {
   }
 
   readRecordId() {
-    try { return new URL(window.location.href).searchParams.get("recordId"); }
-    catch (error) { return null; }
+    try {
+      return new URL(window.location.href).searchParams.get("recordId");
+    } catch {
+      return null;
+    }
   }
 
   @wire(getRecord, { recordId: "$recordId", fields: ASSET_FIELDS })
   wiredAsset({ data, error }) {
-    if (data) { this.assetRecord = data; this.loadError = ""; }
-    else if (error) { this.assetRecord = undefined; this.loadError = "설비 정보를 불러오지 못했습니다. 목록에서 설비를 다시 선택해 주세요."; }
+    if (data) {
+      this.assetRecord = data;
+      this.loadError = "";
+    } else if (error) {
+      this.assetRecord = undefined;
+      this.loadError =
+        "설비 정보를 불러오지 못했습니다. 목록에서 설비를 다시 선택해 주세요.";
+    }
   }
 
-  @wire(getRelatedListRecords, { parentRecordId: "$recordId", relatedListId: "Cases", fields: CASE_FIELDS, sortBy: ["-Case.CreatedDate"], pageSize: 3 })
+  @wire(getRelatedListRecords, {
+    parentRecordId: "$recordId",
+    relatedListId: "Cases",
+    fields: CASE_FIELDS,
+    sortBy: ["-Case.CreatedDate"],
+    pageSize: 3
+  })
   wiredCases({ data }) {
-    this.cases = data ? data.records.map((record) => ({
-      id: record.id,
-      number: record.fields.CaseNumber?.value || "-",
-      subject: record.fields.Subject?.value || "내용 미등록",
-      date: this.formatDateTime(record.fields.ClosedDate?.value || record.fields.CreatedDate?.value),
-      status: record.fields.Status?.value === "신규접수" ? "접수" : (record.fields.Status?.value || "상태 미등록"),
-      engineer: record.fields.Engineer_Name__c?.value || "배정 전"
-    })) : [];
+    this.cases = data
+      ? data.records.map((record) => ({
+          id: record.id,
+          number: record.fields.CaseNumber?.value || "-",
+          subject: record.fields.Subject?.value || "내용 미등록",
+          date: this.formatDateTime(
+            record.fields.ClosedDate?.value || record.fields.CreatedDate?.value
+          ),
+          status:
+            record.fields.Status?.value === "신규접수"
+              ? "접수"
+              : record.fields.Status?.value || "상태 미등록",
+          engineer: record.fields.Engineer_Name__c?.value || "배정 전"
+        }))
+      : [];
   }
 
-  @wire(getRelatedListRecords, { parentRecordId: "$recordId", relatedListId: "WarrantyAssets", fields: WARRANTY_FIELDS, sortBy: ["-AssetWarranty.EndDate"], pageSize: 1 })
-  wiredWarranty({ data }) { this.warrantyRecord = data?.records?.[0]; }
+  @wire(getRelatedListRecords, {
+    parentRecordId: "$recordId",
+    relatedListId: "WarrantyAssets",
+    fields: WARRANTY_FIELDS,
+    sortBy: ["-AssetWarranty.EndDate"],
+    pageSize: 1
+  })
+  wiredWarranty({ data }) {
+    this.warrantyRecord = data?.records?.[0];
+  }
 
-  get model() { return getFieldValue(this.assetRecord, ASSET_PRODUCT_NAME) || "모델 미등록"; }
+  get model() {
+    return getFieldValue(this.assetRecord, ASSET_PRODUCT_NAME) || "모델 미등록";
+  }
   get heroImageUrl() {
     const resolved = resolveProductImage(this.model, "압축기");
     if (resolved.type === "image") return resolved.src;
@@ -98,35 +162,102 @@ export default class CpAssetDetail extends LightningElement {
     if (normalized === "CP2100") return cp2100;
     return cp100;
   }
-  get assetName() { return getFieldValue(this.assetRecord, ASSET_NAME) || "설비명 미등록"; }
-  get serial() { return getFieldValue(this.assetRecord, ASSET_SERIAL) || "일련번호 미등록"; }
-  get location() { return [getFieldValue(this.assetRecord, ASSET_CITY), getFieldValue(this.assetRecord, ASSET_STREET)].filter(Boolean).join(" ") || "설치 위치 미등록"; }
+  get assetName() {
+    return getFieldValue(this.assetRecord, ASSET_NAME) || "설비명 미등록";
+  }
+  get serial() {
+    return getFieldValue(this.assetRecord, ASSET_SERIAL) || "일련번호 미등록";
+  }
+  get location() {
+    return (
+      [
+        getFieldValue(this.assetRecord, ASSET_CITY),
+        getFieldValue(this.assetRecord, ASSET_STREET)
+      ]
+        .filter(Boolean)
+        .join(" ") || "설치 위치 미등록"
+    );
+  }
   get status() {
     const value = getFieldValue(this.assetRecord, ASSET_STATUS);
     if (value === "Installed" || value === "Registered") return "운전 중";
     if (value === "Obsolete") return "폐기";
     return value || "상태 미등록";
   }
-  get statusIconUrl() { return this.status === "운전 중" ? operatingIcon : warningIcon; }
-  get installDate() { return this.formatDate(getFieldValue(this.assetRecord, ASSET_INSTALL_DATE)); }
-  get runtime() { const value = getFieldValue(this.assetRecord, ASSET_RUNTIME); return value == null ? "미등록" : `${new Intl.NumberFormat("ko-KR").format(value)} hr`; }
-  get runtimeDate() { return this.formatDate(getFieldValue(this.assetRecord, ASSET_RUNTIME_DATE)); }
-  get overhaulHours() { const value = getFieldValue(this.assetRecord, ASSET_OVERHAUL); return value == null ? "미등록" : `${new Intl.NumberFormat("ko-KR").format(value)} hr`; }
-  get smartCare() { return getFieldValue(this.assetRecord, ASSET_SMART_CARE) || "미등록"; }
-  get replacementDate() { return this.formatDate(getFieldValue(this.assetRecord, ASSET_REPLACEMENT_DATE)); }
-  get serviceRequestHref() { return this.recordId ? `${this.serviceRequestUrl}?assetId=${this.recordId}` : this.serviceRequestUrl; }
-  get serviceHistoryHref() { return this.recordId ? `${this.serviceListUrl}?assetId=${this.recordId}` : this.serviceListUrl; }
-  get hasCases() { return this.cases.length > 0; }
-  get isPreview() { return !this.recordId; }
-  get warrantyStart() { return this.formatDate(this.warrantyRecord?.fields?.StartDate?.value); }
-  get warrantyEnd() { return this.formatDate(this.warrantyRecord?.fields?.EndDate?.value); }
-  get warrantyParts() { return this.formatPercent(this.warrantyRecord?.fields?.PartsCovered?.value); }
-  get warrantyLabor() { return this.formatPercent(this.warrantyRecord?.fields?.LaborCovered?.value); }
-  get warrantyExpenses() { return this.formatPercent(this.warrantyRecord?.fields?.ExpensesCovered?.value); }
+  get statusIconUrl() {
+    return this.status === "운전 중" ? operatingIcon : warningIcon;
+  }
+  get installDate() {
+    return this.formatDate(getFieldValue(this.assetRecord, ASSET_INSTALL_DATE));
+  }
+  get runtime() {
+    const value = getFieldValue(this.assetRecord, ASSET_RUNTIME);
+    return value == null
+      ? "미등록"
+      : `${new Intl.NumberFormat("ko-KR").format(value)} hr`;
+  }
+  get runtimeDate() {
+    return this.formatDate(getFieldValue(this.assetRecord, ASSET_RUNTIME_DATE));
+  }
+  get overhaulHours() {
+    const value = getFieldValue(this.assetRecord, ASSET_OVERHAUL);
+    return value == null
+      ? "미등록"
+      : `${new Intl.NumberFormat("ko-KR").format(value)} hr`;
+  }
+  get smartCare() {
+    return getFieldValue(this.assetRecord, ASSET_SMART_CARE) || "미등록";
+  }
+  get replacementDate() {
+    return this.formatDate(
+      getFieldValue(this.assetRecord, ASSET_REPLACEMENT_DATE)
+    );
+  }
+  get serviceRequestHref() {
+    return this.recordId
+      ? `${this.serviceRequestUrl}?assetId=${this.recordId}`
+      : this.serviceRequestUrl;
+  }
+  get serviceHistoryHref() {
+    return this.recordId
+      ? `${this.serviceListUrl}?assetId=${this.recordId}`
+      : this.serviceListUrl;
+  }
+  get disableAgentButton() {
+    return !this.assetRecord || !this.recordId;
+  }
+  get agentMessageClass() {
+    return this.agentMessageIsError ? "agent-message error" : "agent-message";
+  }
+  get hasCases() {
+    return this.cases.length > 0;
+  }
+  get isPreview() {
+    return !this.recordId;
+  }
+  get warrantyStart() {
+    return this.formatDate(this.warrantyRecord?.fields?.StartDate?.value);
+  }
+  get warrantyEnd() {
+    return this.formatDate(this.warrantyRecord?.fields?.EndDate?.value);
+  }
+  get warrantyParts() {
+    return this.formatPercent(this.warrantyRecord?.fields?.PartsCovered?.value);
+  }
+  get warrantyLabor() {
+    return this.formatPercent(this.warrantyRecord?.fields?.LaborCovered?.value);
+  }
+  get warrantyExpenses() {
+    return this.formatPercent(
+      this.warrantyRecord?.fields?.ExpensesCovered?.value
+    );
+  }
   get warrantyRemaining() {
     const end = this.warrantyRecord?.fields?.EndDate?.value;
     if (!end) return "보증 정보 미등록";
-    const days = Math.ceil((new Date(`${end}T23:59:59`) - new Date()) / 86400000);
+    const days = Math.ceil(
+      (new Date(`${end}T23:59:59`) - new Date()) / 86400000
+    );
     return days >= 0 ? `D-${days}` : "보증 만료";
   }
   get warrantyProgressStyle() {
@@ -135,17 +266,75 @@ export default class CpAssetDetail extends LightningElement {
     if (!start || !end) return "left: 0%;";
     const total = new Date(end) - new Date(start);
     const elapsed = new Date() - new Date(start);
-    const percent = total > 0 ? Math.min(100, Math.max(0, (elapsed / total) * 100)) : 0;
+    const percent =
+      total > 0 ? Math.min(100, Math.max(0, (elapsed / total) * 100)) : 0;
     return `left: ${percent.toFixed(1)}%;`;
   }
-  formatPercent(value) { return value == null ? "미등록" : `${value}%`; }
+  formatPercent(value) {
+    return value == null ? "미등록" : `${value}%`;
+  }
   formatDate(value) {
     if (!value) return "미등록";
-    return new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(`${value}T00:00:00`)).replace(/\. /g, ".").replace(/\.$/, "");
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    })
+      .format(new Date(`${value}T00:00:00`))
+      .replace(/\. /g, ".")
+      .replace(/\.$/, "");
   }
   formatDateTime(value) {
     if (!value) return "미등록";
-    return new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(value)).replace(/\. /g, ".").replace(/\.$/, "");
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    })
+      .format(new Date(value))
+      .replace(/\. /g, ".")
+      .replace(/\.$/, "");
   }
-  handleLogout() { const returnUrl = encodeURIComponent("/corepress/s/login"); window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`); }
+  async handleAgentInquiry() {
+    this.agentMessage = "";
+    this.agentMessageIsError = false;
+
+    const messaging = window.embeddedservice_bootstrap;
+    if (
+      typeof messaging?.prechatAPI?.setHiddenPrechatFields !== "function" ||
+      typeof messaging?.utilAPI?.launchChat !== "function"
+    ) {
+      this.showAgentError(
+        "상담 채널을 준비하고 있습니다. 잠시 후 다시 시도해 주세요."
+      );
+      return;
+    }
+
+    try {
+      messaging.prechatAPI.setHiddenPrechatFields({
+        AssetId: this.recordId,
+        AssetName: this.assetName,
+        AssetSerialNumber: this.serial,
+        AssetProductName: this.model,
+        InquirySource: "CorePress Asset Detail"
+      });
+      await messaging.utilAPI.launchChat();
+      this.agentMessage = `${this.assetName} 정보를 상담 도우미에 전달했습니다.`;
+    } catch {
+      this.showAgentError(
+        "상담 도우미를 열지 못했습니다. 우측 하단 채팅 버튼을 이용해 주세요."
+      );
+    }
+  }
+  showAgentError(message) {
+    this.agentMessage = message;
+    this.agentMessageIsError = true;
+  }
+  handleLogout() {
+    const returnUrl = encodeURIComponent("/corepress/s/login");
+    window.location.assign(`/secur/logout.jsp?retUrl=${returnUrl}`);
+  }
 }

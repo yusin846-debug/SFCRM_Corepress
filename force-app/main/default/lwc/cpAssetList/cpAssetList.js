@@ -4,14 +4,7 @@ import { getRelatedListRecords } from "lightning/uiRelatedListApi";
 import USER_ID from "@salesforce/user/Id";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
-import ASSET_ID from "@salesforce/schema/Asset.Id";
-import ASSET_NAME from "@salesforce/schema/Asset.Name";
-import ASSET_SERIAL from "@salesforce/schema/Asset.SerialNumber";
-import ASSET_STATUS from "@salesforce/schema/Asset.Status";
-import ASSET_INSTALL_DATE from "@salesforce/schema/Asset.InstallDate";
-import ASSET_CITY from "@salesforce/schema/Asset.City";
-import ASSET_STREET from "@salesforce/schema/Asset.Street";
-import ASSET_PRODUCT_NAME from "@salesforce/schema/Asset.Product2.Name";
+import CONTACT_ACCOUNT_NAME from "@salesforce/schema/Contact.Account.Name";
 import logo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import cp100 from "@salesforce/resourceUrl/CorePressCP100";
 import cp2100 from "@salesforce/resourceUrl/CorePressCP2100";
@@ -29,14 +22,14 @@ import listIconActive from "@salesforce/resourceUrl/CorePressListIconActive";
 import listIconInactive from "@salesforce/resourceUrl/CorePressListIconInactive";
 
 const ASSET_FIELDS = [
-  ASSET_ID,
-  ASSET_NAME,
-  ASSET_SERIAL,
-  ASSET_STATUS,
-  ASSET_INSTALL_DATE,
-  ASSET_CITY,
-  ASSET_STREET,
-  ASSET_PRODUCT_NAME,
+  "Asset.Id",
+  "Asset.Name",
+  "Asset.SerialNumber",
+  "Asset.Status",
+  "Asset.InstallDate",
+  "Asset.City",
+  "Asset.Street",
+  "Asset.Product2.Name"
 ];
 
 export default class CpAssetList extends LightningElement {
@@ -73,11 +66,17 @@ export default class CpAssetList extends LightningElement {
     return getFieldValue(this.userRecord.data, USER_CONTACT_ID);
   }
 
-  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_ACCOUNT_ID] })
+  @wire(getRecord, {
+    recordId: "$contactId",
+    fields: [CONTACT_ACCOUNT_ID, CONTACT_ACCOUNT_NAME]
+  })
   contactRecord;
 
   get accountId() {
     return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID);
+  }
+  get accountName() {
+    return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_NAME) || "";
   }
 
   @wire(getRelatedListRecords, {
@@ -85,7 +84,7 @@ export default class CpAssetList extends LightningElement {
     relatedListId: "Assets",
     fields: ASSET_FIELDS,
     sortBy: ["Asset.InstallDate"],
-    pageSize: 199,
+    pageSize: 199
   })
   wiredAssets({ data, error }) {
     if (data) {
@@ -99,7 +98,8 @@ export default class CpAssetList extends LightningElement {
       this.assets = [];
       this.isPreview = false;
       this.isLoading = false;
-      this.loadError = "설비 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
+      this.loadError =
+        "설비 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
     }
   }
 
@@ -110,13 +110,17 @@ export default class CpAssetList extends LightningElement {
   }
 
   mapAsset(record) {
-    const model = getFieldValue(record, ASSET_PRODUCT_NAME) || "모델 미등록";
-    const sourceStatus = getFieldValue(record, ASSET_STATUS) || "Registered";
-    const isRunning = sourceStatus === "Installed" || sourceStatus === "Registered";
+    const assetName = record.fields.Name?.value || "설비명 미등록";
+    const model =
+      record.fields.Product2?.value?.fields?.Name?.value ||
+      this.modelFromName(assetName);
+    const sourceStatus = record.fields.Status?.value || "Registered";
+    const isRunning =
+      sourceStatus === "Installed" || sourceStatus === "Registered";
     const isObsolete = sourceStatus === "Obsolete";
-    const city = getFieldValue(record, ASSET_CITY);
-    const street = getFieldValue(record, ASSET_STREET);
-    const id = getFieldValue(record, ASSET_ID);
+    const city = record.fields.City?.value;
+    const street = record.fields.Street?.value;
+    const id = record.fields.Id?.value || record.id;
     let displayStatus = "운전 중";
     let statusClass = "status running";
     let statusIcon = operatingIcon;
@@ -132,17 +136,24 @@ export default class CpAssetList extends LightningElement {
     return {
       id,
       model,
-      name: getFieldValue(record, ASSET_NAME) || "설비명 미등록",
-      serial: getFieldValue(record, ASSET_SERIAL) || "시리얼 미등록",
+      name: assetName,
+      serial: record.fields.SerialNumber?.value || "시리얼 미등록",
       location: [city, street].filter(Boolean).join(" ") || "설치 위치 미등록",
       status: displayStatus,
       sourceStatus,
       statusClass,
       statusIcon,
       imageUrl: this.resolveImage(model),
-      installDate: this.formatDate(getFieldValue(record, ASSET_INSTALL_DATE)),
-      detailUrl: `${this.detailUrl}?recordId=${id}`,
+      installDate: this.formatDate(record.fields.InstallDate?.value),
+      detailUrl: `${this.detailUrl}?recordId=${id}`
     };
+  }
+
+  modelFromName(name) {
+    return (
+      (name || "").match(/(?:CP\d+(?:\s+Pro|\+)?|CD7000)/i)?.[0] ||
+      "모델 미등록"
+    );
   }
 
   resolveImage(model) {
@@ -150,7 +161,8 @@ export default class CpAssetList extends LightningElement {
     if (resolved.type === "image") return resolved.src;
     // Legacy fallback (shouldn't hit — resolver always returns an image for CP*)
     const normalized = (model || "").trim().toUpperCase();
-    if (normalized === "CP7100+" || normalized.startsWith("CP7100")) return cp7100;
+    if (normalized === "CP7100+" || normalized.startsWith("CP7100"))
+      return cp7100;
     if (normalized === "CP2100" || normalized.startsWith("CP21")) return cp2100;
     if (normalized === "CP100 PRO" || normalized === "CP100") return cp100;
     return cp7100;
@@ -161,8 +173,11 @@ export default class CpAssetList extends LightningElement {
     return new Intl.DateTimeFormat("ko-KR", {
       year: "numeric",
       month: "2-digit",
-      day: "2-digit",
-    }).format(new Date(`${value}T00:00:00`)).replaceAll(". ", ".").replace(/\.$/, "");
+      day: "2-digit"
+    })
+      .format(new Date(`${value}T00:00:00`))
+      .replaceAll(". ", ".")
+      .replace(/\.$/, "");
   }
 
   get filteredAssets() {
@@ -188,7 +203,9 @@ export default class CpAssetList extends LightningElement {
     return this.isLoading;
   }
   get showEmpty() {
-    return !this.isLoading && !this.loadError && this.filteredAssets.length === 0;
+    return (
+      !this.isLoading && !this.loadError && this.filteredAssets.length === 0
+    );
   }
   get skeletonRows() {
     return [1, 2, 3];
@@ -215,7 +232,8 @@ export default class CpAssetList extends LightningElement {
     return this.filteredAssets.slice(start, start + this.pageSize);
   }
   get gridClass() {
-    const viewClass = this.viewMode === "grid" ? "asset-grid" : "asset-grid list-view";
+    const viewClass =
+      this.viewMode === "grid" ? "asset-grid" : "asset-grid list-view";
     return this.isFiltering ? `${viewClass} is-filtering` : viewClass;
   }
   get selectedFilter() {
@@ -273,10 +291,12 @@ export default class CpAssetList extends LightningElement {
     window.clearTimeout(this.filterTimer);
     this.pendingFilter = filter;
     this.isFiltering = true;
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
     this.filterTimer = window.setTimeout(() => {
       this.activeFilter = filter;
       this.currentPage = 1;
       this.pendingFilter = "";
+      // eslint-disable-next-line @lwc/lwc/no-async-operation
       window.requestAnimationFrame(() => {
         this.isFiltering = false;
       });

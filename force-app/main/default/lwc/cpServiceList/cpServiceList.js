@@ -5,6 +5,7 @@ import { CurrentPageReference } from "lightning/navigation";
 import USER_ID from "@salesforce/user/Id";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
+import CONTACT_ACCOUNT_NAME from "@salesforce/schema/Contact.Account.Name";
 import logo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import logoutIcon from "@salesforce/resourceUrl/CorePressLogoutWhiteIcon";
 import searchIcon from "@salesforce/resourceUrl/CorePressSearchIcon";
@@ -16,9 +17,10 @@ const CASE_FIELDS = [
   "Case.Status",
   "Case.Type",
   "Case.CreatedDate",
+  "Case.AssetId",
   "Case.Engineer_Name__c",
   "Case.Scheduled_Visit__c",
-  "Case.Asset.Name",
+  "Case.Asset.Name"
 ];
 
 const OPEN_STATUSES = ["신규접수", "판정완료", "배정완료", "진행중", "대기 중"];
@@ -45,13 +47,14 @@ export default class CpServiceList extends LightningElement {
 
   @wire(CurrentPageReference)
   setPageReference(pageReference) {
-    this.assetFilterId = pageReference?.state?.assetId || this.readAssetIdFromUrl();
+    this.assetFilterId =
+      pageReference?.state?.assetId || this.readAssetIdFromUrl();
   }
 
   readAssetIdFromUrl() {
     try {
       return new URL(window.location.href).searchParams.get("assetId") || "";
-    } catch (error) {
+    } catch {
       return "";
     }
   }
@@ -63,11 +66,17 @@ export default class CpServiceList extends LightningElement {
     return getFieldValue(this.userRecord.data, USER_CONTACT_ID);
   }
 
-  @wire(getRecord, { recordId: "$contactId", fields: [CONTACT_ACCOUNT_ID] })
+  @wire(getRecord, {
+    recordId: "$contactId",
+    fields: [CONTACT_ACCOUNT_ID, CONTACT_ACCOUNT_NAME]
+  })
   contactRecord;
 
   get accountId() {
     return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_ID);
+  }
+  get accountName() {
+    return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_NAME) || "";
   }
 
   @wire(getRelatedListRecords, {
@@ -75,7 +84,7 @@ export default class CpServiceList extends LightningElement {
     relatedListId: "Cases",
     fields: CASE_FIELDS,
     sortBy: ["-Case.CreatedDate"],
-    pageSize: 199,
+    pageSize: 199
   })
   wiredCases({ data, error }) {
     if (data) {
@@ -89,7 +98,8 @@ export default class CpServiceList extends LightningElement {
       this.requests = [];
       this.isPreview = false;
       this.isLoading = false;
-      this.loadError = "서비스 요청 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
+      this.loadError =
+        "서비스 요청 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
     }
   }
 
@@ -110,12 +120,14 @@ export default class CpServiceList extends LightningElement {
       status,
       isOpen: OPEN_STATUSES.includes(status),
       statusClass: OPEN_STATUSES.includes(status) ? "badge open" : "badge done",
-      assetName: record.fields.Asset?.value?.fields?.Name?.value || "설비 미지정",
+      assetName:
+        record.fields.Asset?.value?.fields?.Name?.value || "설비 미지정",
       assetId: record.fields.AssetId?.value || "",
       createdDate: this.formatDateTime(record.fields.CreatedDate?.value),
-      visitDate: this.formatDateTime(record.fields.Scheduled_Visit__c?.value) || "미정",
+      visitDate:
+        this.formatDateTime(record.fields.Scheduled_Visit__c?.value) || "미정",
       engineer: record.fields.Engineer_Name__c?.value || "배정 전",
-      detailHref: `${this.detailUrl}?recordId=${id}`,
+      detailHref: `${this.detailUrl}?recordId=${id}`
     };
   }
 
@@ -127,7 +139,7 @@ export default class CpServiceList extends LightningElement {
       day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false,
+      hour12: false
     })
       .format(new Date(value))
       .replace(/\. /g, ".")
@@ -137,14 +149,17 @@ export default class CpServiceList extends LightningElement {
   get filteredRequests() {
     const term = this.searchTerm.trim().toLowerCase();
     return this.requests.filter((request) => {
-      const matchesAsset = !this.assetFilterId || request.assetId === this.assetFilterId;
+      const matchesAsset =
+        !this.assetFilterId || request.assetId === this.assetFilterId;
       const matchesFilter =
         this.activeFilter === "전체" ||
         (this.activeFilter === "진행 중" && request.isOpen) ||
         (this.activeFilter === "완료" && !request.isOpen);
       const matchesTerm =
         !term ||
-        `${request.subject} ${request.number} ${request.assetName}`.toLowerCase().includes(term);
+        `${request.subject} ${request.number} ${request.assetName}`
+          .toLowerCase()
+          .includes(term);
       return matchesAsset && matchesFilter && matchesTerm;
     });
   }
