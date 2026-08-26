@@ -46,3 +46,15 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
+
+# Local retrieve/deploy scratch
+.tmp-retrieve*/
+tmp/
+deploy_err.txt
+deploy_out.json
+
+# Local AI/agent tooling (personal, not shared)
+.mcp.json
+skills-lock.json
+.claude/
+.agents/
