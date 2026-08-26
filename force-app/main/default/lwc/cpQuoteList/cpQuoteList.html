@@ -10,7 +10,7 @@
         <a class="active" href={quoteUrl} aria-current="page">견적</a>
       </nav>
       <div class="user">
-        대한케미컬<span></span>
+        {accountName}<span></span>
         <button class="logout" type="button" onclick={handleLogout}>
           <img src={logoutIconUrl} alt="" />로그아웃
         </button>
@@ -24,30 +24,77 @@
         <span>요청한 견적의 금액과 유효기간, 상세 품목을 확인합니다.</span>
       </section>
 
-      <template if:true={showPreviewNotice}><aside class="data-notice" role="status">Builder 미리보기입니다. 현재 사용자는 고객 Contact에 연결되어 있지 않아 견적을 표시할 수 없습니다. 실제 고객 로그인 시 해당 고객사의 견적만 조회됩니다.</aside></template>
-      <template if:true={loadError}><aside class="data-notice error" role="alert">{loadError}</aside></template>
+      <template if:true={showPreviewNotice}
+        ><aside class="data-notice" role="status">
+          Builder 미리보기입니다. 현재 사용자는 고객 Contact에 연결되어 있지
+          않아 견적을 표시할 수 없습니다. 실제 고객 로그인 시 해당 고객사의
+          견적만 조회됩니다.
+        </aside></template
+      >
+      <template if:true={loadError}
+        ><aside class="data-notice error" role="alert">
+          {loadError}
+        </aside></template
+      >
 
       <section class="summary" aria-label="견적 현황 요약">
-        <div><span>전체 견적</span><strong>{totalCount}</strong><small>건</small></div>
-        <div><span>확인 필요</span><strong>{pendingCount}</strong><small>건</small></div>
-        <div><span>수락 완료</span><strong>{acceptedCount}</strong><small>건</small></div>
+        <div>
+          <span>전체 견적</span><strong>{totalCount}</strong><small>건</small>
+        </div>
+        <div>
+          <span>확인 필요</span><strong>{pendingCount}</strong><small>건</small>
+        </div>
+        <div>
+          <span>수락 완료</span><strong>{acceptedCount}</strong
+          ><small>건</small>
+        </div>
       </section>
 
       <section class="workspace">
         <div class="quote-list">
           <header class="list-heading">
-            <div><h2>견적 목록</h2><span>{filteredCount}건</span></div>
+            <div>
+              <h2>견적 목록</h2>
+              <span>{filteredCount}건</span>
+            </div>
             <div class="filters" role="group" aria-label="견적 상태 필터">
-              <button class={allFilterClass} type="button" data-filter="all" onclick={changeFilter}>전체</button>
-              <button class={pendingFilterClass} type="button" data-filter="pending" onclick={changeFilter}>확인 필요</button>
-              <button class={acceptedFilterClass} type="button" data-filter="accepted" onclick={changeFilter}>수락 완료</button>
+              <button
+                class={allFilterClass}
+                type="button"
+                data-filter="all"
+                onclick={changeFilter}
+              >
+                전체
+              </button>
+              <button
+                class={pendingFilterClass}
+                type="button"
+                data-filter="pending"
+                onclick={changeFilter}
+              >
+                확인 필요
+              </button>
+              <button
+                class={acceptedFilterClass}
+                type="button"
+                data-filter="accepted"
+                onclick={changeFilter}
+              >
+                수락 완료
+              </button>
             </div>
           </header>
 
-          <div class={listClass} aria-live="polite">
+          <div class="list-body" aria-live="polite">
             <template if:true={hasQuotes}>
               <template for:each={filteredQuotes} for:item="quote">
-                <button class={quote.rowClass} type="button" key={quote.id} data-id={quote.id} onclick={selectQuote}>
+                <button
+                  class={quote.rowClass}
+                  type="button"
+                  key={quote.id}
+                  data-id={quote.id}
+                  onclick={selectQuote}
+                >
                   <span class={quote.statusClass}>{quote.status}</span>
                   <strong>{quote.number}</strong>
                   <small>등록 {quote.createdDate}</small>
@@ -63,11 +110,20 @@
                 <template if:true={hasAnyQuotes}>
                   <h3>해당 상태의 견적이 없습니다</h3>
                   <p>다른 상태를 선택해 견적을 확인해 주세요.</p>
-                  <button type="button" data-filter="all" onclick={changeFilter}>전체 견적 보기</button>
+                  <button
+                    type="button"
+                    data-filter="all"
+                    onclick={changeFilter}
+                  >
+                    전체 견적 보기
+                  </button>
                 </template>
                 <template if:false={hasAnyQuotes}>
                   <h3>등록된 견적이 없습니다</h3>
-                  <p>RFP·RFQ 제출 후 담당 영업사원이 견적을 등록하면 여기에 표시됩니다.</p>
+                  <p>
+                    RFP·RFQ 제출 후 담당 영업사원이 견적을 등록하면 여기에
+                    표시됩니다.
+                  </p>
                 </template>
               </div>
             </template>
@@ -78,23 +134,44 @@
           <article class="detail" aria-labelledby="detail-title">
             <header class="detail-heading">
               <div>
-                <span class={selectedQuote.statusClass}>{selectedQuote.status}</span>
+                <span class={selectedQuote.statusClass}
+                  >{selectedQuote.status}</span
+                >
                 <p>견적번호 {selectedQuote.number}</p>
                 <h2 id="detail-title">{selectedQuote.title}</h2>
               </div>
               <dl>
-                <div><dt>등록일</dt><dd>{selectedQuote.createdDate}</dd></div>
-                <div><dt>유효기한</dt><dd>{selectedQuote.expiryDate}</dd></div>
-                <div><dt>남은 기간</dt><dd class={selectedQuote.validityClass}>{selectedQuote.validityLabel}</dd></div>
+                <div>
+                  <dt>등록일</dt>
+                  <dd>{selectedQuote.createdDate}</dd>
+                </div>
+                <div>
+                  <dt>유효기한</dt>
+                  <dd>{selectedQuote.expiryDate}</dd>
+                </div>
+                <div>
+                  <dt>남은 기간</dt>
+                  <dd class={selectedQuote.validityClass}>
+                    {selectedQuote.validityLabel}
+                  </dd>
+                </div>
               </dl>
             </header>
 
             <section class="items" aria-labelledby="items-title">
-              <div class="section-heading"><h3 id="items-title">견적 품목</h3><span>VAT 별도</span></div>
-              <div class="item-head" aria-hidden="true"><span>품목</span><span>수량</span><span>금액</span></div>
+              <div class="section-heading">
+                <h3 id="items-title">견적 품목</h3>
+                <span>VAT 별도</span>
+              </div>
+              <div class="item-head" aria-hidden="true">
+                <span>품목</span><span>수량</span><span>금액</span>
+              </div>
               <template for:each={selectedQuote.items} for:item="item">
                 <div class="item-row" key={item.key}>
-                  <div><strong>{item.name}</strong><small>{item.description}</small></div>
+                  <div>
+                    <strong>{item.name}</strong
+                    ><small>{item.description}</small>
+                  </div>
                   <span>{item.quantity}</span><b>{item.amount}</b>
                 </div>
               </template>
@@ -102,21 +179,71 @@
 
             <section class="totals" aria-label="견적 합계">
               <dl>
-                <div><dt>공급가액</dt><dd>{selectedQuote.subtotal}</dd></div>
-                <div><dt>부가세</dt><dd>{selectedQuote.tax}</dd></div>
-                <div class="grand-total"><dt>총 견적금액</dt><dd>{selectedQuote.totalWithTax}</dd></div>
+                <div>
+                  <dt>공급가액</dt>
+                  <dd>{selectedQuote.subtotal}</dd>
+                </div>
+                <div>
+                  <dt>부가세</dt>
+                  <dd>{selectedQuote.tax}</dd>
+                </div>
+                <div class="grand-total">
+                  <dt>총 견적금액</dt>
+                  <dd>{selectedQuote.totalWithTax}</dd>
+                </div>
               </dl>
-              <p>본 견적은 유효기한 내 승인된 경우에만 적용됩니다. 변경 요청은 담당 영업사원에게 문의해 주세요.</p>
+              <p>
+                본 견적은 유효기한 내 승인된 경우에만 적용됩니다. 변경 요청은
+                담당 영업사원에게 문의해 주세요.
+              </p>
             </section>
 
             <footer class="actions">
+              <div class="action-messages" aria-live="polite">
+                <template if:true={actionError}
+                  ><p class="action-error" role="alert">
+                    {actionError}
+                  </p></template
+                >
+                <template if:true={actionMessage}
+                  ><p class="action-success" role="status">
+                    {actionMessage}
+                  </p></template
+                >
+              </div>
               <template if:true={selectedQuote.contentDocumentId}>
-                <a class="download" href={downloadUrl} target="_blank" rel="noopener">
+                <a
+                  class="download"
+                  href={downloadUrl}
+                  target="_blank"
+                  rel="noopener"
+                >
                   견적서 PDF 다운로드 <span aria-hidden="true">↓</span>
                 </a>
               </template>
               <template if:false={selectedQuote.contentDocumentId}>
-                <p role="status">첨부된 견적서 파일이 아직 없습니다. 담당 영업사원에게 문의해 주세요.</p>
+                <p class="no-attachment" role="status">
+                  첨부된 견적서 파일이 아직 없습니다. 담당 영업사원에게 문의해
+                  주세요.
+                </p>
+              </template>
+              <template if:true={selectedQuote.canAct}>
+                <button
+                  class="reject"
+                  type="button"
+                  onclick={handleReject}
+                  disabled={isSubmitting}
+                >
+                  {rejectLabel}
+                </button>
+                <button
+                  class="approve"
+                  type="button"
+                  onclick={handleApprove}
+                  disabled={isSubmitting}
+                >
+                  {approveLabel}
+                </button>
               </template>
             </footer>
           </article>
