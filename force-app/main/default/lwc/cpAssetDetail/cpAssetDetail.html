@@ -44,7 +44,14 @@
             <dt><img src={locationIconUrl} alt="" /></dt>
             <dd>{location}</dd>
             <dt><img src={statusIconUrl} alt="" /></dt>
-            <dd>{status}</dd>
+            <dd>
+              {status}
+              <template if:true={hasHealthAlert}
+                ><span class={healthBadgeClass} title={healthBadgeTitle}
+                  >{healthBadgeLabel}</span
+                ></template
+              >
+            </dd>
           </dl>
         </div>
         <div class="hero-actions">

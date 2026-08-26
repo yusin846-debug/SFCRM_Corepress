@@ -23,7 +23,8 @@ const ASSET_FIELDS = [
   "Asset.Id",
   "Asset.Name",
   "Asset.Status",
-  "Asset.Product2.Name"
+  "Asset.Product2.Name",
+  "Asset.Sales_Alert_Status__c"
 ];
 
 const CASE_FIELDS = [
@@ -124,11 +125,16 @@ export default class CpPortalHome extends LightningElement {
     const stage = "";
     const isRunning = status === "Installed" || status === "Registered";
     const isObsolete = status === "Obsolete";
+    const alertStatus = record.fields.Sales_Alert_Status__c?.value || "";
+    const isAlerted = alertStatus === "Alerted";
     const score = STAGE_SCORE[stage] || (isObsolete ? 55 : isRunning ? 90 : 70);
     let label = "양호";
     let labelClass = "good";
     if (isObsolete) {
       label = "교체 필요";
+      labelClass = "attention";
+    } else if (isAlerted) {
+      label = "점검 필요";
       labelClass = "attention";
     } else if (score < 80) {
       label = "점검 필요";

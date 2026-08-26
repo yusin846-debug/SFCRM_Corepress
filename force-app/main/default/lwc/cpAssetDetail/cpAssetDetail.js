@@ -17,6 +17,8 @@ import ASSET_RUNTIME_DATE from "@salesforce/schema/Asset.Runtime_As_Of__c";
 import ASSET_OVERHAUL from "@salesforce/schema/Asset.Next_Overhaul_Hours__c";
 import ASSET_SMART_CARE from "@salesforce/schema/Asset.Smart_Care_Stage__c";
 import ASSET_REPLACEMENT_DATE from "@salesforce/schema/Asset.Expected_Replacement_Date__c";
+import ASSET_ALERT_STATUS from "@salesforce/schema/Asset.Sales_Alert_Status__c";
+import ASSET_ALERT_SENT_AT from "@salesforce/schema/Asset.Sales_Alert_Sent_At__c";
 import logo from "@salesforce/resourceUrl/CorePressHeaderLogo";
 import cp7100 from "@salesforce/resourceUrl/CorePressCP7100Detail";
 import cp2100 from "@salesforce/resourceUrl/CorePressCP2100";
@@ -40,7 +42,9 @@ const ASSET_FIELDS = [
   ASSET_RUNTIME_DATE,
   ASSET_OVERHAUL,
   ASSET_SMART_CARE,
-  ASSET_REPLACEMENT_DATE
+  ASSET_REPLACEMENT_DATE,
+  ASSET_ALERT_STATUS,
+  ASSET_ALERT_SENT_AT
 ];
 const CASE_FIELDS = [
   "Case.CaseNumber",
@@ -212,6 +216,37 @@ export default class CpAssetDetail extends LightningElement {
     return this.formatDate(
       getFieldValue(this.assetRecord, ASSET_REPLACEMENT_DATE)
     );
+  }
+  get alertStatus() {
+    return getFieldValue(this.assetRecord, ASSET_ALERT_STATUS) || "";
+  }
+  get hasHealthAlert() {
+    return this.alertStatus === "Alerted" || this.alertStatus === "Needs Data";
+  }
+  get healthBadgeLabel() {
+    if (this.alertStatus === "Alerted") return "점검 필요";
+    if (this.alertStatus === "Needs Data") return "데이터 확인 중";
+    return "";
+  }
+  get healthBadgeClass() {
+    if (this.alertStatus === "Alerted") return "health-badge alerted";
+    if (this.alertStatus === "Needs Data") return "health-badge needs-data";
+    return "health-badge";
+  }
+  get alertSentAt() {
+    const value = getFieldValue(this.assetRecord, ASSET_ALERT_SENT_AT);
+    return value ? this.formatDate(value) : "";
+  }
+  get healthBadgeTitle() {
+    if (this.alertStatus === "Alerted") {
+      return this.alertSentAt
+        ? `영업팀 알림 발송: ${this.alertSentAt} · 오버홀 임계치 초과`
+        : "오버홀 임계치 초과 — 영업팀 알림 대상";
+    }
+    if (this.alertStatus === "Needs Data") {
+      return "가동시간 또는 오버홀 주기 정보 부족";
+    }
+    return "";
   }
   get serviceRequestHref() {
     return this.recordId
