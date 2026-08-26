@@ -1,0 +1,92 @@
+/*
+  CorePress 디자인 토큰
+  브랜드 레퍼런스(짙은 네이비 크롬 + 틸 accent + Manrope 계열 그로테스크)를 기준으로
+  화면기획서.html의 blueprint 와이어프레임 구조를 재해석한다.
+
+  전략:
+  - accent 색상은 틸(teal) 하나만 사용한다 (링크, 포커스링, 상태점, 그라디언트 텍스트).
+  - 버튼 배경에는 틸을 쓰지 않는다 (대비 실패 방지). 네이비 크롬 위에서는 밝은 필,
+    라이트 콘텐츠 위에서는 네이비 필을 사용한다.
+  - 코너 반경은 전역 스케일 하나로 고정한다 (버튼/입력 10px, 카드 14px, 배지 pill).
+*/
+
+:root {
+  color-scheme: light;
+
+  /* neutral content surfaces (light, default) */
+  --bg: #f3f5f6;
+  --bg-raised: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #eef1f3;
+  --surface-3: #e3e8eb;
+  --border: #dde3e7;
+  --border-strong: #c4ccd1;
+
+  --text: #10202c;
+  --text-muted: #55666f;
+  --text-faint: #8b979d;
+  --text-on-dark: #eef4f4;
+  --text-on-dark-muted: #a9bcc2;
+
+  /* navy chrome (fixed brand structural color, independent of light/dark content theme) */
+  --navy-950: #050c14;
+  --navy-900: #0a1826;
+  --navy-800: #102436;
+  --navy-700: #17334a;
+  --navy-600: #204a63;
+
+  /* single accent color: teal */
+  --teal-300: #8fe9db;
+  --teal-400: #43ddc7;
+  --teal-500: #17b8a6;
+  --teal-600: #0f9488;
+  --teal-700: #0b756c;
+
+  --accent: var(--teal-500);
+  --accent-strong: var(--teal-600);
+  --accent-soft: #e3fbf5;
+
+  --danger: #c8432f;
+  --danger-soft: #fbe9e4;
+  --warning: #b6791c;
+  --warning-soft: #fbf1de;
+  --success: #1c8a5c;
+  --success-soft: #e4f5ec;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(10, 24, 38, 0.06);
+  --shadow-md: 0 6px 20px rgba(10, 24, 38, 0.08);
+  --shadow-lg: 0 20px 48px rgba(10, 24, 38, 0.16);
+
+  --font-sans:
+    "Manrope", -apple-system, "Pretendard", "Apple SD Gothic Neo", system-ui,
+    sans-serif;
+
+  --container: 1240px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #0b1620;
+    --bg-raised: #101f2c;
+    --surface: #121f2b;
+    --surface-2: #162836;
+    --surface-3: #1c3244;
+    --border: #223648;
+    --border-strong: #2d4358;
+
+    --text: #e9f0f2;
+    --text-muted: #9fb1b8;
+    --text-faint: #6f838b;
+
+    --accent-soft: #0e332f;
+    --danger-soft: #351d18;
+    --warning-soft: #332510;
+    --success-soft: #12301f;
+  }
+}

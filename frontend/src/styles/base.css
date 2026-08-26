@@ -1,0 +1,328 @@
+@import "tailwindcss";
+@import "@fontsource/manrope/400.css";
+@import "@fontsource/manrope/500.css";
+@import "@fontsource/manrope/600.css";
+@import "@fontsource/manrope/700.css";
+@import "@fontsource/manrope/800.css";
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--teal-300);
+  color: var(--navy-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal-500);
+  outline-offset: 2px;
+}
+
+/* ---------- layout helpers ---------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-inline: 16px;
+  }
+}
+
+/* ---------- typography helpers ---------- */
+
+.text-gradient-brand {
+  background: linear-gradient(
+    100deg,
+    var(--teal-300) 0%,
+    var(--teal-500) 55%,
+    var(--teal-700) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- buttons ---------- */
+/* Two contexts: on dark navy chrome (btn-on-dark) vs on light content (default).
+   Teal never fills a button background (fails WCAG AA vs both white and navy text). */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 11px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+  transition:
+    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--navy-900);
+  color: #ffffff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--navy-800);
+}
+
+.btn-on-dark {
+  background: #f6f8f4;
+  color: var(--navy-950);
+}
+.btn-on-dark:hover:not(:disabled) {
+  background: #ffffff;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+
+.btn-secondary-on-dark {
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.32);
+}
+.btn-secondary-on-dark:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--accent-strong);
+  padding-inline: 4px;
+}
+.btn-ghost:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 13px;
+}
+
+.btn-icon {
+  padding: 10px;
+  border-radius: var(--radius-pill);
+}
+
+/* ---------- cards ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.card-flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ---------- tags / badges ---------- */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  line-height: 1.3;
+}
+
+.tag-neutral {
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+.tag-accent {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+.tag-success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.tag-warning {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+.tag-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ---------- form fields ---------- */
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.field .hint {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 5px;
+}
+
+.field .error {
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 13px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.input::placeholder {
+  color: var(--text-faint);
+}
+
+.input:hover {
+  border-color: var(--teal-600);
+}
+
+.input:focus-visible {
+  border-color: var(--teal-500);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  outline: none;
+}
+
+textarea.input {
+  min-height: 96px;
+  resize: vertical;
+}
+
+/* ---------- table ---------- */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  text-align: left;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  font-weight: 700;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover td {
+  background: var(--surface-2);
+}
+
+.hr {
+  height: 1px;
+  border: 0;
+  background: var(--border);
+  margin: 0;
+}
