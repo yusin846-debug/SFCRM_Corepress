@@ -17,6 +17,8 @@ if (!salesOwners.isEmpty()) salesOwnerId = salesOwners[0].Id;
 
 // -------- Local helper class --------
 class AssetFactory {
+  Id ownerId;
+  AssetFactory(Id ownerId) { this.ownerId = ownerId; }
   Asset build(Id accountId, Id contactId, Id productId,
               String name, String city, String street,
               Date installDate, Integer runtimeHours, String status, String alertStatus) {
@@ -29,6 +31,7 @@ class AssetFactory {
       Runtime_As_Of__c = Date.today(),
       Total_Runtime_Hours__c = runtimeHours
     );
+    if (ownerId != null) a.OwnerId = ownerId;
     if (String.isNotBlank(alertStatus)) {
       a.Sales_Alert_Status__c = alertStatus;
       a.Sales_Alert_Sent_At__c = System.now();
@@ -113,7 +116,9 @@ if (!toInsertContacts.isEmpty()) {
 }
 
 // -------- Asset seeds --------
-AssetFactory af = new AssetFactory();
+// Owner must be a sales user in the portal role hierarchy (김영업) — assets
+// owned by an admin above the portal role are invisible to portal users.
+AssetFactory af = new AssetFactory(salesOwnerId);
 Id samyangId = accountsByName.get('삼양중공업').Id;
 Id jungminId = accountsByName.get('정민플라스틱').Id;
 Id sungjinId = accountsByName.get('성진공업').Id;
