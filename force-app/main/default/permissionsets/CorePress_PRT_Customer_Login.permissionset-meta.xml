@@ -4,6 +4,14 @@
         <apexClass>CpPortalFileController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>CpProductCatalogController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CpCatalogLeadController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description
   >License-free clone of CorePress PRT Customer for Customer Community Plus Login users.</description>
     <fieldPermissions>
