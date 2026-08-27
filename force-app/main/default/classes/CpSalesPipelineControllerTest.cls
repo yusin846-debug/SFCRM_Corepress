@@ -10,7 +10,7 @@ private class CpSalesPipelineControllerTest {
 
         System.assertEquals(true, result, 'A matching open Lead should be synced');
         Lead updated = [SELECT Status FROM Lead WHERE Company = '대한케미컬 테스트'];
-        System.assertEquals('제안 진행', updated.Status, 'Lead should advance to the Working stage');
+        System.assertEquals('RFP접수', updated.Status, 'Lead should advance to the RFP접수 stage');
     }
 
     @IsTest
@@ -39,7 +39,7 @@ private class CpSalesPipelineControllerTest {
         }
         Account acct = new Account(Name = 'CpSalesPipeline 테스트 계정', ShippingStreet = '테스트로 1');
         insert acct;
-        Opportunity opp = new Opportunity(Name = '테스트 기회', AccountId = acct.Id, StageName = 'Qualification', CloseDate = Date.today().addDays(30));
+        Opportunity opp = new Opportunity(Name = '테스트 기회', AccountId = acct.Id, StageName = 'RFP 검토중', CloseDate = Date.today().addDays(30));
         insert opp;
 
         Test.startTest();
@@ -62,7 +62,7 @@ private class CpSalesPipelineControllerTest {
 
     @IsTest
     static void isIdempotentWhenLeadAlreadyAdvanced() {
-        insert new Lead(Company = '이미 진행 중', LastName = '테스트', Email = 'already.working@daehan-corepress-poc.com', LeadSource = '카탈로그 문의', Privacy_Consent__c = true, Status = '제안 진행');
+        insert new Lead(Company = '이미 진행 중', LastName = '테스트', Email = 'already.working@daehan-corepress-poc.com', LeadSource = '카탈로그 문의', Privacy_Consent__c = true, Status = 'RFP접수');
 
         Test.startTest();
         Boolean result = CpSalesPipelineController.syncLeadOnRfpSubmit('이미 진행 중');
@@ -70,6 +70,6 @@ private class CpSalesPipelineControllerTest {
 
         System.assertEquals(true, result, 'Lead already at the Working stage should still report success');
         Lead unchanged = [SELECT Status FROM Lead WHERE Company = '이미 진행 중'];
-        System.assertEquals('제안 진행', unchanged.Status, 'Status should remain unchanged, not re-written');
+        System.assertEquals('RFP접수', unchanged.Status, 'Status should remain unchanged, not re-written');
     }
 }

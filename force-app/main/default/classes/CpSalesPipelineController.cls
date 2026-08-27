@@ -5,7 +5,7 @@
  * returns that record data to the caller — only whether a sync happened.
  */
 public without sharing class CpSalesPipelineController {
-    private static final String WORKING_STATUS = '제안 진행';
+    private static final String WORKING_STATUS = 'RFP접수';
     private static final String SALES_OWNER_USERNAME = 'test.teamlead.backup@corepress.demo';
 
     /**

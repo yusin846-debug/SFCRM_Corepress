@@ -28,11 +28,11 @@ const OPPORTUNITY_LIST_FIELDS = [
     'Opportunity.Description',
     'Opportunity.IsClosed'
 ];
-const RFP_STAGES = ['Qualification', 'Discovery'];
-const RFQ_STAGES = ['Proposal/Quote', 'Negotiation', 'Closed Won', 'Closed Lost'];
+const RFP_STAGES = ['RFP 검토중', '���체 제안', '숏리스트 선정'];
+const RFQ_STAGES = ['RFQ 접수', '사양 협상', '견적 제출', '계약 검토', '경제성 검토', '예산 승인 대기', 'Closed Won', 'Closed Lost'];
 const RFP_TYPE_MAP = {
-    '신규 설비 도입': 'New Business',
-    '노후화 장비 교체': 'Existing Business',
+    '신규 설비 도입': '신규 도입',
+    '노후화 장비 교체': '설비 교체',
     '기타': 'Services'
 };
 
@@ -220,7 +220,7 @@ export default class CpRfpPortal extends LightningElement {
                     [OPPORTUNITY_NAME.fieldApiName]: title,
                     [OPPORTUNITY_ACCOUNT_ID.fieldApiName]: this.accountId,
                     [OPPORTUNITY_TYPE.fieldApiName]: RFP_TYPE_MAP[this.fieldValue(form, 'rfpType')] || 'Services',
-                    [OPPORTUNITY_STAGE.fieldApiName]: 'Qualification',
+                    [OPPORTUNITY_STAGE.fieldApiName]: 'RFP 검토중',
                     [OPPORTUNITY_CLOSE_DATE.fieldApiName]: this.fieldValue(form, 'rfpCloseDate'),
                     [OPPORTUNITY_DESCRIPTION.fieldApiName]: this.fieldValue(form, 'rfpPurpose')
                 }
@@ -263,7 +263,7 @@ export default class CpRfpPortal extends LightningElement {
                 fields: {
                     [OPPORTUNITY_NAME.fieldApiName]: title,
                     [OPPORTUNITY_ACCOUNT_ID.fieldApiName]: this.accountId,
-                    [OPPORTUNITY_STAGE.fieldApiName]: 'Proposal/Quote',
+                    [OPPORTUNITY_STAGE.fieldApiName]: 'RFQ 접수',
                     [OPPORTUNITY_CLOSE_DATE.fieldApiName]: this.fieldValue(form, 'rfqCloseDate') || this.defaultCloseDate(),
                     [OPPORTUNITY_DESCRIPTION.fieldApiName]: description
                 }
