@@ -47,10 +47,10 @@ public without sharing class CpQuoteController {
       WHERE Opportunity.AccountId = :customerAccountId
       ORDER BY CreatedDate DESC
     ]) {
-      // Legacy proposal-only quotes stay hidden until they belong to a persisted RFP journey.
+      // Portal customers only ever see quotes on the current RFP journey — legacy
+      // sales quotes accumulated on the Account stay out of the portal entirely.
       if (
         isExternalCustomer() &&
-        q.Status == 'Presented' &&
         !scenarioOpportunityIds.contains(q.OpportunityId)
       )
         continue;
