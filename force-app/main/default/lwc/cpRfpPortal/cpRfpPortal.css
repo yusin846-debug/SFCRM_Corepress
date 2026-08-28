@@ -1120,3 +1120,41 @@ select:invalid {
     linear-gradient(180deg, #f8fafc 0%, #f4f7fa 52%, #f7f9fb 100%);
   background-attachment: fixed;
 }
+
+.revision-request {
+  margin-top: 14px;
+}
+.link-button {
+  padding: 0;
+  border: 0;
+  color: #167f8d;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+}
+.revision-panel {
+  margin-top: 10px;
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+  border: 1px solid #dbe4ea;
+  border-radius: 8px;
+  background: #f7fafc;
+}
+.revision-panel label {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+}
+.revision-panel textarea {
+  padding: 8px 10px;
+  font: inherit;
+  border: 1px solid #cbd6de;
+  border-radius: 6px;
+  resize: vertical;
+}
+.revision-panel .primary {
+  justify-self: start;
+}

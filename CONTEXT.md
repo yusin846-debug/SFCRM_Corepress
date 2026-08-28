@@ -73,3 +73,25 @@ _Avoid_: 보증 만료 (연장·재가입 보증 케이스를 놓침)
 **김영업(SALES_OWNER)**:
 포털에서 접수된 Lead와 Opportunity의 소유자로 지정되는 CorePress 내부 영업사원 유저(`saleskim@corepress.demo`). 두 컨트롤러(`CpCatalogLeadController`, `CpSalesPipelineController`)의 `SALES_OWNER_USERNAME` 상수로 참조되며, 이 유저가 없거나 비활성이면 소유권 재할당은 조용히 스킵된다. 프로필은 Minimum Access - Salesforce라 Lead/Opportunity 접근은 별도 permission set `CorePress_Sales_Owner`로 부여된다.
 _Avoid_: 시스템 관리자(admin) 소유 (실제 영업 담당자 아니므로 시연 흐름 어색)
+
+## 장비 지원 지식
+
+**장비 모델**:
+고객 문의의 기준이 되는 압축기 또는 드라이어 본체 Product. 부품과 서비스는 장비 모델에 연결되는 항목이지 독립 장비 모델이 아니다.
+_Avoid_: 모든 Product를 장비로 간주, 부품 모델
+
+**고객 보유 장비**:
+고객사에 설치된 개별 Asset. 장비 모델의 공통 지식과 달리 시리얼 번호, 설치 상태처럼 고객별 사실을 나타낸다.
+_Avoid_: Product, 장비 모델
+
+**Product 기반 데모 지식**:
+Product의 명칭, 코드, 설명과 수명·정비 필드를 확정 정보로 삼고 교육·시연을 위해 보강한 가상 장비 안내 자료. 실제 제조사 매뉴얼이나 현장 작업 지침이 아니다.
+_Avoid_: 공식 매뉴얼, 실장비 정비 지침
+
+**데모 오류 코드**:
+AIR, TMP, PRS, VIB, MTR, DRY, SYS 계열로 구성한 PoC 전용 증상 분류 코드. 실제 장비의 제어기 오류 코드가 아니다.
+_Avoid_: 제조사 오류 코드, 실제 알람 코드
+
+**기준 원천**:
+Product와 Asset의 실시간 구조화 값이 최우선이고, 생성 문서는 설명과 검색 문맥을 보충한다. 양쪽 모두 근거가 없으면 정보 없음으로 처리한다.
+_Avoid_: 생성 문서를 원장으로 사용, 검색 실패 시 추론

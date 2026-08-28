@@ -323,6 +323,72 @@ private class CpSalesPipelineControllerTest {
   }
 
   @IsTest
+  static void shouldRecordRevisionRequestAsVisibleEvent() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead lead = [SELECT Id FROM Lead WHERE Company = :COMPANY LIMIT 1];
+    Id rfpId = CpSalesPipelineController.submitRfp(
+      buildSubmission(account.Id, contact.Id, lead.Id)
+    );
+
+    Test.startTest();
+    CpSalesPipelineController.requestProposalRevision(
+      rfpId,
+      contact.Id,
+      '납기를 2주 앞당겨 주세요.'
+    );
+    Test.stopTest();
+
+    List<CorePress_RFP_Event__c> events = [
+      SELECT Detail__c, Visible_To_Customer__c
+      FROM CorePress_RFP_Event__c
+      WHERE RFP__c = :rfpId AND Event_Type__c = '제안서 수정요청'
+    ];
+    Assert.areEqual(1, events.size(), 'One revision-request event expected');
+    Assert.isTrue(
+      events[0].Visible_To_Customer__c,
+      'Revision request must be visible on the customer timeline'
+    );
+    Assert.isTrue(
+      events[0].Detail__c.contains('2주'),
+      'Customer message should be kept on the event'
+    );
+  }
+
+  @IsTest
+  static void shouldRejectBlankRevisionRequest() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead lead = [SELECT Id FROM Lead WHERE Company = :COMPANY LIMIT 1];
+    Id rfpId = CpSalesPipelineController.submitRfp(
+      buildSubmission(account.Id, contact.Id, lead.Id)
+    );
+
+    Test.startTest();
+    try {
+      CpSalesPipelineController.requestProposalRevision(
+        rfpId,
+        contact.Id,
+        '  '
+      );
+      Assert.fail('Blank revision text must be rejected');
+    } catch (AuraHandledException expected) {
+      Assert.isNotNull(expected.getMessage());
+    }
+    Test.stopTest();
+  }
+
+  @IsTest
   static void shouldReturnOnlyCatalogLeads() {
     Lead serviceLead = TestDataFactory.createCatalogLead(
       COMPANY,

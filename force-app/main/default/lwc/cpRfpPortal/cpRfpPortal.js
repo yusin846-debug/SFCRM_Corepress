@@ -13,6 +13,7 @@ import submitRfpRequest from "@salesforce/apex/CpSalesPipelineController.submitR
 import submitRfqRequest from "@salesforce/apex/CpSalesPipelineController.submitRfq";
 import selectShortlist from "@salesforce/apex/CpSalesPipelineController.selectShortlist";
 import recordProposalDownload from "@salesforce/apex/CpSalesPipelineController.recordProposalDownload";
+import requestProposalRevision from "@salesforce/apex/CpSalesPipelineController.requestProposalRevision";
 import getRfpsForAccount from "@salesforce/apex/CpSalesPipelineController.getRfpsForAccount";
 import getTimeline from "@salesforce/apex/CpSalesPipelineController.getTimeline";
 import getLeadsForAccount from "@salesforce/apex/CpSalesPipelineController.getLeadsForAccount";
@@ -71,6 +72,10 @@ export default class CpRfpPortal extends LightningElement {
   selectedRfpId = "";
   selectedRfqId = "";
   rfpEquipmentValue = "";
+  showRevisionPanel = false;
+  revisionText = "";
+  isSubmittingRevision = false;
+  revisionError = "";
 
   get showIssue() {
     return this.activeTab === "issue";
@@ -326,16 +331,15 @@ export default class CpRfpPortal extends LightningElement {
   get timelineDisplay() {
     const events = [...this.timeline];
     const hasSubmitEvent = events.some((e) => e.eventType === "제안서 제출");
+    // Fallback row for when a rep attached the proposal file without running the
+    // "제안서 제출" quick action. Only ever shows once a real file exists.
     if (this.selectedRfp?.hasProposal && !hasSubmitEvent) {
-      const cdlId = this.selectedRfp.proposalContentDocumentId;
       const title = this.selectedRfp.proposalTitle;
       const uploadedAt =
         this.selectedRfp.proposalUploadedAt || this.selectedRfp.submittedAt;
       events.push({
         eventType: "제안서 제출",
-        detail: cdlId
-          ? `${title || "제안서 파일"} 첨부 완료 — 다운로드 가능`
-          : "CorePress 영업담당자가 제안서를 등록했습니다.",
+        detail: `${title || "제안서 파일"} 첨부 완료 — 다운로드 가능`,
         occurredAt: uploadedAt,
         displayDate: this.formatDateTime(uploadedAt)
       });
@@ -565,6 +569,41 @@ export default class CpRfpPortal extends LightningElement {
     } catch (error) {
       this.rfpSubmitError =
         error?.body?.message || "제안서 다운로드 이력을 기록하지 못했습니다.";
+    }
+  }
+
+  toggleRevisionPanel() {
+    this.showRevisionPanel = !this.showRevisionPanel;
+    this.revisionError = "";
+    this.revisionText = "";
+  }
+
+  handleRevisionInput(event) {
+    this.revisionText = event.target.value;
+  }
+
+  async submitRevisionRequest() {
+    if (!this.selectedRfp) return;
+    if (!this.revisionText.trim()) {
+      this.revisionError = "수정 요청 내용을 입력해 주세요.";
+      return;
+    }
+    this.isSubmittingRevision = true;
+    this.revisionError = "";
+    try {
+      await requestProposalRevision({
+        rfpId: this.selectedRfp.id,
+        contactId: this.contactId,
+        message: this.revisionText.trim()
+      });
+      await refreshApex(this.wiredTimelineResult);
+      this.revisionText = "";
+      this.showRevisionPanel = false;
+    } catch (error) {
+      this.revisionError =
+        error?.body?.message || "수정 요청을 전달하지 못했습니다.";
+    } finally {
+      this.isSubmittingRevision = false;
     }
   }
 

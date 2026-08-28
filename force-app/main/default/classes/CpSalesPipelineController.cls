@@ -6,7 +6,6 @@ public without sharing class CpSalesPipelineController {
   private static final String NEW_INSTALLATION_RECORD_TYPE = 'New_Installation';
   private static final String NEW_BUSINESS_TYPE = 'New Business';
   private static final String SALES_OWNER_USERNAME = 'saleskim@corepress.demo';
-  private static final String PROPOSAL_KEY = 'CP7100_PLUS';
   private static final String LEAD_SOURCE_CATALOG = '카탈로그 문의';
 
   /** @param submission Customer RFP payload. @return Created RFP Id. */
@@ -72,8 +71,7 @@ public without sharing class CpSalesPipelineController {
       Submitted_At__c = submittedAt,
       Source__c = String.isBlank(submission.source)
         ? '포털'
-        : submission.source.trim(),
-      Proposal_Key__c = PROPOSAL_KEY
+        : submission.source.trim()
     );
     Database.insert(rfp, AccessLevel.SYSTEM_MODE);
     attachOriginalFile(rfp.Id, submission);
@@ -130,7 +128,32 @@ public without sharing class CpSalesPipelineController {
       rfp.Opportunity__c,
       contactId,
       '제안서 다운로드',
-      'CP7100+ 기술 제안서를 다운로드했습니다.'
+      '기술 제안서를 다운로드했습니다.'
+    );
+  }
+
+  /**
+   * Customer asks CorePress to revise the proposal. Records a customer-visible
+   * event only — the sales owner is assumed to be notified out of band (no email).
+   *
+   * @param rfpId RFP the request is about. @param contactId Requesting Contact.
+   * @param message Free-text revision request from the customer.
+   */
+  @AuraEnabled
+  public static void requestProposalRevision(
+    Id rfpId,
+    Id contactId,
+    String message
+  ) {
+    CorePress_RFP__c rfp = getRfpForContact(rfpId, contactId);
+    if (String.isBlank(message))
+      throw new AuraHandledException('수정 요청 내용을 입력해 주세요.');
+    insertEvent(
+      rfp.Id,
+      rfp.Opportunity__c,
+      contactId,
+      '제안서 수정요청',
+      '제안서 수정요청이 접수되어 담당자에게 전달되었습니다.\n' + message.trim()
     );
   }
 
@@ -334,11 +357,11 @@ public without sharing class CpSalesPipelineController {
         Interested_Equipment__c,
         Status__c,
         Submitted_At__c,
-        Proposal_Key__c,
         (
           SELECT
             ContentDocumentId,
             ContentDocument.Title,
+            ContentDocument.ContentModifiedDate,
             ContentDocument.LatestPublishedVersionId
           FROM ContentDocumentLinks
           ORDER BY SystemModstamp DESC
@@ -662,13 +685,14 @@ public without sharing class CpSalesPipelineController {
       status = rfp.Status__c;
       submittedAt = rfp.Submitted_At__c;
       shortlistComplete = rfp.Opportunity__c != null;
-      Boolean hasSeededProposal = rfp.Proposal_Key__c == PROPOSAL_KEY;
-      Boolean hasAttachedFile = !rfp.ContentDocumentLinks.isEmpty();
-      hasProposal = hasSeededProposal || hasAttachedFile;
-      if (hasAttachedFile) {
+      // 제안서는 CorePress 담당자가 실제 파일을 첨부했을 때만 "제출됨"으로 본다.
+      hasProposal = !rfp.ContentDocumentLinks.isEmpty();
+      if (hasProposal) {
         proposalContentDocumentId = rfp.ContentDocumentLinks[0]
           .ContentDocumentId;
         proposalTitle = rfp.ContentDocumentLinks[0].ContentDocument.Title;
+        proposalUploadedAt = rfp.ContentDocumentLinks[0]
+          .ContentDocument.ContentModifiedDate;
       }
     }
   }

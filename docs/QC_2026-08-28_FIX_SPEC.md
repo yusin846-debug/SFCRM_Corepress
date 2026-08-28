@@ -140,31 +140,29 @@ RFP·RFQ·견적 세 화면 모두 **현재 `CorePress_RFP__c` 저널에 연결�
 
 ---
 
-## D. 제안서 라이프사이클 (`cpRfpPortal` + `CorePress_RFP__c`) — QC 항목 3 (Q9·Q10 — 확정)
+## D. 제안서 라이프사이클 (`cpRfpPortal` + `CorePress_RFP__c`) — QC 항목 3 (Q9·Q10) — **배포 완료 2026-08-28**
 
-### D-1. 자동 "제안서 제출" 제거
+### D-1. 자동 "제안서 제출" 제거 ✅
 
-- `CpSalesPipelineController.submitRfp`: `Proposal_Key__c = PROPOSAL_KEY` **하드코딩 제거**.
-- `RfpSummary.hasProposal` = `ContentDocumentLinks` 에 실제 첨부가 있을 때만 true (`hasSeededProposal` 분기 삭제).
-- `cpRfpPortal.timelineDisplay`: 실제 첨부 없을 때 합성 "제안서 제출" 이벤트 push 하는 로직 제거.
-- "제안서 다운로드" 버튼: `hasProposal`(실파일) 일 때만 활성. 아니면 "제안서 준비 중" 유지.
+- `CpSalesPipelineController.submitRfp`: `Proposal_Key__c` 하드코딩 + `PROPOSAL_KEY` 상수 제거.
+- `RfpSummary.hasProposal` = `ContentDocumentLinks` 에 실제 첨부가 있을 때만 true. `proposalUploadedAt` = `ContentDocument.ContentModifiedDate`.
+- `cpRfpPortal.timelineDisplay`: 합성 "제안서 제출" 행은 실제 파일이 있을 때만, 파일 기반 문구로만 표시(담당자 등록 문구 분기 제거).
+- "제안서 다운로드" 버튼: `hasProposal`(실파일) 일 때만 활성.
 
-### D-2. 담당자용 "제안서 제출" Quick Action
+### D-2. 담당자용 "제안서 제출" Quick Action ✅ (레이아웃 배치만 수동)
 
-- `CorePress_RFP__c` 에 Quick Action **"제안서 제출"**: 담당자(김영업)가 org의 RFP 레코드에서 파일 업로드.
-- 실행 시:
-  - `ContentDocument` 를 RFP에 링크
-  - `CorePress_RFP_Event__c` 생성: `Event_Type__c = '제안서 제출'`, `Visible_To_Customer__c = true`
-  - 신규 필드 `CorePress_RFP__c.Proposal_Submitted_At__c` (Datetime) 스탬프
-- 데모: 라이브로 진행(대한케미컬 RFP는 데모 중 생성되므로 시드 첨부 불필요).
+- Screen Flow `CorePress_RFP_Submit_Proposal` + Quick Action `CorePress_RFP__c.Submit_Proposal` (라벨 "제안서 제출") 배포됨.
+  - 파일 업로드(`forceContent:fileUpload`, `recordId`={!recordId}) → RFP에 첨부
+  - `CorePress_RFP_Event__c` 생성 (`Event_Type__c='제안서 제출'`, `Visible_To_Customer__c=true`, `Occurred_At__c=now`)
+  - `CorePress_RFP__c.Proposal_Submitted_At__c` (신규 Datetime 필드) 스탬프
+- **남은 수동 1단계**: Setup → Object Manager → CorePress RFP → 페이지 레이아웃 → "제안서 제출" 액션을 Lightning 액션 영역에 드래그. (repo에 레이아웃 미포함이라 자동화 불가.) 또는 담당자가 표준 Files 관련 목록에 첨부해도 D-1 로직상 포털에 반영됨.
+- `Proposal_Key__c` 필드는 org에 남아있으나 코드에서 미사용(파괴적 삭제 보류).
 
-### D-3. 제안서 수정요청 (신규 기능)
+### D-3. 제안서 수정요청 ✅
 
-- "내 RFP 현황" 화면에 **"제안서 수정요청"** 버튼 + 사유 입력(textarea).
-- 제출 시:
-  - `CorePress_RFP_Event__c` 생성: `Event_Type__c = '제안서 수정요청'`, `Detail__c` = 고객 입력, `Visible_To_Customer__c = true`
-  - 타임라인에 "제안서 수정요청 접수 · 담당자에게 전달됨" 표시
-  - **실제 이메일 발송 안 함** (Q17). 추후 `Messaging.SingleEmailMessage` 한 줄 추가 가능하도록 훅만.
+- "내 RFP 현황"에 **"제안서 수정요청"** 버튼(제안서 준비된 RFP만) + 사유 textarea 패널.
+- `CpSalesPipelineController.requestProposalRevision(rfpId, contactId, message)` → `CorePress_RFP_Event__c` (`Event_Type__c='제안서 수정요청'`, 고객 입력 보존, `Visible_To_Customer__c=true`) → 타임라인 표시.
+- **이메일 발송 안 함** (Q17). 테스트 2건 추가.
 
 ---
 
