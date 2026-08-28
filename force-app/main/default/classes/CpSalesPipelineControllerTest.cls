@@ -334,6 +334,45 @@ private class CpSalesPipelineControllerTest {
   }
 
   @IsTest
+  static void shouldReturnJourneyRfqsForAccount() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead lead = [SELECT Id FROM Lead WHERE Company = :COMPANY LIMIT 1];
+    Id rfpId = CpSalesPipelineController.submitRfp(
+      buildSubmission(account.Id, contact.Id, lead.Id)
+    );
+    CpSalesPipelineController.selectShortlist(rfpId, account.Id, contact.Id);
+    CpSalesPipelineController.submitRfq(
+      rfpId,
+      contact.Id,
+      'CP7100+ RFQ',
+      Date.today().addDays(40),
+      ''
+    );
+
+    Test.startTest();
+    List<CpSalesPipelineController.RfqSummary> rfqs = CpSalesPipelineController.getRfqsForAccount(
+      account.Id
+    );
+    Test.stopTest();
+
+    Assert.areEqual(1, rfqs.size(), 'One journey RFQ expected');
+    Assert.areEqual('CP7100+ RFQ', rfqs[0].name);
+    Assert.isNotNull(rfqs[0].rfpNumber, 'RFQ row should carry the RFP number');
+    Assert.areEqual('RFQ 접수', rfqs[0].stage);
+    Assert.areEqual(
+      0,
+      CpSalesPipelineController.getRfqsForAccount(null).size(),
+      'Null accountId returns empty'
+    );
+  }
+
+  @IsTest
   static void shouldRecordRevisionRequestAsVisibleEvent() {
     Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
     Contact contact = [

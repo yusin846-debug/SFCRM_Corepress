@@ -601,27 +601,54 @@
             ><template if:true={isRfqPortalMode}
               ><div class="two-cols">
                 <label class="field"
-                  ><span>연결 RFP</span
-                  ><input placeholder="예) DHC-RFP-2026-014" readonly /></label
-                ><label class="field"
-                  ><span>사내 품의 확인 <em>필수</em></span
-                  ><select required>
-                    <option value="" disabled selected>
-                      예) 진행 상태를 선택해 주세요
+                  ><span>연결 RFP <em>필수</em></span
+                  ><select name="rfqRfpId" required onchange={selectRfqRfp}>
+                    <option value="">
+                      숏리스트 완료된 RFP를 선택해 주세요
                     </option>
+                    <template for:each={shortlistedRfps} for:item="rfp"
+                      ><option
+                        key={rfp.id}
+                        value={rfp.id}
+                        selected={rfp.selected}
+                      >
+                        {rfp.name}
+                      </option></template
+                    ></select
+                  ><template if:false={hasShortlistedRfps}
+                    ><small class="warning"
+                      >먼저 제안서를 숏리스트로 선정해 주세요.</small
+                    ></template
+                  ></label
+                ><label class="field"
+                  ><span>사내 품의 확인</span
+                  ><select>
+                    <option value="">진행 상태를 선택해 주세요</option>
                     <option>승인 완료</option>
                     <option>진행 중</option>
                   </select></label
                 ><label class="field"
-                  ><span>RFQ 요청 제목 <em>필수</em></span
+                  ><span>RFQ 요청 제목</span
                   ><input
                     name="rfqTitle"
-                    required
-                    placeholder="예) 제2공장 증설 CP7100+ 견적 요청" /></label
+                    value={rfqTitleValue}
+                    onchange={handleRfqTitleInput}
+                    placeholder="연결 RFP를 선택하면 자동 입력됩니다" /></label
                 ><label class="field"
-                  ><span>희망 납기</span><input name="rfqCloseDate" type="date"
+                  ><span>희망 납기</span
+                  ><input
+                    name="rfqCloseDate"
+                    type="date"
+                    value={rfqCloseDateValue}
+                    onchange={handleRfqCloseInput}
                 /></label>
               </div>
+              <template if:true={rfqSpecValue}
+                ><label class="field"
+                  ><span>확정 사양 (RFP에서 가져옴)</span
+                  ><textarea rows="3" readonly>{rfqSpecValue}</textarea>
+                </label></template
+              >
               <div class="form-block agreed-products">
                 <div class="agreed-heading">
                   <div>
@@ -739,11 +766,11 @@
                     placeholder="예) 계약 30% / 출하 40% / 시운전·인수 후 30%"
                 /></label>
                 <div class="check-grid">
-                  <label><input type="checkbox" required />확정 사양</label
-                  ><label><input type="checkbox" required />희망 납기</label
-                  ><label><input type="checkbox" required />수량</label
-                  ><label><input type="checkbox" required />결제 조건</label
-                  ><label><input type="checkbox" required />RFQ 원본</label>
+                  <label><input type="checkbox" />확정 사양</label
+                  ><label><input type="checkbox" />희망 납기</label
+                  ><label><input type="checkbox" />수량</label
+                  ><label><input type="checkbox" />결제 조건</label
+                  ><label><input type="checkbox" />RFQ 원본</label>
                 </div>
               </div></template
             ><template if:true={rfqSubmitError}

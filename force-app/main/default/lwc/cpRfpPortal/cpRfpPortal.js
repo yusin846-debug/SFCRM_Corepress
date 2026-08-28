@@ -15,6 +15,7 @@ import selectShortlist from "@salesforce/apex/CpSalesPipelineController.selectSh
 import recordProposalDownload from "@salesforce/apex/CpSalesPipelineController.recordProposalDownload";
 import requestProposalRevision from "@salesforce/apex/CpSalesPipelineController.requestProposalRevision";
 import getRfpsForAccount from "@salesforce/apex/CpSalesPipelineController.getRfpsForAccount";
+import getRfqsForAccount from "@salesforce/apex/CpSalesPipelineController.getRfqsForAccount";
 import getTimeline from "@salesforce/apex/CpSalesPipelineController.getTimeline";
 import getLeadsForAccount from "@salesforce/apex/CpSalesPipelineController.getLeadsForAccount";
 import headerLogo from "@salesforce/resourceUrl/CorePressHeaderLogo";
@@ -30,15 +31,6 @@ const OPPORTUNITY_LIST_FIELDS = [
   "Opportunity.Description",
   "Opportunity.RecordType.DeveloperName",
   "Opportunity.IsClosed"
-];
-const RFQ_STAGES = [
-  "숏리스트 선정",
-  "RFQ 접수",
-  "사양 협상",
-  "견적 제출",
-  "계약 검토",
-  "Closed Won",
-  "Closed Lost"
 ];
 
 export default class CpRfpPortal extends LightningElement {
@@ -72,6 +64,9 @@ export default class CpRfpPortal extends LightningElement {
   selectedRfpId = "";
   selectedRfqId = "";
   rfpEquipmentValue = "";
+  rfqTitleValue = "";
+  rfqCloseDateValue = "";
+  rfqSpecValue = "";
   showRevisionPanel = false;
   revisionText = "";
   isSubmittingRevision = false;
@@ -291,14 +286,36 @@ export default class CpRfpPortal extends LightningElement {
     }));
   }
 
+  rfqSummaries = [];
+  wiredRfqsResult;
+
+  @wire(getRfqsForAccount, { accountId: "$accountId" })
+  wiredRfqs(result) {
+    this.wiredRfqsResult = result;
+    this.rfqSummaries = (result.data || []).map((rfq) => ({
+      id: rfq.id,
+      name: rfq.name || "제목 미등록",
+      stage: rfq.stage || "",
+      closeDate: this.formatDate(rfq.closeDate),
+      description: rfq.description || "설명이 등록되지 않았습니다.",
+      rfpNumber: rfq.rfpNumber || "",
+      isClosed: Boolean(rfq.isClosed)
+    }));
+  }
+
   get rfpRequests() {
     return this.rfpRecords;
   }
   get rfqRequests() {
-    return this.pipelineOpportunities.filter(
-      (opp) =>
-        opp.recordType === "New_Installation" && RFQ_STAGES.includes(opp.stage)
-    );
+    return this.rfqSummaries;
+  }
+  get shortlistedRfps() {
+    return this.rfpRequests
+      .filter((rfp) => rfp.shortlistComplete)
+      .map((rfp) => ({ ...rfp, selected: rfp.id === this.selectedRfpId }));
+  }
+  get hasShortlistedRfps() {
+    return this.shortlistedRfps.length > 0;
   }
   get hasRfpRequests() {
     return this.rfpRequests.length > 0;
@@ -398,6 +415,24 @@ export default class CpRfpPortal extends LightningElement {
   }
   selectRfqRequest(event) {
     this.selectedRfqId = event.currentTarget.dataset.id;
+  }
+
+  // RFQ 폼에서 연결 RFP를 고르면 관련 값을 최대한 미리 채운다.
+  selectRfqRfp(event) {
+    this.selectedRfpId = event.target.value;
+    const rfp = this.shortlistedRfps.find((r) => r.id === this.selectedRfpId);
+    if (!rfp) return;
+    this.rfqTitleValue = rfp.title ? `${rfp.title} 견적 요청` : "";
+    this.rfqCloseDateValue = rfp.requestedDeliveryDate
+      ? String(rfp.requestedDeliveryDate).slice(0, 10)
+      : "";
+    this.rfqSpecValue = rfp.specifications || "";
+  }
+  handleRfqTitleInput(event) {
+    this.rfqTitleValue = event.target.value;
+  }
+  handleRfqCloseInput(event) {
+    this.rfqCloseDateValue = event.target.value;
   }
 
   selectTab(e) {
@@ -521,8 +556,9 @@ export default class CpRfpPortal extends LightningElement {
         "고객 계정 연결 정보가 없어 접수할 수 없습니다. 관리자에게 Contact 연결을 요청해 주세요.";
       return;
     }
-    const title = this.fieldValue(form, "rfqTitle");
-    if (this.hasDuplicateOpen(title)) {
+    const title =
+      this.rfqTitleValue.trim() || this.fieldValue(form, "rfqTitle");
+    if (title && this.hasDuplicateOpen(title)) {
       this.rfqSubmitError =
         "이미 동일한 제목으로 접수된 요청이 있습니다. 제목을 다시 확인해 주세요.";
       return;
@@ -538,12 +574,15 @@ export default class CpRfpPortal extends LightningElement {
         contactId: this.contactId,
         title,
         requestedDeliveryDate:
-          this.fieldValue(form, "rfqCloseDate") || this.defaultCloseDate(),
+          this.rfqCloseDateValue ||
+          this.fieldValue(form, "rfqCloseDate") ||
+          this.defaultCloseDate(),
         description
       });
       await Promise.all([
         refreshApex(this.wiredRfpsResult),
         refreshApex(this.wiredOpportunitiesResult),
+        refreshApex(this.wiredRfqsResult),
         refreshApex(this.wiredTimelineResult)
       ]);
       this.activeTab = "rfq-status";
@@ -625,7 +664,8 @@ export default class CpRfpPortal extends LightningElement {
       await Promise.all([
         refreshApex(this.wiredRfpsResult),
         refreshApex(this.wiredTimelineResult),
-        refreshApex(this.wiredOpportunitiesResult)
+        refreshApex(this.wiredOpportunitiesResult),
+        refreshApex(this.wiredRfqsResult)
       ]);
     } catch (error) {
       this.rfpSubmitError =

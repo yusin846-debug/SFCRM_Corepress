@@ -79,8 +79,6 @@ export default class CpAssetDetail extends LightningElement {
   cases = [];
   warrantyRecord;
   loadError = "";
-  agentMessage = "";
-  agentMessageIsError = false;
 
   @wire(getRecord, { recordId: USER_ID, fields: [USER_CONTACT_ID] })
   userRecord;
@@ -258,12 +256,6 @@ export default class CpAssetDetail extends LightningElement {
       ? `${this.serviceListUrl}?assetId=${this.recordId}`
       : this.serviceListUrl;
   }
-  get disableAgentButton() {
-    return !this.assetRecord || !this.recordId;
-  }
-  get agentMessageClass() {
-    return this.agentMessageIsError ? "agent-message error" : "agent-message";
-  }
   get hasCases() {
     return this.cases.length > 0;
   }
@@ -332,41 +324,6 @@ export default class CpAssetDetail extends LightningElement {
       .format(new Date(value))
       .replace(/\. /g, ".")
       .replace(/\.$/, "");
-  }
-  async handleAgentInquiry() {
-    this.agentMessage = "";
-    this.agentMessageIsError = false;
-
-    const messaging = window.embeddedservice_bootstrap;
-    if (
-      typeof messaging?.prechatAPI?.setHiddenPrechatFields !== "function" ||
-      typeof messaging?.utilAPI?.launchChat !== "function"
-    ) {
-      this.showAgentError(
-        "상담 채널을 준비하고 있습니다. 잠시 후 다시 시도해 주세요."
-      );
-      return;
-    }
-
-    try {
-      messaging.prechatAPI.setHiddenPrechatFields({
-        AssetId: this.recordId,
-        AssetName: this.assetName,
-        AssetSerialNumber: this.serial,
-        AssetProductName: this.model,
-        InquirySource: "CorePress Asset Detail"
-      });
-      await messaging.utilAPI.launchChat();
-      this.agentMessage = `${this.assetName} 정보를 상담 도우미에 전달했습니다.`;
-    } catch {
-      this.showAgentError(
-        "상담 도우미를 열지 못했습니다. 우측 하단 채팅 버튼을 이용해 주세요."
-      );
-    }
-  }
-  showAgentError(message) {
-    this.agentMessage = message;
-    this.agentMessageIsError = true;
   }
   handleLogout() {
     const returnUrl = encodeURIComponent("/corepress/s/login");

@@ -197,28 +197,22 @@ RFP·RFQ·견적 세 화면 모두 **현재 `CorePress_RFP__c` 저널에 연결�
 
 ---
 
-## F. RFQ 폼 + RFQ 현황 (`cpRfpPortal`) — QC 항목 4 (Q13 — 전부 확정)
+## F. RFQ 폼 + RFQ 현황 (`cpRfpPortal`) — QC 항목 4 (Q13) — **배포 완료 2026-08-28**
 
-### F-1. 연결 RFP → 픽리스트
+### F-1. 연결 RFP → 픽리스트 ✅
 
-- `cpRfpPortal.html` L546~547: 죽은 `<input ... readonly>` 제거.
-- `<select>` 로 교체: 계정의 **숏리스트 완료 RFP**(`Opportunity__c != null`) 목록, `selectedRfpId` 바인딩.
+- 죽은 `<input ... readonly>` 제거 → `<select name="rfqRfpId" required>`, `shortlistedRfps`(= `shortlistComplete` RFP) 옵션, `selected` 마킹 + `onchange={selectRfqRfp}` → `selectedRfpId` 세팅.
 
-### F-2. 필수 해제 + 오토필
+### F-2. 필수 해제 + 오토필 ✅
 
-- `required` 제거 대상: "사내 품의 확인" `<select>`, "RFQ 요청 제목" `<input>`, 확인용 체크박스 5개.
-- 연결 RFP 선택 시 오토필:
-  - RFQ 제목 ← RFP `Title__c` (+ " 견적 요청")
-  - 희망 납기 ← RFP `Requested_Delivery_Date__c`
-  - 사양 요약 ← RFP `Specifications__c`
-  - "앞단에서 가져올 수 있는 데이터는 최대한 prefill" 원칙.
+- `required` 제거: "사내 품의 확인" select, "RFQ 요청 제목" input, 확인 체크박스 5개. (유일 필수 = 연결 RFP)
+- 연결 RFP 선택 시 오토필: RFQ 제목 ← `Title__c + " 견적 요청"`, 희망 납기 ← `Requested_Delivery_Date__c`, 확정 사양(읽기전용) ← `Specifications__c`. `RfpSummary` 에 `requestedDeliveryDate`/`specifications` 추가.
 
-### F-3. RFQ 현황 빈 화면 → Apex
+### F-3. RFQ 현황 빈 화면 → Apex ✅
 
-- 원인: `cpRfpPortal` 의 `getRelatedListRecords` 가 중첩 `Opportunity.RecordType.DeveloperName` 을 안 돌려줘 `rfqRequests` 필터가 항상 실패. 견적 화면은 자체 Apex라 정상.
-- 신설 `CpSalesPipelineController.getRfqsForAccount(Id accountId)`:
-  - 저널 연결 + `RecordType.DeveloperName = 'New_Installation'` + `StageName IN (RFQ 단계들)` Opp 반환.
-  - `cpRfpPortal` 은 이 결과 사용, `getRelatedListRecords('Opportunities')` 의존 제거.
+- 신설 `CpSalesPipelineController.getRfqsForAccount(Id accountId)` → 저널 연결 + `RecordType.DeveloperName='New_Installation'` + RFQ 단계 Opp 반환(`RfqSummary`: name/stage/closeDate/rfpNumber/…).
+- `cpRfpPortal` 이 `getRelatedListRecords('Opportunities')` 대신 이걸 사용. `RFQ_STAGES` JS 상수 제거. submitRfq/handleShortlist 가 `wiredRfqsResult` refresh.
+- 테스트 `shouldReturnJourneyRfqsForAccount` 추가. (총 11 test / 100%)
 
 ---
 
@@ -239,22 +233,20 @@ RFP·RFQ·견적 세 화면 모두 **현재 `CorePress_RFP__c` 저널에 연결�
 - 커스텀 버튼이 `prechatAPI.setHiddenPrechatFields` / `utilAPI.launchChat` 를 직접 호출하다
   `"상담 채널을 준비하고 있습니다"` 로 실패하던 문제 자체가 사라짐 (그 코드 경로를 없앰).
 
-### H-1. `cpAssetDetail` 정리
+### H-1. `cpAssetDetail` 정리 ✅ (배포 완료 2026-08-28)
 
-- "AI 증상 문의" 버튼 마크업 제거.
-- `handleAgentInquiry`, `showAgentError`, `agentMessage`, `agentMessageIsError`, `agentMessageClass`,
-  `disableAgentButton` 및 관련 임포트/상태 제거.
-- 남은 CTA는 "서비스 요청" 하나.
+- "AI 증상 문의" 버튼 마크업 + `handleAgentInquiry`/`showAgentError`/`agentMessage`/`agentMessageIsError`/`agentMessageClass`/`disableAgentButton` 전부 제거.
+- 남은 hero CTA는 "서비스 요청" 하나. (`window.embeddedservice_bootstrap` 직접 호출 경로 소멸 → "상담 채널을 준비하고 있습니다" 에러 재발 불가)
 
-### H-2. "Ask Me Anything" 위젯 사이트 전역 노출
+### H-2. "Ask Me Anything" 위젯 사이트 전역 노출 — ⚙️ Experience Builder 수동 설정
 
-- 현재 일부 페이지(설비 상세 등)에만 뜸 → 포털 전 페이지에 노출.
-- 구현 단계에서 확인:
-  - 임베디드 메시징이 Experience Builder에서 페이지별 컴포넌트로 들어가 있는지 vs 사이트 전역 설정인지.
-  - 전역 노출 방법: 사이트 테마 레이아웃 / 모든 페이지 공통 영역에 임베디드 메시징 컴포넌트 배치,
-    또는 사이트 `head` 스니펫으로 부트스트랩 로드.
-  - 리포지토리의 `EmbeddedServiceConfig` / `digitalExperiences` 에서 현재 연결 상태 파악 후 조정.
-- 위젯 자체(에이전트 라우팅)는 사용자가 이미 정상화함 — 노출 범위만 손댄다.
+- 조사 결과: repo의 `digitalExperiences` / `ExperienceBundle` 에 임베디드 메시징 배치 정보 없음. 위젯은 **사이트 Head Markup 스니펫** 또는 **EmbeddedServiceConfig(`CorePress_Agent_Web`, WebV2/MIAW)** 로 주입되며, 이 계층은 이 저장소 메타데이터에 안 잡힘.
+- **수동 절차** (Experience Builder, 관리자):
+  1. Experience Builder → 해당 사이트 열기 → 설정(⚙️) → 고급 → **Head Markup 편집**.
+  2. Head Markup에 임베디드 메시징 부트스트랩 스니펫이 있으면 → **이미 전 페이지 전역**(head는 모든 페이지 공통). 다른 페이지에서 안 보이면 브라우저 캐시/게스트-로그인 상태 차이일 가능성 → 각 페이지 재확인.
+  3. 페이지별 "Embedded Messaging" 컴포넌트로 들어가 있으면 → 스니펫을 Head Markup으로 옮겨 전역화(권장) 하거나, 남은 페이지에 컴포넌트 추가.
+  4. 배포는 `Setup → Embedded Service Deployments → CorePress Agent Web → Code Snippet` 에서 최신 스니펫 복사.
+- 위젯/라우팅 자체는 사용자가 이미 정상화 — **노출 범위만** 손대는 작업이라 코드 변경 없음.
 
 ---
 

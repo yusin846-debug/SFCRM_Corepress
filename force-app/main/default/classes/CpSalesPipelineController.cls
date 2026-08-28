@@ -366,6 +366,8 @@ public without sharing class CpSalesPipelineController {
         Interested_Equipment__c,
         Status__c,
         Submitted_At__c,
+        Requested_Delivery_Date__c,
+        Specifications__c,
         (
           SELECT
             ContentDocumentId,
@@ -382,6 +384,51 @@ public without sharing class CpSalesPipelineController {
       LIMIT 50
     ])
       summaries.add(new RfpSummary(rfp));
+    return summaries;
+  }
+
+  private static final Set<String> RFQ_STAGES = new Set<String>{
+    '숏리스트 선정',
+    'RFQ 접수',
+    '사양 협상',
+    '견적 제출',
+    '계약 검토',
+    'Closed Won',
+    'Closed Lost'
+  };
+
+  /**
+   * RFQ 현황 rows — the new-installation Opportunities on this Account's RFP
+   * journeys. Replaces the LWC's getRelatedListRecords call, which never
+   * returned the spanning RecordType.DeveloperName so the filter always failed.
+   *
+   * @param accountId Customer Account. @return RFQ (Opportunity) rows.
+   */
+  @AuraEnabled(cacheable=true)
+  public static List<RfqSummary> getRfqsForAccount(Id accountId) {
+    List<RfqSummary> summaries = new List<RfqSummary>();
+    if (accountId == null)
+      return summaries;
+    enforceCurrentUserAccount(accountId, null);
+    Map<Id, String> rfpNumberByOpp = new Map<Id, String>();
+    for (CorePress_RFP__c journey : [
+      SELECT Name, Opportunity__c
+      FROM CorePress_RFP__c
+      WHERE Account__c = :accountId AND Opportunity__c != NULL
+    ])
+      rfpNumberByOpp.put(journey.Opportunity__c, journey.Name);
+    if (rfpNumberByOpp.isEmpty())
+      return summaries;
+    for (Opportunity opp : [
+      SELECT Id, Name, StageName, CloseDate, Description, Amount, IsClosed
+      FROM Opportunity
+      WHERE
+        Id IN :rfpNumberByOpp.keySet()
+        AND RecordType.DeveloperName = :NEW_INSTALLATION_RECORD_TYPE
+        AND StageName IN :RFQ_STAGES
+      ORDER BY CreatedDate DESC
+    ])
+      summaries.add(new RfqSummary(opp, rfpNumberByOpp.get(opp.Id)));
     return summaries;
   }
 
@@ -684,6 +731,10 @@ public without sharing class CpSalesPipelineController {
     public String proposalTitle;
     @AuraEnabled
     public Datetime proposalUploadedAt;
+    @AuraEnabled
+    public Date requestedDeliveryDate;
+    @AuraEnabled
+    public String specifications;
     public RfpSummary(CorePress_RFP__c rfp) {
       id = rfp.Id;
       numberValue = rfp.Name;
@@ -693,6 +744,8 @@ public without sharing class CpSalesPipelineController {
       equipment = rfp.Interested_Equipment__c;
       status = rfp.Status__c;
       submittedAt = rfp.Submitted_At__c;
+      requestedDeliveryDate = rfp.Requested_Delivery_Date__c;
+      specifications = rfp.Specifications__c;
       shortlistComplete = rfp.Opportunity__c != null;
       // 제안서는 CorePress 담당자가 실제 파일을 첨부했을 때만 "제출됨"으로 본다.
       hasProposal = !rfp.ContentDocumentLinks.isEmpty();
@@ -703,6 +756,35 @@ public without sharing class CpSalesPipelineController {
         proposalUploadedAt = rfp.ContentDocumentLinks[0]
           .ContentDocument.ContentModifiedDate;
       }
+    }
+  }
+  /** Portal-safe RFQ (Opportunity) row. */
+  public class RfqSummary {
+    @AuraEnabled
+    public Id id;
+    @AuraEnabled
+    public String name;
+    @AuraEnabled
+    public String stage;
+    @AuraEnabled
+    public Date closeDate;
+    @AuraEnabled
+    public String description;
+    @AuraEnabled
+    public Decimal amount;
+    @AuraEnabled
+    public String rfpNumber;
+    @AuraEnabled
+    public Boolean isClosed;
+    public RfqSummary(Opportunity opp, String rfpNumber) {
+      id = opp.Id;
+      name = opp.Name;
+      stage = opp.StageName;
+      closeDate = opp.CloseDate;
+      description = opp.Description;
+      amount = opp.Amount;
+      this.rfpNumber = rfpNumber;
+      isClosed = opp.IsClosed;
     }
   }
   /** Portal-safe timeline row. */

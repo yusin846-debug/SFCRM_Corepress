@@ -55,21 +55,8 @@
           </dl>
         </div>
         <div class="hero-actions">
-          <button
-            class="agent-inquiry"
-            type="button"
-            onclick={handleAgentInquiry}
-            disabled={disableAgentButton}
-          >
-            AI 증상 문의 <span aria-hidden="true">✦</span>
-          </button>
           <a class="primary" href={serviceRequestHref}
             >서비스 요청 <span aria-hidden="true">→</span></a
-          >
-          <template if:true={agentMessage}
-            ><p class={agentMessageClass} role="status" aria-live="polite">
-              {agentMessage}
-            </p></template
           >
         </div>
       </section>
