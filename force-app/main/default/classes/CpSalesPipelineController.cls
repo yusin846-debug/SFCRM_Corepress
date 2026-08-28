@@ -164,10 +164,12 @@ public without sharing class CpSalesPipelineController {
     CorePress_RFP__c rfp = [
       SELECT
         Id,
+        Name,
         Account__c,
         Contact__c,
         Lead__c,
         Opportunity__c,
+        Title__c,
         Interested_Equipment__c,
         Requested_Delivery_Date__c
       FROM CorePress_RFP__c
@@ -181,6 +183,11 @@ public without sharing class CpSalesPipelineController {
       );
     if (rfp.Opportunity__c != null)
       return rfp.Opportunity__c;
+
+    // 김영업이 org에서 바로 찾을 수 있도록 Opportunity 이름을 RFP 제목으로 통일한다.
+    String opportunityName = String.isBlank(rfp.Title__c)
+      ? rfp.Interested_Equipment__c + ' 신규 도입'
+      : rfp.Title__c.trim();
 
     Lead lead = [
       SELECT Id, IsConverted, ConvertedOpportunityId
@@ -197,7 +204,7 @@ public without sharing class CpSalesPipelineController {
       conversion.setConvertedStatus(getConvertedStatusApiName());
       conversion.setAccountId(accountId);
       conversion.setContactId(contactId);
-      conversion.setOpportunityName(rfp.Interested_Equipment__c + ' 신규 도입');
+      conversion.setOpportunityName(opportunityName);
       Database.LeadConvertResult conversionResult = Database.convertLead(
         conversion,
         false
@@ -217,6 +224,8 @@ public without sharing class CpSalesPipelineController {
     ];
     Opportunity opportunity = new Opportunity(
       Id = opportunityId,
+      Name = opportunityName,
+      RFP_Number__c = rfp.Name,
       RecordTypeId = newInstallation.Id,
       Type = NEW_BUSINESS_TYPE,
       StageName = SHORTLIST_STATUS,

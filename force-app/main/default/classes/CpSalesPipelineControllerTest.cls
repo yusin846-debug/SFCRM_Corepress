@@ -148,6 +148,8 @@ private class CpSalesPipelineControllerTest {
     Opportunity opportunity = [
       SELECT
         AccountId,
+        Name,
+        RFP_Number__c,
         Owner.Username,
         RecordType.DeveloperName,
         Type,
@@ -159,6 +161,15 @@ private class CpSalesPipelineControllerTest {
       firstOpportunityId,
       secondOpportunityId,
       'Repeated shortlist clicks must return the same Opportunity'
+    );
+    Assert.areEqual(
+      '제2공장 CP7100+ 도입 RFP',
+      opportunity.Name,
+      'Opportunity name should match the RFP title so sales can find it'
+    );
+    Assert.isNotNull(
+      opportunity.RFP_Number__c,
+      'Opportunity should carry the RFP number for cross-reference'
     );
     Assert.areEqual(
       account.Id,

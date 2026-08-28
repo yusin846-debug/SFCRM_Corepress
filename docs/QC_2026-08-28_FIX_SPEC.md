@@ -182,18 +182,18 @@ RFP·RFQ·견적 세 화면 모두 **현재 `CorePress_RFP__c` 저널에 연결�
 
 - `ensureRfqQuote`: `Quote.Name = Opp.Name + ' 견적서'` (현행 유지, Opp.Name이 이제 RFP 제목이므로 자동 정합).
 
-### E-4. Opportunity 리스트뷰 신설
+### E-4. Opportunity 리스트뷰 신설 ✅
 
-- 리스트뷰 메타데이터 `Opportunity.포털_신규도입_진행` (라벨: "포털 신규도입 진행"):
-  - 필터: `RecordType = New_Installation` AND `StageName IN (숏리스트 선정, RFQ 접수, 사양 협상, 견적 제출, 계약 검토)`
-  - 컬럼: Name, RFP_Number__c, StageName, Amount, CloseDate, Account.Name
-  - 정렬: CreatedDate DESC, 공개 범위: 전체 사용자(Public)
+- `Opportunity.Portal_New_Installation_Pipeline` (라벨 "포털 신규도입 진행") 배포됨.
+  - 필터: `RFP_Number__c` 채워짐(= 포털 저널 Opp) AND 미종결(`CLOSED = 0`)
+  - 컬럼: Name, RFP 번호, Stage, Account, Close Date. filterScope Everything(전체 공개).
+  - `CorePress_Sales_Owner` permset에 `Opportunity.RFP_Number__c` FLS 추가.
 
-### E-5. 기존 저널 레코드 백필
+### E-5. 기존 저널 레코드 백필 — ⏳ 스크립트 준비됨, 실행 대기
 
-- 삼양 저널 Opp(현재 이름 `ㅈㄹ`, `RFP-0034` 연결) → `Name = 'RFP-0034 신규 도입'` 또는 RFP `Title__c`, `RFP_Number__c = 'RFP-0034'`.
-- `ㅈㄹ 견적` Quote → `Name` 규칙 재적용.
-- 저널 연결된 소수 레코드만 수정 (대량 삭제 아님).
+- `scripts/backfill_opportunity_rfp_names.apex`: 저널 연결 Opp 이름을 RFP `Title__c` 로, `RFP_Number__c` 를 RFP `Name` 으로 백필 + 연결 Quote 이름을 `Opp.Name + ' 견적서'` 규칙으로.
+- **막힘**: `Opportunity.RFP_Number__c` 가 방금 생성돼 SOQL/anon-apex 스키마 캐시에 아직 전파 안 됨(배포된 Apex/테스트에선 정상 인식). 몇 분 뒤 스크립트 재실행하면 됨.
+- 대상은 삼양 저널 Opp(`ㅈㄹ` → `신규도임 문의의건`) 1건 + 연결 Quote. **삼양은 테스트 계정**이라 데모(대한케미컬)엔 영향 없음 — 급하지 않음.
 
 ---
 
