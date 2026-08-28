@@ -257,6 +257,31 @@ RFP·RFQ·견적 세 화면 모두 **현재 `CorePress_RFP__c` 저널에 연결�
 - 필드: `CorePress_RFP__c.Proposal_Submitted_At__c`, `Opportunity.RFP_Number__c`
 - Quick Action: `CorePress_RFP__c` "제안서 제출"
 - ListView: `Opportunity.포털_신규도입_진행`
-- Permission set: `CorePress_PRT_Customer_Login` (Product2 + AssetWarranty 접근, dangling FLS 제거)
-- Static resource: 드라이어 사진 1~2종
-- 데이터 스크립트: 대한케미컬 2호기 보강 + Case 시드, 삼양 저널 Opp 백필
+- Permission set: `CorePress_PRT_Customer_Login` (Product2 + AssetWarranty 접근), `CorePress_Sales_Owner` (Opportunity.RFP_Number__c FLS)
+- Static resource: `CorePressCD7000Body` (드라이어 SVG)
+- 데이터 스크립트: `seed_daehan_cp6000_2ho_demo.apex`(2호기 보강 + Case), `backfill_opportunity_rfp_names.apex`(저널 Opp 이름 백필 — 대기), `cleanup_junk_opps.apex`(쓰레기 Opp 삭제 — 실행 대기)
+
+---
+
+## I. 원래 요청의 이연 항목 (핸드오프 §4-1/§4-2) — 2026-08-28 세션에서 처리
+
+### I-1. 카탈로그 문의 픽리스트 범위 ✅ 배포 완료
+
+- 사용자 결정: **장비 본체만** (소모품·테스트 제외).
+- `CpProductCatalogController.getEquipmentProducts` 쿼리에 `AND Is_Consumable__c != true AND (NOT Name LIKE 'test%')` 추가.
+- 랜딩 카탈로그 문의 모달 "관심 제품" 드롭다운: **46개 → 19개** (압축기 13 + 드라이어 본체 6). 테스트 `shouldReturnOnlyEquipmentBodies` 갱신.
+- `getEquipmentCatalog`(제품 목록 페이지)는 그대로 — 별개 화면.
+
+### I-2. 레거시 Opp/Quote 정리 ⏳ 스크립트 준비, 실행은 사용자
+
+- 사용자 결정: **쓰레기만 삭제** (Closed Won/Lost 등 과거 이력 보존).
+- B-2 코드 필터로 포털은 이미 깨끗 — 이건 org 내부(김영업 리스트/리포트) 정리용.
+- `scripts/cleanup_junk_opps.apex` 가 삭제하는 것 (그 외 전부 보존):
+  - 삼양 `ㅈㄹ` Opp + `ㅈㄹ 견적` Quote + `RFP-0034` + 이벤트
+  - 대한케미컬 `CP7100  RFQ Test` Opp + Quote + `RFP-0016` + 이벤트
+- **자동 실행 차단됨** (파괴적 DML): 사용자가 `sf apex run -o trail-org --file scripts/cleanup_junk_opps.apex` 직접 실행하거나 승인 필요.
+- 삭제 대상에서 `test CP5100 Pro`, `Test Product`, `TEST_MOB_*` **Product** 는 제외 — Opp/Quote 정리 범위 밖 + PricebookEntry 의존 위험. 픽리스트에선 I-1으로 이미 숨겨짐.
+
+### I-3. 삼양중공업 시드 데이터 — 처리 안 함 (Q15)
+
+테스트 계정이라 건강도 밴드가 다수 "교체 필요"로 떠도 허용. 데모는 대한케미컬.
