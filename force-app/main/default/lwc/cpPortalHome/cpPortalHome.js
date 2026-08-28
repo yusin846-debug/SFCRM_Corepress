@@ -1,6 +1,7 @@
 import { LightningElement, api, wire } from "lwc";
 import { getRecord, getFieldValue } from "lightning/uiRecordApi";
 import { getRelatedListRecords } from "lightning/uiRelatedListApi";
+import getHealthForAccount from "@salesforce/apex/CpAssetHealthController.getHealthForAccount";
 import USER_ID from "@salesforce/user/Id";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
@@ -40,7 +41,14 @@ const ASSIGNED_STATUSES = ["배정완료"];
 const PROGRESS_STATUSES = ["진행중", "대기 중"];
 const DONE_STATUSES = ["완료", "처리완료", "종료", "Closed"];
 
-const STAGE_SCORE = { S1: 98, S2: 92, S3: 84, S4: 72, S5: 60 };
+// Worst band first, for the "설비별 건강도" ordering.
+const BAND_SEVERITY = {
+  REPLACE: 0,
+  INSPECT: 1,
+  WATCH: 2,
+  NO_DATA: 3,
+  HEALTHY: 4
+};
 
 export default class CpPortalHome extends LightningElement {
   @api homeUrl = "portal-home";
@@ -65,6 +73,8 @@ export default class CpPortalHome extends LightningElement {
   maintenanceIconUrl = maintenanceIcon;
 
   assets = [];
+  assetRecords = [];
+  healthByAsset = {};
   cases = [];
 
   @wire(getRecord, { recordId: USER_ID, fields: [USER_CONTACT_ID] })
@@ -103,8 +113,24 @@ export default class CpPortalHome extends LightningElement {
   })
   wiredAssets({ data }) {
     if (data) {
-      this.assets = data.records.map((record) => this.mapAsset(record));
+      this.assetRecords = data.records;
+      this.rebuildAssets();
     }
+  }
+
+  @wire(getHealthForAccount, { accountId: "$accountId" })
+  wiredHealth({ data }) {
+    if (data) {
+      this.healthByAsset = data.reduce((map, item) => {
+        map[item.assetId] = item;
+        return map;
+      }, {});
+      this.rebuildAssets();
+    }
+  }
+
+  rebuildAssets() {
+    this.assets = this.assetRecords.map((record) => this.mapAsset(record));
   }
 
   @wire(getRelatedListRecords, {
@@ -121,40 +147,23 @@ export default class CpPortalHome extends LightningElement {
   }
 
   mapAsset(record) {
+    const id = record.fields.Id?.value || record.id;
     const status = record.fields.Status?.value || "Registered";
-    const stage = "";
     const isRunning = status === "Installed" || status === "Registered";
-    const isObsolete = status === "Obsolete";
-    const alertStatus = record.fields.Sales_Alert_Status__c?.value || "";
-    const isAlerted = alertStatus === "Alerted";
-    const score = STAGE_SCORE[stage] || (isObsolete ? 55 : isRunning ? 90 : 70);
-    let label = "양호";
-    let labelClass = "good";
-    if (isObsolete) {
-      label = "교체 필요";
-      labelClass = "attention";
-    } else if (isAlerted) {
-      label = "점검 필요";
-      labelClass = "attention";
-    } else if (score < 80) {
-      label = "점검 필요";
-      labelClass = "attention";
-    } else if (score < 90) {
-      label = "관찰";
-      labelClass = "watch";
-    }
+    const health = this.healthByAsset[id];
+    const band = health?.band || "HEALTHY";
     return {
-      id: record.fields.Id?.value || record.id,
+      id,
       name: record.fields.Name?.value || "설비명 미등록",
       model:
         record.fields.Product2?.value?.fields?.Name?.value ||
         this.modelFromName(record.fields.Name?.value),
       isRunning,
-      score,
-      label,
-      labelClass,
-      scoreStyle: `width:${score}%`,
-      barClass: labelClass === "attention" ? "score-bar attention" : "score-bar"
+      band,
+      severity: BAND_SEVERITY[band] ?? 5,
+      label: health?.bandLabel || "양호",
+      isAttention: band === "REPLACE" || band === "INSPECT",
+      badgeClass: `asset-band ${health?.bandClass || "good"}`
     };
   }
 
@@ -207,30 +216,54 @@ export default class CpPortalHome extends LightningElement {
   get runningAssetCount() {
     return this.assets.filter((asset) => asset.isRunning).length;
   }
+  bandCount(band) {
+    return this.assets.filter((asset) => asset.band === band).length;
+  }
+  get replaceCount() {
+    return this.bandCount("REPLACE");
+  }
+  get inspectCount() {
+    return this.bandCount("INSPECT");
+  }
+  get watchCount() {
+    return this.bandCount("WATCH");
+  }
+  get healthyCount() {
+    return this.bandCount("HEALTHY") + this.bandCount("NO_DATA");
+  }
   get attentionAssetCount() {
-    return this.assets.filter((asset) => !asset.isRunning).length;
+    return this.replaceCount + this.inspectCount;
   }
-  get healthScore() {
-    if (!this.assets.length) return 0;
-    const total = this.assets.reduce((sum, asset) => sum + asset.score, 0);
-    return Math.round(total / this.assets.length);
+  get bandBreakdown() {
+    return [
+      {
+        key: "replace",
+        label: "교체 필요",
+        count: this.replaceCount,
+        cls: "attention"
+      },
+      {
+        key: "inspect",
+        label: "점검 필요",
+        count: this.inspectCount,
+        cls: "attention"
+      },
+      { key: "watch", label: "관찰", count: this.watchCount, cls: "watch" },
+      { key: "healthy", label: "양호", count: this.healthyCount, cls: "good" }
+    ];
   }
-  get healthLabel() {
-    const score = this.healthScore;
-    if (score >= 90) return "양호";
-    if (score >= 80) return "관찰";
-    return "점검 필요";
-  }
-  get healthPercent() {
-    return `${this.healthScore}%`;
+  get healthHeadline() {
+    if (!this.assets.length) return "설비 없음";
+    return this.attentionAssetCount > 0 ? "조치 필요" : "모두 정상";
   }
   get ringStyle() {
-    const pct = this.healthScore;
-    const arc = pct < 80 ? "#c78036" : "#2eb7b0";
-    return `background: conic-gradient(from -90deg, ${arc} 0%, ${arc} ${pct}%, rgba(46,196,182,0.16) ${pct}% 100%);`;
+    const total = this.assets.length || 1;
+    const attentionPct = Math.round((this.attentionAssetCount / total) * 100);
+    const arc = this.attentionAssetCount > 0 ? "#c0392b" : "#2eb7b0";
+    return `background: conic-gradient(from -90deg, ${arc} 0%, ${arc} ${attentionPct}%, rgba(46,196,182,0.16) ${attentionPct}% 100%);`;
   }
   get topAssets() {
-    return [...this.assets].sort((a, b) => b.score - a.score).slice(0, 5);
+    return [...this.assets].sort((a, b) => a.severity - b.severity).slice(0, 5);
   }
   get hasAssets() {
     return this.assets.length > 0;

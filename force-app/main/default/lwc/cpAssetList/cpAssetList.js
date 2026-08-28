@@ -1,6 +1,7 @@
 import { LightningElement, api, wire } from "lwc";
 import { getRecord, getFieldValue } from "lightning/uiRecordApi";
 import { getRelatedListRecords } from "lightning/uiRelatedListApi";
+import getHealthForAccount from "@salesforce/apex/CpAssetHealthController.getHealthForAccount";
 import USER_ID from "@salesforce/user/Id";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
@@ -79,6 +80,9 @@ export default class CpAssetList extends LightningElement {
     return getFieldValue(this.contactRecord.data, CONTACT_ACCOUNT_NAME) || "";
   }
 
+  assetRecords = [];
+  healthByAsset = {};
+
   @wire(getRelatedListRecords, {
     parentRecordId: "$accountId",
     relatedListId: "Assets",
@@ -88,19 +92,36 @@ export default class CpAssetList extends LightningElement {
   })
   wiredAssets({ data, error }) {
     if (data) {
-      this.assets = data.records.map((record) => this.mapAsset(record));
+      this.assetRecords = data.records;
+      this.rebuildAssets();
       this.isPreview = false;
       this.isLoading = false;
       this.loadError = "";
       return;
     }
     if (error) {
+      this.assetRecords = [];
       this.assets = [];
       this.isPreview = false;
       this.isLoading = false;
       this.loadError =
         "설비 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
     }
+  }
+
+  @wire(getHealthForAccount, { accountId: "$accountId" })
+  wiredHealth({ data }) {
+    if (data) {
+      this.healthByAsset = data.reduce((map, item) => {
+        map[item.assetId] = item;
+        return map;
+      }, {});
+      this.rebuildAssets();
+    }
+  }
+
+  rebuildAssets() {
+    this.assets = this.assetRecords.map((record) => this.mapAsset(record));
   }
 
   renderedCallback() {
@@ -115,23 +136,25 @@ export default class CpAssetList extends LightningElement {
       record.fields.Product2?.value?.fields?.Name?.value ||
       this.modelFromName(assetName);
     const sourceStatus = record.fields.Status?.value || "Registered";
-    const isRunning =
-      sourceStatus === "Installed" || sourceStatus === "Registered";
-    const isObsolete = sourceStatus === "Obsolete";
     const city = record.fields.City?.value;
     const street = record.fields.Street?.value;
     const id = record.fields.Id?.value || record.id;
-    let displayStatus = "운전 중";
+
+    const health = this.healthByAsset[id];
+    const band = health?.band || "HEALTHY";
+    const isAttention = band === "REPLACE" || band === "INSPECT";
+    let displayStatus = health?.bandLabel || "양호";
     let statusClass = "status running";
     let statusIcon = operatingIcon;
-    if (isObsolete) {
-      displayStatus = "교체 필요";
+    if (isAttention) {
       statusClass = "status attention";
       statusIcon = warningIcon;
-    } else if (!isRunning) {
-      displayStatus = "점검 필요";
-      statusClass = "status attention";
+    } else if (band === "WATCH") {
+      statusClass = "status watch";
       statusIcon = warningIcon;
+    } else if (band === "NO_DATA") {
+      displayStatus = "데이터 확인 중";
+      statusClass = "status muted";
     }
     return {
       id,
@@ -141,6 +164,7 @@ export default class CpAssetList extends LightningElement {
       location: [city, street].filter(Boolean).join(" ") || "설치 위치 미등록",
       status: displayStatus,
       sourceStatus,
+      isAttention,
       statusClass,
       statusIcon,
       imageUrl: this.resolveImage(model),
@@ -185,8 +209,8 @@ export default class CpAssetList extends LightningElement {
     return this.assets.filter((asset) => {
       const matchesFilter =
         this.activeFilter === "전체" ||
-        (this.activeFilter === "운전 중" && asset.status === "운전 중") ||
-        (this.activeFilter === "이상" && asset.status !== "운전 중");
+        (this.activeFilter === "운전 중" && !asset.isAttention) ||
+        (this.activeFilter === "이상" && asset.isAttention);
       const matchesTerm =
         !term ||
         `${asset.name} ${asset.serial} ${asset.model}`
@@ -218,10 +242,10 @@ export default class CpAssetList extends LightningElement {
     return this.assets.length;
   }
   get runningAssetCount() {
-    return this.assets.filter((asset) => asset.status === "운전 중").length;
+    return this.assets.filter((asset) => !asset.isAttention).length;
   }
   get attentionAssetCount() {
-    return this.assets.filter((asset) => asset.status !== "운전 중").length;
+    return this.assets.filter((asset) => asset.isAttention).length;
   }
   get totalPages() {
     return Math.max(1, Math.ceil(this.filteredAssets.length / this.pageSize));

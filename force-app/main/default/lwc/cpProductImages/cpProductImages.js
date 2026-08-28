@@ -19,6 +19,7 @@ import cp7100Pro from "@salesforce/resourceUrl/CorePressCP7100ProBody";
 import cp7100Plus from "@salesforce/resourceUrl/CorePressCP7100PlusBody";
 import cpa2100 from "@salesforce/resourceUrl/CorePressCPA2100";
 import cpa3100 from "@salesforce/resourceUrl/CorePressCPA3100";
+import cd7000Body from "@salesforce/resourceUrl/CorePressCD7000Body";
 
 import partImpeller from "@salesforce/resourceUrl/CorePressPartImpeller";
 import partGearbox from "@salesforce/resourceUrl/CorePressPartGearbox";
@@ -57,7 +58,7 @@ const BODY_BY_MODEL = {
   "CP5100 PRO": cp5100Pro,
   CP6000: cp6000Body,
   "CP6100 PRO": cp6100Pro,
-  CD7000: cp6100Pro,
+  CD7000: cd7000Body,
   "CP7100 PRO": cp7100Pro,
   "CP7100+": cp7100Plus,
   CPA2100: cpa2100,
@@ -111,7 +112,10 @@ const PART_RULES = [
 
 function bodyForModel(nameUpper) {
   const key = nameUpper.replace(/\s+/g, " ").trim();
-  return BODY_BY_MODEL[key] || null;
+  if (BODY_BY_MODEL[key]) return BODY_BY_MODEL[key];
+  // Any CD-series model is a refrigerated air dryer.
+  if (/^CD\d/.test(key)) return cd7000Body;
+  return null;
 }
 
 function partFor(name) {
@@ -137,11 +141,12 @@ export function resolveProductImage(name, family) {
   const part = partFor(raw);
   if (part) return { type: "image", src: part };
 
-  // 3. Family fallback
-  if (family === "압축기" || /^CP/i.test(raw)) {
-    return { type: "image", src: partImpeller };
+  // 3. Dryer family fallback
+  if (family === "드라이어" || /^CD/i.test(raw)) {
+    return { type: "image", src: cd7000Body };
   }
 
-  // 4. Placeholder (dryer body + anything unmatched)
+  // 4. Placeholder — an unmatched compressor shows the caller's gradient
+  //    placeholder with the model name, never a random part photo.
   return { type: "placeholder", src: null };
 }

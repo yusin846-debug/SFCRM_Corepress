@@ -2,6 +2,7 @@ import { LightningElement, api, wire } from "lwc";
 import { CurrentPageReference } from "lightning/navigation";
 import { getRecord, getFieldValue } from "lightning/uiRecordApi";
 import { getRelatedListRecords } from "lightning/uiRelatedListApi";
+import getHealthForAsset from "@salesforce/apex/CpAssetHealthController.getHealthForAsset";
 import USER_ID from "@salesforce/user/Id";
 import USER_CONTACT_ID from "@salesforce/schema/User.ContactId";
 import CONTACT_ACCOUNT_ID from "@salesforce/schema/Contact.AccountId";
@@ -217,36 +218,35 @@ export default class CpAssetDetail extends LightningElement {
       getFieldValue(this.assetRecord, ASSET_REPLACEMENT_DATE)
     );
   }
-  get alertStatus() {
-    return getFieldValue(this.assetRecord, ASSET_ALERT_STATUS) || "";
+  @wire(getHealthForAsset, { assetId: "$recordId" })
+  healthResult;
+
+  get healthBand() {
+    return this.healthResult && this.healthResult.data
+      ? this.healthResult.data
+      : null;
   }
   get hasHealthAlert() {
-    return this.alertStatus === "Alerted" || this.alertStatus === "Needs Data";
+    const band = this.healthBand ? this.healthBand.band : "";
+    return band === "REPLACE" || band === "INSPECT" || band === "WATCH";
   }
   get healthBadgeLabel() {
-    if (this.alertStatus === "Alerted") return "점검 필요";
-    if (this.alertStatus === "Needs Data") return "데이터 확인 중";
-    return "";
+    return this.healthBand ? this.healthBand.bandLabel : "";
   }
   get healthBadgeClass() {
-    if (this.alertStatus === "Alerted") return "health-badge alerted";
-    if (this.alertStatus === "Needs Data") return "health-badge needs-data";
-    return "health-badge";
-  }
-  get alertSentAt() {
-    const value = getFieldValue(this.assetRecord, ASSET_ALERT_SENT_AT);
-    return value ? this.formatDate(value) : "";
+    const map = {
+      attention: "health-badge alerted",
+      watch: "health-badge watch",
+      good: "health-badge good",
+      muted: "health-badge needs-data"
+    };
+    const key = this.healthBand ? this.healthBand.bandClass : "";
+    return map[key] || "health-badge";
   }
   get healthBadgeTitle() {
-    if (this.alertStatus === "Alerted") {
-      return this.alertSentAt
-        ? `영업팀 알림 발송: ${this.alertSentAt} · 오버홀 임계치 초과`
-        : "오버홀 임계치 초과 — 영업팀 알림 대상";
-    }
-    if (this.alertStatus === "Needs Data") {
-      return "가동시간 또는 오버홀 주기 정보 부족";
-    }
-    return "";
+    return this.healthBand && this.healthBand.reasons
+      ? this.healthBand.reasons.join(" · ")
+      : "";
   }
   get serviceRequestHref() {
     return this.recordId

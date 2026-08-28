@@ -31,7 +31,7 @@
             <strong>{runningAssetCount}<small>대</small></strong>
           </p>
           <p>
-            <i><img src={warningIconUrl} alt="" /></i>점검 필요
+            <i><img src={warningIconUrl} alt="" /></i>점검·교체 필요
             <strong>{attentionAssetCount}<small>대</small></strong>
           </p>
         </div>
@@ -42,27 +42,18 @@
           </h2>
           <div class="ring" style={ringStyle}>
             <div>
-              <small>설비 건강도</small><strong>{healthPercent}</strong
-              ><span>{healthLabel}</span>
+              <small>조치 필요</small
+              ><strong>{attentionAssetCount}<small>대</small></strong
+              ><span>{healthHeadline}</span>
             </div>
           </div>
-          <ul>
-            <li>
-              <img class="check-icon" src={completeIconUrl} alt="" />진동
-              <b>양호</b>
-            </li>
-            <li>
-              <img class="check-icon" src={completeIconUrl} alt="" />온도
-              <b>양호</b>
-            </li>
-            <li>
-              <img class="check-icon" src={completeIconUrl} alt="" />압력
-              <b>양호</b>
-            </li>
-            <li>
-              <img class="check-icon" src={completeIconUrl} alt="" />윤활유
-              <b>양호</b>
-            </li>
+          <ul class="band-breakdown">
+            <template for:each={bandBreakdown} for:item="row">
+              <li key={row.key}>
+                <span class={row.cls}></span>{row.label}
+                <b>{row.count}</b>
+              </li>
+            </template>
           </ul>
         </div>
         <div class="maintenance">
@@ -98,15 +89,12 @@
             </h2>
             <a href={assetListUrl}>설비 전체 보기 <span>→</span></a>
           </header>
-          <ul>
+          <ul class="asset-band-list">
             <template for:each={topAssets} for:item="asset">
               <li key={asset.id}>
                 <span class="asset-name"
                   ><b>{asset.name}</b><small>{asset.model}</small></span
-                ><span class="score-track"
-                  ><i class={asset.barClass} style={asset.scoreStyle}></i></span
-                ><strong>{asset.score}</strong
-                ><em class={asset.labelClass}>{asset.label}</em>
+                ><em class={asset.badgeClass}>{asset.label}</em>
               </li>
             </template>
             <template if:false={hasAssets}>

@@ -16,7 +16,11 @@
     system-ui,
     sans-serif;
   background:
-    radial-gradient(circle at 86% 6%, rgba(46, 196, 182, 0.055), transparent 34rem),
+    radial-gradient(
+      circle at 86% 6%,
+      rgba(46, 196, 182, 0.055),
+      transparent 34rem
+    ),
     linear-gradient(180deg, #f8fafc 0%, #f4f7fa 52%, #f7f9fb 100%);
   background-attachment: fixed;
 }
@@ -284,7 +288,10 @@ main {
   background-size: 200% 100%;
   animation: cpSkeleton 1.4s ease-in-out infinite;
 }
-.asset-card.skeleton .asset-copy { padding: 26px 22px; gap: 14px; }
+.asset-card.skeleton .asset-copy {
+  padding: 26px 22px;
+  gap: 14px;
+}
 .skeleton-line {
   display: block;
   height: 14px;
@@ -293,11 +300,19 @@ main {
   background-size: 200% 100%;
   animation: cpSkeleton 1.4s ease-in-out infinite;
 }
-.skeleton-line.short { width: 45%; }
-.skeleton-line.long { width: 82%; }
+.skeleton-line.short {
+  width: 45%;
+}
+.skeleton-line.long {
+  width: 82%;
+}
 @keyframes cpSkeleton {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
 }
 .machine {
   min-width: 0;
@@ -371,9 +386,19 @@ main {
   object-fit: contain;
 }
 .status.attention {
-  color: #a45d1b;
-  border-color: #ead2b8;
-  background: #fff8ef;
+  color: #a03030;
+  border-color: #e6a8a8;
+  background: #fdecec;
+}
+.status.watch {
+  color: #8a5a1b;
+  border-color: #e6c78f;
+  background: #fdf3e4;
+}
+.status.muted {
+  color: #6c7a8a;
+  border-color: #cdd6e0;
+  background: #eef2f6;
 }
 .asset-copy dl {
   margin: 15px 0 0;
