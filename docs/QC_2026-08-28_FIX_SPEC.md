@@ -155,7 +155,7 @@ RFP·RFQ·견적 세 화면 모두 **현재 `CorePress_RFP__c` 저널에 연결�
   - 파일 업로드(`forceContent:fileUpload`, `recordId`={!recordId}) → RFP에 첨부
   - `CorePress_RFP_Event__c` 생성 (`Event_Type__c='제안서 제출'`, `Visible_To_Customer__c=true`, `Occurred_At__c=now`)
   - `CorePress_RFP__c.Proposal_Submitted_At__c` (신규 Datetime 필드) 스탬프
-- **남은 수동 1단계**: Setup → Object Manager → CorePress RFP → 페이지 레이아웃 → "제안서 제출" 액션을 Lightning 액션 영역에 드래그. (repo에 레이아웃 미포함이라 자동화 불가.) 또는 담당자가 표준 Files 관련 목록에 첨부해도 D-1 로직상 포털에 반영됨.
+- **레이아웃 배치 완료**: `CorePress_RFP__c-CorePress RFP Layout` 를 retrieve → `platformActionList` 에 `CorePress_RFP__c.Submit_Proposal` (+ Edit/Delete/Clone) 추가 → 배포. "제안서 제출" 버튼이 RFP 레코드 액션바에 노출됨. (담당자가 표준 Files 에 첨부해도 D-1 로직상 포털 반영됨.)
 - `Proposal_Key__c` 필드는 org에 남아있으나 코드에서 미사용(파괴적 삭제 보류).
 
 ### D-3. 제안서 수정요청 ✅
@@ -189,11 +189,11 @@ RFP·RFQ·견적 세 화면 모두 **현재 `CorePress_RFP__c` 저널에 연결�
   - 컬럼: Name, RFP 번호, Stage, Account, Close Date. filterScope Everything(전체 공개).
   - `CorePress_Sales_Owner` permset에 `Opportunity.RFP_Number__c` FLS 추가.
 
-### E-5. 기존 저널 레코드 백필 — ⏳ 스크립트 준비됨, 실행 대기
+### E-5. 기존 저널 레코드 백필 — ⚪ 사실상 불필요
 
-- `scripts/backfill_opportunity_rfp_names.apex`: 저널 연결 Opp 이름을 RFP `Title__c` 로, `RFP_Number__c` 를 RFP `Name` 으로 백필 + 연결 Quote 이름을 `Opp.Name + ' 견적서'` 규칙으로.
-- **막힘**: `Opportunity.RFP_Number__c` 가 방금 생성돼 SOQL/anon-apex 스키마 캐시에 아직 전파 안 됨(배포된 Apex/테스트에선 정상 인식). 몇 분 뒤 스크립트 재실행하면 됨.
-- 대상은 삼양 저널 Opp(`ㅈㄹ` → `신규도임 문의의건`) 1건 + 연결 Quote. **삼양은 테스트 계정**이라 데모(대한케미컬)엔 영향 없음 — 급하지 않음.
+- `scripts/backfill_opportunity_rfp_names.apex` 는 저널 연결 Opp 이름/번호를 규칙에 맞추는 범용 스크립트로 repo에 남겨둠.
+- 그러나 현재 유일한 pre-existing 저널 Opp는 삼양 `ㅈㄹ`(RFP-0034) 하나뿐이고, 이건 **I-2 `cleanup_junk_opps.apex` 가 통째로 삭제**하므로 백필할 대상이 없어짐.
+- (참고) `Opportunity.RFP_Number__c` 는 배포된 Apex/테스트에선 정상이나 ad-hoc SOQL/anon-apex 파서엔 전파가 느림 — 시간 지나면 해소. 백필이 불필요해져서 blocker도 무의미.
 
 ---
 
