@@ -48,6 +48,28 @@ _Avoid_: Lead 설명란만으로 관리, RFQ
 RFP 접수, 제안서 다운로드, 숏리스트 선정처럼 고객에게 공개할 수 있는 실제 진행 사건의 기록. 내부 영업 활동이나 비공개 Task와 구분한다.
 _Avoid_: 화면 전시용 가짜 타임라인, 내부 활동 전체 공개
 
+**RFP 저널**:
+하나의 신규 설비 도입 여정을 처음부터 끝까지 잇는 `CorePress_RFP__c` 레코드. 포털의 RFP·RFQ·견적 화면은 이 저널에 연결된 Opportunity/Quote만 노출하며, 계정에 쌓인 과거 영업 데이터는 보여주지 않는다.
+_Avoid_: 시나리오 데이터, 저널 레코드 (일반 용어와 혼동)
+
+**제안서 제출**:
+CorePress 담당자가 org에서 RFP 레코드에 실제 제안서 파일을 첨부하는 행위. 이때만 고객 타임라인에 "제안서 제출" 이벤트가 생기고 다운로드가 열린다. 고객이 포털에서 RFP를 접수한 것만으로는 제출로 보지 않는다.
+_Avoid_: 자동 제안서, 시드 제안서, Proposal_Key
+
+## 설비 건강도
+
+**설비 건강 상태 (건강도 밴드)**:
+자산의 정비·보증·폐기 상태를 한 눈에 보여주는 5단계 표기 — 양호 / 관찰 / 점검 필요 / 교체 필요 / 데이터 확인 중. 0~100 숫자 점수가 아니다. 포털 홈, 보유 설비 목록, 설비 상세 세 화면이 같은 판정을 공유한다.
+_Avoid_: 건강 점수, 헬스스코어(숫자), 90점
+
+**교체 필요 기준**:
+프로젝트에서 합의된 판정 규칙 — `Status = Obsolete` 이거나, 누적 운전시간이 오버홀 주기의 3배 이상이거나, 활성 보증이 없거나(유상), Sales Alert가 Alerted 인 자산.
+_Avoid_: 임의 임계값, 노후 판단
+
+**보증 유상 / 무상**:
+오늘 날짜가 활성 `AssetWarranty`(StartDate~EndDate) 안에 들면 무상(CorePress 커버), 없으면 유상(고객 비용 부담)이다. 유상 전환은 교체 필요를 트리거하는 신호다.
+_Avoid_: 보증 만료 (연장·재가입 보증 케이스를 놓침)
+
 **김영업(SALES_OWNER)**:
 포털에서 접수된 Lead와 Opportunity의 소유자로 지정되는 CorePress 내부 영업사원 유저(`saleskim@corepress.demo`). 두 컨트롤러(`CpCatalogLeadController`, `CpSalesPipelineController`)의 `SALES_OWNER_USERNAME` 상수로 참조되며, 이 유저가 없거나 비활성이면 소유권 재할당은 조용히 스킵된다. 프로필은 Minimum Access - Salesforce라 Lead/Opportunity 접근은 별도 permission set `CorePress_Sales_Owner`로 부여된다.
 _Avoid_: 시스템 관리자(admin) 소유 (실제 영업 담당자 아니므로 시연 흐름 어색)
