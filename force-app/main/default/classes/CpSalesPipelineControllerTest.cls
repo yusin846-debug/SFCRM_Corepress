@@ -275,6 +275,79 @@ private class CpSalesPipelineControllerTest {
     );
   }
 
+  @IsTest
+  static void shouldAttachOriginalAndFlagEmailSource_WhenEmailRfpSubmitted() {
+    Account account = [SELECT Id FROM Account WHERE Name = :COMPANY LIMIT 1];
+    Contact contact = [
+      SELECT Id
+      FROM Contact
+      WHERE AccountId = :account.Id
+      LIMIT 1
+    ];
+    Lead lead = [SELECT Id FROM Lead WHERE Company = :COMPANY LIMIT 1];
+
+    CpSalesPipelineController.RfpSubmission submission = buildSubmission(
+      account.Id,
+      contact.Id,
+      lead.Id
+    );
+    submission.source = '이메일';
+    submission.fileName = 'rfp-원본.txt';
+    submission.fileBase64 = EncodingUtil.base64Encode(
+      Blob.valueOf('이메일로 전달한 RFP 원본')
+    );
+
+    Test.startTest();
+    Id rfpId = CpSalesPipelineController.submitRfp(submission);
+    Test.stopTest();
+
+    CorePress_RFP__c rfp = [
+      SELECT Source__c
+      FROM CorePress_RFP__c
+      WHERE Id = :rfpId
+    ];
+    Assert.areEqual(
+      '이메일',
+      rfp.Source__c,
+      'Email intake source should be recorded on the RFP'
+    );
+    Assert.areEqual(
+      1,
+      [
+        SELECT COUNT()
+        FROM ContentDocumentLink
+        WHERE LinkedEntityId = :rfpId
+      ],
+      'The uploaded original file should be linked to the RFP'
+    );
+  }
+
+  @IsTest
+  static void shouldReturnOnlyCatalogLeads() {
+    Lead serviceLead = TestDataFactory.createCatalogLead(
+      COMPANY,
+      EMAIL,
+      EQUIPMENT,
+      false
+    );
+    serviceLead.LeadSource = '서비스 요청';
+    Database.DMLOptions options = new Database.DMLOptions();
+    options.DuplicateRuleHeader.allowSave = true;
+    Database.insert(serviceLead, options, AccessLevel.SYSTEM_MODE);
+
+    Test.startTest();
+    List<CpSalesPipelineController.LeadSummary> leads = CpSalesPipelineController.getLeadsForAccount(
+      COMPANY
+    );
+    Test.stopTest();
+
+    Assert.areEqual(
+      1,
+      leads.size(),
+      'Only the 카탈로그 문의 Lead should be offered for RFP linkage'
+    );
+  }
+
   private static CpSalesPipelineController.RfpSubmission buildSubmission(
     Id accountId,
     Id contactId,

@@ -70,6 +70,7 @@ export default class CpRfpPortal extends LightningElement {
   proposalFallbackUrl = cp7100Proposal;
   selectedRfpId = "";
   selectedRfqId = "";
+  rfpEquipmentValue = "";
 
   get showIssue() {
     return this.activeTab === "issue";
@@ -217,20 +218,49 @@ export default class CpRfpPortal extends LightningElement {
   wiredLeads(result) {
     this.wiredLeadsResult = result;
     if (result.data) {
-      this.leads = result.data.map((lead) => ({
-        id: lead.id,
-        name: lead.name || "이름 미등록",
-        company: lead.company || "",
-        status: lead.status || "신규 문의",
-        productInterest: lead.productInterest || "-",
-        equipment: lead.equipment || "-",
-        description: lead.description || "문의 내용이 등록되지 않았습니다.",
-        leadSource: lead.leadSource || "",
-        createdDate: this.formatDateTime(lead.createdDate),
-        isConverted: lead.isConverted,
-        convertedOpportunityId: lead.convertedOpportunityId
-      }));
+      this.leads = result.data.map((lead) => {
+        const equipment = lead.equipment || "관심 장비 미상";
+        const name = lead.name || "이름 미등록";
+        const created = this.formatDateTime(lead.createdDate);
+        return {
+          id: lead.id,
+          name,
+          company: lead.company || "",
+          status: lead.status || "신규 문의",
+          productInterest: lead.productInterest || "-",
+          equipment,
+          description: lead.description || "문의 내용이 등록되지 않았습니다.",
+          leadSource: lead.leadSource || "",
+          createdDate: created,
+          optionLabel: `${equipment} · ${name} · ${created}`,
+          isConverted: lead.isConverted,
+          convertedOpportunityId: lead.convertedOpportunityId
+        };
+      });
     }
+  }
+
+  handleLeadChange(event) {
+    const chosen = this.leads.find((lead) => lead.id === event.target.value);
+    this.rfpEquipmentValue =
+      chosen && chosen.equipment !== "관심 장비 미상" ? chosen.equipment : "";
+  }
+
+  handleEquipmentInput(event) {
+    this.rfpEquipmentValue = event.target.value;
+  }
+
+  readFileAsBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () =>
+        resolve({
+          name: file.name,
+          base64: String(reader.result).split(",")[1]
+        });
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
   }
 
   @wire(getRfpsForAccount, { accountId: "$accountId" })
@@ -416,34 +446,52 @@ export default class CpRfpPortal extends LightningElement {
     this.rfpSubmitError = "";
     const form = e.currentTarget;
     if (!this.validate(form)) return;
-    if (!this.isPortalMode) {
-      this.activeTab = "status";
-      return;
-    }
     if (!this.hasCustomerContext) {
       this.rfpSubmitError =
         "고객 계정 연결 정보가 없어 접수할 수 없습니다. 관리자에게 Contact 연결을 요청해 주세요.";
       return;
     }
+    const viaEmail = this.isEmailMode;
     this.isSubmittingRfp = true;
     try {
-      await submitRfpRequest({
-        submission: {
-          accountId: this.accountId,
-          contactId: this.contactId,
-          leadId: this.fieldValue(form, "leadId"),
-          title: this.fieldValue(form, "rfpTitle"),
-          equipment: this.fieldValue(form, "rfpEquipment"),
-          introductionType: this.fieldValue(form, "rfpType"),
-          requestedDeliveryDate: this.fieldValue(form, "rfpCloseDate") || null,
-          specifications: this.fieldValue(form, "rfpPurpose"),
-          source: "포털"
-        }
-      });
+      const fileInput = form.querySelector('input[type="file"]');
+      const file = fileInput?.files?.[0];
+      const filePayload = file ? await this.readFileAsBase64(file) : null;
+      const submission = viaEmail
+        ? {
+            accountId: this.accountId,
+            contactId: this.contactId,
+            leadId: this.fieldValue(form, "leadId"),
+            title: this.fieldValue(form, "emailSubject"),
+            equipment: this.rfpEquipmentValue,
+            introductionType: "신규 도입",
+            requestedDeliveryDate: null,
+            specifications: `이메일 발송일: ${this.fieldValue(form, "emailSentDate") || "미기재"}`,
+            source: "이메일"
+          }
+        : {
+            accountId: this.accountId,
+            contactId: this.contactId,
+            leadId: this.fieldValue(form, "leadId"),
+            title: this.fieldValue(form, "rfpTitle"),
+            equipment:
+              this.rfpEquipmentValue || this.fieldValue(form, "rfpEquipment"),
+            introductionType: this.fieldValue(form, "rfpType"),
+            requestedDeliveryDate:
+              this.fieldValue(form, "rfpCloseDate") || null,
+            specifications: this.fieldValue(form, "rfpPurpose"),
+            source: "포털"
+          };
+      if (filePayload) {
+        submission.fileName = filePayload.name;
+        submission.fileBase64 = filePayload.base64;
+      }
+      await submitRfpRequest({ submission });
       await Promise.all([
         refreshApex(this.wiredLeadsResult),
         refreshApex(this.wiredRfpsResult)
       ]);
+      this.rfpEquipmentValue = "";
       this.activeTab = "status";
     } catch (error) {
       this.rfpSubmitError =

@@ -7,6 +7,7 @@ public without sharing class CpSalesPipelineController {
   private static final String NEW_BUSINESS_TYPE = 'New Business';
   private static final String SALES_OWNER_USERNAME = 'saleskim@corepress.demo';
   private static final String PROPOSAL_KEY = 'CP7100_PLUS';
+  private static final String LEAD_SOURCE_CATALOG = '카탈로그 문의';
 
   /** @param submission Customer RFP payload. @return Created RFP Id. */
   @AuraEnabled
@@ -75,8 +76,49 @@ public without sharing class CpSalesPipelineController {
       Proposal_Key__c = PROPOSAL_KEY
     );
     Database.insert(rfp, AccessLevel.SYSTEM_MODE);
-    insertEvent(rfp.Id, null, contact.Id, RFP_STATUS, 'RFP가 접수되었습니다.');
+    attachOriginalFile(rfp.Id, submission);
+    Boolean viaEmail = rfp.Source__c == '이메일';
+    insertEvent(
+      rfp.Id,
+      null,
+      contact.Id,
+      RFP_STATUS,
+      viaEmail
+        ? '이메일로 전달한 RFP를 포털에 등록했습니다.'
+        : 'RFP가 접수되었습니다.'
+    );
     return rfp.Id;
+  }
+
+  private static void attachOriginalFile(Id rfpId, RfpSubmission submission) {
+    if (
+      submission == null ||
+      String.isBlank(submission.fileName) ||
+      String.isBlank(submission.fileBase64)
+    )
+      return;
+    ContentVersion version = new ContentVersion(
+      Title = submission.fileName,
+      PathOnClient = submission.fileName,
+      VersionData = EncodingUtil.base64Decode(submission.fileBase64),
+      Origin = 'H'
+    );
+    Database.insert(version, AccessLevel.SYSTEM_MODE);
+    Id contentDocumentId = [
+      SELECT ContentDocumentId
+      FROM ContentVersion
+      WHERE Id = :version.Id
+      LIMIT 1
+    ]
+    .ContentDocumentId;
+    Database.insert(
+      new ContentDocumentLink(
+        ContentDocumentId = contentDocumentId,
+        LinkedEntityId = rfpId,
+        ShareType = 'V'
+      ),
+      AccessLevel.SYSTEM_MODE
+    );
   }
 
   /** @param rfpId RFP whose proposal was downloaded. @param contactId Downloading Contact. */
@@ -311,7 +353,7 @@ public without sharing class CpSalesPipelineController {
     return summaries;
   }
 
-  /** @param accountName Customer company. @return Matching unconverted catalog Leads. */
+  /** @param accountName Customer company. @return Unconverted 카탈로그 문의 Leads only. */
   @AuraEnabled(cacheable=true)
   public static List<LeadSummary> getLeadsForAccount(String accountName) {
     List<LeadSummary> summaries = new List<LeadSummary>();
@@ -330,7 +372,10 @@ public without sharing class CpSalesPipelineController {
         Description,
         CreatedDate
       FROM Lead
-      WHERE Company = :accountName AND IsConverted = FALSE
+      WHERE
+        Company = :accountName
+        AND IsConverted = FALSE
+        AND LeadSource = :LEAD_SOURCE_CATALOG
       ORDER BY CreatedDate DESC
       LIMIT 50
     ])
@@ -542,6 +587,10 @@ public without sharing class CpSalesPipelineController {
     public String specifications { get; set; }
     @AuraEnabled
     public String source { get; set; }
+    @AuraEnabled
+    public String fileName { get; set; }
+    @AuraEnabled
+    public String fileBase64 { get; set; }
   }
   /** Portal-safe Lead row. */
   public class LeadSummary {

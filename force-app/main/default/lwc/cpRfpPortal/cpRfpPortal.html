@@ -95,13 +95,29 @@
                   <span>로그인 계정으로 자동 등록</span
                   ><strong>{customerName}</strong><small>{customerEmail}</small>
                 </div>
+                <label class="field"
+                  ><span>연결 카탈로그 문의 <em>필수</em></span
+                  ><select name="leadId" required onchange={handleLeadChange}>
+                    <option value="">문의 건을 선택해 주세요</option>
+                    <template for:each={leadOptions} for:item="lead"
+                      ><option key={lead.id} value={lead.id}>
+                        {lead.optionLabel}
+                      </option></template
+                    ></select
+                  ><template if:false={hasLeadOptions}
+                    ><small class="warning"
+                      >먼저 공개 랜딩에서 카탈로그 문의를 등록해 주세요.</small
+                    ></template
+                  ></label
+                >
                 <div class="two-cols compact-fields">
                   <label class="field"
                     ><span>이메일 발송일 <em>필수</em></span
-                    ><input type="date" required /></label
+                    ><input name="emailSentDate" type="date" required /></label
                   ><label class="field"
                     ><span>이메일 제목 <em>필수</em></span
                     ><input
+                      name="emailSubject"
                       required
                       placeholder="예) 보낸 이메일 제목을 입력해 주세요"
                   /></label>
@@ -128,11 +144,11 @@
                 <div class="two-cols">
                   <label class="field"
                     ><span>연결 카탈로그 문의 <em>필수</em></span
-                    ><select name="leadId" required>
+                    ><select name="leadId" required onchange={handleLeadChange}>
                       <option value="">문의 건을 선택해 주세요</option>
                       <template for:each={leadOptions} for:item="lead"
                         ><option key={lead.id} value={lead.id}>
-                          {lead.equipment} · {lead.name}
+                          {lead.optionLabel}
                         </option></template
                       ></select
                     ><template if:false={hasLeadOptions}
@@ -146,7 +162,9 @@
                     ><input
                       name="rfpEquipment"
                       required
-                      value="CP7100+" /></label
+                      value={rfpEquipmentValue}
+                      onchange={handleEquipmentInput}
+                      placeholder="연결 카탈로그 문의를 선택하면 자동 입력됩니다" /></label
                   ><label class="field"
                     ><span>RFP 요청 제목 <em>필수</em></span
                     ><input
