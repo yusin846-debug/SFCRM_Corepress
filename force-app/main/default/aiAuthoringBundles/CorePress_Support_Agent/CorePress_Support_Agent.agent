@@ -6,9 +6,11 @@ system:
 
 config:
     developer_name: "CorePress_Support_Agent"
-    default_agent_user: "CorePress_Support_Agent_user@00DgK00000WSKnl.ext"
     agent_label: "CorePress 지원 도우미"
     description: "CorePress 설비 고객을 위한 지원 도우미. 압축기·드라이어·필터·보증·서비스 요청 관련 질문에 Knowledge 기반으로 답변하고, 필요 시 상담원 연결을 제안합니다."
+
+access:
+    default_agent_user: "CorePress_Support_Agent_user@00DgK00000WSKnl.ext"
 
 variables:
     EndUserId: linked string
@@ -24,15 +26,15 @@ variables:
         source: @MessagingSession.EndUserLanguage
         description: "This variable may also be referred to as MessagingSession EndUserLanguage"
 
+knowledge:
+    rag_feature_config_id: "ARFPC_1JDgK000008bBZNWA2"
+    citations_url: ""
+    citations_enabled: True
+
 language:
     default_locale: "en_US"
     additional_locales: ""
     all_additional_locales: False
-
-knowledge:
-    rag_feature_config_id: "ARFPC_1JDgK000008eJIfWAM"
-    citations_url: ""
-    citations_enabled: True
 
 start_agent agent_router:
     label: "Agent Router"
@@ -60,11 +62,17 @@ subagent general_faq:
             | When Asset context is supplied by the portal, use its model, asset name, and serial number to make the Knowledge search query specific to that equipment. Do not claim that the context proves the cause of a symptom.
             | For symptom inquiries, ask for the observed symptom, when it started, and any displayed alarm code when those details are missing. Do not ask again for equipment identifiers already supplied by the portal.
             | If the customer's question is too vague to search, ask one concise clarifying question first.
-            | For every substantive question, call {!@actions.AnswerQuestionsWithKnowledge} before answering.
-            | Answer only from the returned knowledgeSummary. If it is empty, tell the customer the knowledge base has no answer and ask whether they want to be connected to a live agent.
+            | For every substantive equipment question, call {!@actions.GetEquipmentContext} first using the model name or Product Code mentioned by the customer and the linked customer contact identifier. Treat its Product and Asset output as authoritative structured facts.
+            | Then call {!@actions.AnswerQuestionsWithKnowledge} only when the question needs operation, troubleshooting, parts, or support-procedure guidance. Do not call it for model facts, specifications, life, overhaul interval, serial number, Asset status, or available maintenance services.
+            | Use productSummary, assetSummary, and serviceSummary as the sole source for structured facts and available maintenance services. Copy these values directly into the answer. Never quote, infer, replace, or supplement them from knowledgeSummary.
+            | Use knowledgeSummary only for operation, troubleshooting, parts, and support-procedure guidance. If it is empty and such guidance was requested, tell the customer the knowledge base has no answer and ask whether they want to be connected to a live agent.
+            | If Product/Asset output conflicts with knowledgeSummary, explicitly use the current Product/Asset value and omit the conflicting document value everywhere, including service descriptions. Never expose Assets outside the linked Contact's Account.
             | Reply in Korean. Keep answers concise and practical.
             | Never provide generic advice or troubleshooting steps that were not retrieved from the knowledge base.
         actions:
+            GetEquipmentContext: @actions.GetEquipmentContext
+                with contactId = @variables.ContactId
+                with modelName = ...
             AnswerQuestionsWithKnowledge: @actions.AnswerQuestionsWithKnowledge
                 with query = ...
                 with citationsUrl = ...
@@ -72,6 +80,51 @@ subagent general_faq:
                 with citationsEnabled = ...
 
     actions:
+        GetEquipmentContext:
+            description: "Looks up authoritative Product facts and customer Account-scoped Asset facts for a CorePress equipment model. Call before document search for equipment questions."
+            label: "Get CorePress Equipment Context"
+            require_user_confirmation: False
+            include_in_progress_indicator: False
+            target: "apex://CorePressEquipmentContextAction"
+            inputs:
+                contactId: string
+                    description: "Current customer's linked Contact Id."
+                    label: "Contact Id"
+                    is_required: False
+                modelName: string
+                    description: "Equipment model name or Product Code from the customer's question."
+                    label: "Model Name"
+                    is_required: False
+            outputs:
+                isSuccess: boolean
+                    description: "Whether lookup completed."
+                    label: "Success"
+                    is_displayable: False
+                productId: string
+                    description: "Matched Product2 Id."
+                    label: "Product Id"
+                    is_displayable: False
+                productSummary: string
+                    description: "Authoritative Product2 facts."
+                    label: "Product Summary"
+                    is_displayable: False
+                assetSummary: string
+                    description: "Customer Account-scoped Asset facts."
+                    label: "Asset Summary"
+                    is_displayable: False
+                serviceSummary: string
+                    description: "Related service Product facts."
+                    label: "Service Summary"
+                    is_displayable: False
+                errorMessage: string
+                    description: "Sanitized error message."
+                    label: "Error Message"
+                    is_displayable: False
+                errorType: string
+                    description: "Exception type."
+                    label: "Error Type"
+                    is_displayable: False
+
         AnswerQuestionsWithKnowledge:
             description: "Answers questions about CorePress equipment, policies, procedures, troubleshooting, or product information by searching knowledge articles. For example: '압축기 점검 주기는?' or '보증 청구는 어떻게 하나요?'"
             label: "Answer Questions with Knowledge"

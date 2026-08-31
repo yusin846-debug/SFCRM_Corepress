@@ -4,6 +4,10 @@
   >Grants the CorePress Support Agent Einstein Agent User read access to Knowledge articles and the fields indexed by the Help_Agent_Knowledge data library.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>CorePress Support Agent Knowledge</label>
+    <classAccesses>
+        <apexClass>CorePressEquipmentContextAction</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <userPermissions>
         <enabled>true</enabled>
         <name>AllowViewKnowledge</name>
@@ -17,6 +21,36 @@
         <modifyAllRecords>false</modifyAllRecords>
         <object>Knowledge__kav</object>
     </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead><allowCreate>false</allowCreate><allowEdit
+    >false</allowEdit><allowDelete>false</allowDelete>
+        <viewAllRecords>false</viewAllRecords><modifyAllRecords
+    >false</modifyAllRecords><object>Product2</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead><allowCreate>false</allowCreate><allowEdit
+    >false</allowEdit><allowDelete>false</allowDelete>
+        <viewAllRecords>false</viewAllRecords><modifyAllRecords
+    >false</modifyAllRecords><object>Asset</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead><allowCreate>false</allowCreate><allowEdit
+    >false</allowEdit><allowDelete>false</allowDelete>
+        <viewAllRecords>false</viewAllRecords><modifyAllRecords
+    >false</modifyAllRecords><object>Contact</object>
+    </objectPermissions>
+    <objectPermissions>
+        <allowRead>true</allowRead><allowCreate>false</allowCreate><allowEdit
+    >false</allowEdit><allowDelete>false</allowDelete>
+        <viewAllRecords>false</viewAllRecords><modifyAllRecords
+    >false</modifyAllRecords><object>Account</object>
+    </objectPermissions>
+    <fieldPermissions><editable>false</editable><field
+    >Product2.Expected_Life_Years__c</field><readable
+    >true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field
+    >Product2.Overhaul_Interval_Hours__c</field><readable
+    >true</readable></fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Knowledge__kav.Summary</field>

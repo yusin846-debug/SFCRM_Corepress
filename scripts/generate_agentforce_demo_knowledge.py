@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 import subprocess
 from dataclasses import dataclass
 from datetime import date
@@ -63,6 +64,12 @@ class Product:
 
 
 def cli_json(command: list[str]) -> dict:
+    if command and command[0] == "sf":
+        sf_executable = shutil.which("sf.cmd") or shutil.which("sf") or "sf"
+        if sf_executable.lower().endswith(".cmd"):
+            command = ["cmd.exe", "/d", "/s", "/c", sf_executable, *command[1:]]
+        else:
+            command[0] = sf_executable
     completed = subprocess.run(command, check=True, capture_output=True, text=True, encoding="utf-8")
     return json.loads(completed.stdout)
 
@@ -135,6 +142,7 @@ def styles(font: str) -> dict[str, ParagraphStyle]:
         "h1": ParagraphStyle("H1KR", parent=base["Heading1"], fontName="CorePressKoreanBold", fontSize=14, leading=19, textColor=colors.HexColor("#0B6E75"), spaceBefore=5 * mm, spaceAfter=2.5 * mm),
         "body": ParagraphStyle("BodyKR", parent=base["BodyText"], fontName=font, fontSize=9.5, leading=15, textColor=colors.HexColor("#243746"), spaceAfter=2.5 * mm),
         "small": ParagraphStyle("SmallKR", parent=base["BodyText"], fontName=font, fontSize=8, leading=12, textColor=colors.HexColor("#526575")),
+        "compact": ParagraphStyle("CompactKR", parent=base["BodyText"], fontName=font, fontSize=7.2, leading=9.2, textColor=colors.HexColor("#526575")),
         "warning": ParagraphStyle("WarningKR", parent=base["BodyText"], fontName=font, fontSize=8.5, leading=13, textColor=colors.HexColor("#7A3E00"), backColor=colors.HexColor("#FFF4DE"), borderColor=colors.HexColor("#E6A23C"), borderWidth=0.6, borderPadding=7, spaceAfter=5 * mm),
     }
 
@@ -202,8 +210,8 @@ def topic_story(topic_key: str, equipment: Product, parts: list[Product], servic
             ("SYS-901", "제어 또는 통신 상태 확인", "표시 메시지와 시간을 기록하고, 승인되지 않은 초기화·펌웨어 변경은 수행하지 않습니다."),
         ]
         story += [Paragraph("PoC용 가상 오류 코드", st["h1"])]
-        rows = [[Paragraph("코드", st["small"]), Paragraph("의미", st["small"]), Paragraph("안전한 1차 대응", st["small"])]]
-        rows += [[Paragraph(esc(code), st["small"]), Paragraph(esc(label), st["small"]), Paragraph(esc(action), st["small"])] for code, label, action in codes]
+        rows = [[Paragraph("코드", st["compact"]), Paragraph("의미", st["compact"]), Paragraph("안전한 1차 대응", st["compact"])]]
+        rows += [[Paragraph(esc(code), st["compact"]), Paragraph(esc(label), st["compact"]), Paragraph(esc(action), st["compact"])] for code, label, action in codes]
         table = Table(rows, colWidths=[22 * mm, 45 * mm, 93 * mm], repeatRows=1)
         table.setStyle(TableStyle([
             ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#123B5D")),
@@ -212,7 +220,7 @@ def topic_story(topic_key: str, equipment: Product, parts: list[Product], servic
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
             ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F4F8FA")]),
             ("LEFTPADDING", (0, 0), (-1, -1), 5), ("RIGHTPADDING", (0, 0), (-1, -1), 5),
-            ("TOPPADDING", (0, 0), (-1, -1), 5), ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ("TOPPADDING", (0, 0), (-1, -1), 3), ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
         ]))
         story.append(table)
     elif topic_key == "04_parts_maintenance":

@@ -24,6 +24,45 @@ public class TestDataFactory {
       insert record;
     return record;
   }
+  /** @param name Product name. @param code Product code. @param insertRecord Whether to insert. @return Product2. */
+  public static Product2 createEquipmentProduct(
+    String name,
+    String code,
+    Boolean insertRecord
+  ) {
+    Product2 record = new Product2(
+      Name = name,
+      ProductCode = code,
+      Family = '압축기',
+      Description = name + ' 테스트 장비 설명',
+      IsActive = true,
+      Expected_Life_Years__c = 10,
+      Overhaul_Interval_Hours__c = 12000
+    );
+    if (insertRecord)
+      insert record;
+    return record;
+  }
+  /** @param accountId Owner Account. @param productId Product2. @param serialNumber Serial. @param insertRecord Whether to insert. @return Asset. */
+  public static Asset createAsset(
+    Id accountId,
+    Id productId,
+    String serialNumber,
+    Boolean insertRecord
+  ) {
+    Asset record = new Asset(
+      Name = '테스트 보유 장비 ' + serialNumber,
+      AccountId = accountId,
+      Product2Id = productId,
+      SerialNumber = serialNumber,
+      Status = 'Installed',
+      Runtime_As_Of__c = Date.today(),
+      Total_Runtime_Hours__c = 1000
+    );
+    if (insertRecord)
+      insert record;
+    return record;
+  }
   /** @param company Company. @param email Email. @param equipment Model. @param insertRecord Whether to insert. @return Lead. */
   public static Lead createCatalogLead(
     String company,

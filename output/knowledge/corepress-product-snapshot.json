@@ -1,0 +1,2602 @@
+[
+  {
+    "id": "01tgK00000E9Uq9QAF",
+    "name": "고객 교육",
+    "code": "SVC-FIELD-09",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9Uq4QAF",
+    "name": "구설비 철거·반출",
+    "code": "SVC-FIELD-04",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9Uq1QAF",
+    "name": "기초공사·앵커링",
+    "code": "SVC-FIELD-01",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9Uq3QAF",
+    "name": "배관·전기 연결",
+    "code": "SVC-FIELD-03",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9Uq2QAF",
+    "name": "본체 반입·설치",
+    "code": "SVC-FIELD-02",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9Uq7QAF",
+    "name": "시운전·성능 테스트",
+    "code": "SVC-FIELD-07",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9Uq8QAF",
+    "name": "시운전·인수",
+    "code": "SVC-FIELD-08",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9Uq5QAF",
+    "name": "신설비 반입·설치",
+    "code": "SVC-FIELD-05",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9Uq6QAF",
+    "name": "조치·부품 교체",
+    "code": "SVC-FIELD-06",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000E9UqAQAV",
+    "name": "진단·점검",
+    "code": "SVC-FIELD-10",
+    "family": "서비스",
+    "description": "현장 서비스 작업 항목",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVv3QAF",
+    "name": "CD1000",
+    "code": "CD1000-HL",
+    "family": "드라이어",
+    "description": "CD1000 흡착식 압축공기 드라이어 · 무열식 (Heatless) · 처리유량 1,200~3,600 m³/hr · 노점 -40°C · 퍼지 손실 약 15% · 적용 CPA2100 · CP2100",
+    "expected_life": 15,
+    "overhaul_hours": 40000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVvAQAV",
+    "name": "CD1000 After-Filter Element",
+    "code": "CD1000-PA-001",
+    "family": "드라이어",
+    "description": "CD1000 드라이어용 After-Filter Element · 후처리 필터 엘리먼트 — 흡착제 분진 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvCQAV",
+    "name": "CD1000 Desiccant Charge",
+    "code": "CD1000-DC-001",
+    "family": "드라이어",
+    "description": "CD1000 드라이어용 Desiccant Charge · 흡착제 충전재 — 수분을 흡착하는 실제 작동 물질 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVv9QAF",
+    "name": "CD1000 Pre-Filter Element",
+    "code": "CD1000-PF-001",
+    "family": "드라이어",
+    "description": "CD1000 드라이어용 Pre-Filter Element · 전처리 필터 엘리먼트 — 드라이어 유입 전 수분·미립자 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvBQAV",
+    "name": "CD1000 Switching Valve Kit",
+    "code": "CD1000-VK-001",
+    "family": "드라이어",
+    "description": "CD1000 드라이어용 Switching Valve Kit · 전환 밸브 키트 — 흡착탑 절환용 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVv4QAF",
+    "name": "CD2000",
+    "code": "CD2000-HL",
+    "family": "드라이어",
+    "description": "CD2000 흡착식 압축공기 드라이어 · 무열식 (Heatless) · 처리유량 3,000~7,000 m³/hr · 노점 -40°C · 퍼지 손실 약 15% · 적용 CP3000 · CP3100 Pro · CPA3100",
+    "expected_life": 15,
+    "overhaul_hours": 40000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVvEQAV",
+    "name": "CD2000 After-Filter Element",
+    "code": "CD2000-PA-001",
+    "family": "드라이어",
+    "description": "CD2000 드라이어용 After-Filter Element · 후처리 필터 엘리먼트 — 흡착제 분진 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvGQAV",
+    "name": "CD2000 Desiccant Charge",
+    "code": "CD2000-DC-001",
+    "family": "드라이어",
+    "description": "CD2000 드라이어용 Desiccant Charge · 흡착제 충전재 — 수분을 흡착하는 실제 작동 물질 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvDQAV",
+    "name": "CD2000 Pre-Filter Element",
+    "code": "CD2000-PF-001",
+    "family": "드라이어",
+    "description": "CD2000 드라이어용 Pre-Filter Element · 전처리 필터 엘리먼트 — 드라이어 유입 전 수분·미립자 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvFQAV",
+    "name": "CD2000 Switching Valve Kit",
+    "code": "CD2000-VK-001",
+    "family": "드라이어",
+    "description": "CD2000 드라이어용 Switching Valve Kit · 전환 밸브 키트 — 흡착탑 절환용 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVv5QAF",
+    "name": "CD3000",
+    "code": "CD3000-BP",
+    "family": "드라이어",
+    "description": "CD3000 흡착식 압축공기 드라이어 · 블로워 퍼지 (Blower Purge) · 처리유량 6,000~15,000 m³/hr · 노점 -40°C · 퍼지 손실 약 2% · 적용 CP4000 · CP4100 Pro · CP5000 · CP5100 Pro",
+    "expected_life": 15,
+    "overhaul_hours": 40000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVvIQAV",
+    "name": "CD3000 After-Filter Element",
+    "code": "CD3000-PA-001",
+    "family": "드라이어",
+    "description": "CD3000 드라이어용 After-Filter Element · 후처리 필터 엘리먼트 — 흡착제 분진 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvKQAV",
+    "name": "CD3000 Desiccant Charge",
+    "code": "CD3000-DC-001",
+    "family": "드라이어",
+    "description": "CD3000 드라이어용 Desiccant Charge · 흡착제 충전재 — 수분을 흡착하는 실제 작동 물질 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvHQAV",
+    "name": "CD3000 Pre-Filter Element",
+    "code": "CD3000-PF-001",
+    "family": "드라이어",
+    "description": "CD3000 드라이어용 Pre-Filter Element · 전처리 필터 엘리먼트 — 드라이어 유입 전 수분·미립자 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvJQAV",
+    "name": "CD3000 Switching Valve Kit",
+    "code": "CD3000-VK-001",
+    "family": "드라이어",
+    "description": "CD3000 드라이어용 Switching Valve Kit · 전환 밸브 키트 — 흡착탑 절환용 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVv6QAF",
+    "name": "CD3500 DP",
+    "code": "CD3500-DP",
+    "family": "드라이어",
+    "description": "CD3500 DP 흡착식 압축공기 드라이어 · 블로워 퍼지 · 초저노점 · 처리유량 6,000~15,000 m³/hr · 노점 -70°C · 퍼지 손실 약 3% · 적용 CP5100 Pro (반도체·이차전지 공정)",
+    "expected_life": 15,
+    "overhaul_hours": 40000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVvMQAV",
+    "name": "CD3500 DP After-Filter Element",
+    "code": "CD3500-PA-001",
+    "family": "드라이어",
+    "description": "CD3500 DP 드라이어용 After-Filter Element · 후처리 필터 엘리먼트 — 흡착제 분진 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvOQAV",
+    "name": "CD3500 DP Desiccant Charge",
+    "code": "CD3500-DC-001",
+    "family": "드라이어",
+    "description": "CD3500 DP 드라이어용 Desiccant Charge · 흡착제 충전재 — 수분을 흡착하는 실제 작동 물질 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvLQAV",
+    "name": "CD3500 DP Pre-Filter Element",
+    "code": "CD3500-PF-001",
+    "family": "드라이어",
+    "description": "CD3500 DP 드라이어용 Pre-Filter Element · 전처리 필터 엘리먼트 — 드라이어 유입 전 수분·미립자 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvNQAV",
+    "name": "CD3500 DP Switching Valve Kit",
+    "code": "CD3500-VK-001",
+    "family": "드라이어",
+    "description": "CD3500 DP 드라이어용 Switching Valve Kit · 전환 밸브 키트 — 흡착탑 절환용 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVv7QAF",
+    "name": "CD5000",
+    "code": "CD5000-HOC",
+    "family": "드라이어",
+    "description": "CD5000 흡착식 압축공기 드라이어 · 압축열 재생 (HOC) · 처리유량 10,000~24,000 m³/hr · 노점 -40°C · 퍼지 손실 0% (압축열 이용) · 적용 CP6000 · CP6100 Pro",
+    "expected_life": 15,
+    "overhaul_hours": 40000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVvQQAV",
+    "name": "CD5000 After-Filter Element",
+    "code": "CD5000-PA-001",
+    "family": "드라이어",
+    "description": "CD5000 드라이어용 After-Filter Element · 후처리 필터 엘리먼트 — 흡착제 분진 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvSQAV",
+    "name": "CD5000 Desiccant Charge",
+    "code": "CD5000-DC-001",
+    "family": "드라이어",
+    "description": "CD5000 드라이어용 Desiccant Charge · 흡착제 충전재 — 수분을 흡착하는 실제 작동 물질 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvPQAV",
+    "name": "CD5000 Pre-Filter Element",
+    "code": "CD5000-PF-001",
+    "family": "드라이어",
+    "description": "CD5000 드라이어용 Pre-Filter Element · 전처리 필터 엘리먼트 — 드라이어 유입 전 수분·미립자 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvRQAV",
+    "name": "CD5000 Switching Valve Kit",
+    "code": "CD5000-VK-001",
+    "family": "드라이어",
+    "description": "CD5000 드라이어용 Switching Valve Kit · 전환 밸브 키트 — 흡착탑 절환용 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVv8QAF",
+    "name": "CD7000",
+    "code": "CD7000-HOC",
+    "family": "드라이어",
+    "description": "CD7000 흡착식 압축공기 드라이어 · 압축열 재생 (HOC) · 처리유량 22,000~45,000 m³/hr · 노점 -40°C · 퍼지 손실 0% (압축열 이용) · 적용 CP7100 Pro · CP7100+",
+    "expected_life": 15,
+    "overhaul_hours": 40000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVvUQAV",
+    "name": "CD7000 After-Filter Element",
+    "code": "CD7000-PA-001",
+    "family": "드라이어",
+    "description": "CD7000 드라이어용 After-Filter Element · 후처리 필터 엘리먼트 — 흡착제 분진 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvWQAV",
+    "name": "CD7000 Desiccant Charge",
+    "code": "CD7000-DC-001",
+    "family": "드라이어",
+    "description": "CD7000 드라이어용 Desiccant Charge · 흡착제 충전재 — 수분을 흡착하는 실제 작동 물질 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvTQAV",
+    "name": "CD7000 Pre-Filter Element",
+    "code": "CD7000-PF-001",
+    "family": "드라이어",
+    "description": "CD7000 드라이어용 Pre-Filter Element · 전처리 필터 엘리먼트 — 드라이어 유입 전 수분·미립자 제거 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVvVQAV",
+    "name": "CD7000 Switching Valve Kit",
+    "code": "CD7000-VK-001",
+    "family": "드라이어",
+    "description": "CD7000 드라이어용 Switching Valve Kit · 전환 밸브 키트 — 흡착탑 절환용 (소모품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVstQAF",
+    "name": "CoreConnect Dashboard (Asset Health / Trend / Alert)",
+    "code": "CH-DASH",
+    "family": "서비스",
+    "description": "CoreConnect 알림/접속 채널",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsqQAF",
+    "name": "CoreConnect Local HMI",
+    "code": "CC-HMI",
+    "family": "필터·부품",
+    "description": "CoreConnect 원격 모니터링용 하드웨어 장치",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVspQAF",
+    "name": "CoreConnect M2M Gateway",
+    "code": "CC-GW",
+    "family": "필터·부품",
+    "description": "CoreConnect 원격 모니터링용 하드웨어 장치",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsrQAF",
+    "name": "CoreConnect SMS & Email Alert Channel",
+    "code": "CH-SMS",
+    "family": "서비스",
+    "description": "CoreConnect 알림/접속 채널",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVreQAF",
+    "name": "CP2100",
+    "code": "CP2100-PKG",
+    "family": "압축기",
+    "description": "CP2100 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 1,400~3,550 m³/hr (824~2,089 CFM) · 정격출력 150~335 kW (200~450 HP) · 토출압력 5.0~11.4 bar A · 외형 3,400x2,200x2,066 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsUQAV",
+    "name": "CP2100 모니터링",
+    "code": "CP2100-AM04",
+    "family": "서비스",
+    "description": "CP2100 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsRQAV",
+    "name": "CP2100 부품 공급 서비스",
+    "code": "CP2100-AM01",
+    "family": "서비스",
+    "description": "CP2100 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsSQAV",
+    "name": "CP2100 유지보수",
+    "code": "CP2100-AM02",
+    "family": "서비스",
+    "description": "CP2100 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsTQAV",
+    "name": "CP2100 주기정비",
+    "code": "CP2100-AM03",
+    "family": "서비스",
+    "description": "CP2100 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsVQAV",
+    "name": "CP2100 토탈솔루션",
+    "code": "CP2100-AM05",
+    "family": "서비스",
+    "description": "CP2100 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuqQAF",
+    "name": "CP2100 Gasket",
+    "code": "CP2100-GS-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtpQAF",
+    "name": "CP2100 Gasket & O-Ring Kit",
+    "code": "CP2100-GK-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtqQAF",
+    "name": "CP2100 Gearbox Lube Oil Filter Element",
+    "code": "CP2100-OF-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtrQAF",
+    "name": "CP2100 Inlet Air Filter Element",
+    "code": "CP2100-AF-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVunQAF",
+    "name": "CP2100 Motor",
+    "code": "CP2100-MT-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVupQAF",
+    "name": "CP2100 O-Ring",
+    "code": "CP2100-OR-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuoQAF",
+    "name": "CP2100 Shaft",
+    "code": "CP2100-SH-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtsQAF",
+    "name": "CP2100 Shaft Seal Kit",
+    "code": "CP2100-SL-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVttQAF",
+    "name": "CP2100 Tilting Pad Bearing Kit",
+    "code": "CP2100-TB-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtuQAF",
+    "name": "CP2100 Vibration Sensor",
+    "code": "CP2100-VS-001",
+    "family": "필터·부품",
+    "description": "CP2100 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVraQAF",
+    "name": "CP3000",
+    "code": "CP3000-PKG",
+    "family": "압축기",
+    "description": "CP3000 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 3,300~5,300 m³/hr (1,950~3,100 CFM) · 정격출력 230~710 kW (300~950 HP) · 토출압력 3.5~25.0 bar A · 외형 4,750x2,100x2,500 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsAQAV",
+    "name": "CP3000 모니터링",
+    "code": "CP3000-AM04",
+    "family": "서비스",
+    "description": "CP3000 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs7QAF",
+    "name": "CP3000 부품 공급 서비스",
+    "code": "CP3000-AM01",
+    "family": "서비스",
+    "description": "CP3000 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs8QAF",
+    "name": "CP3000 유지보수",
+    "code": "CP3000-AM02",
+    "family": "서비스",
+    "description": "CP3000 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs9QAF",
+    "name": "CP3000 주기정비",
+    "code": "CP3000-AM03",
+    "family": "서비스",
+    "description": "CP3000 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsBQAV",
+    "name": "CP3000 토탈솔루션",
+    "code": "CP3000-AM05",
+    "family": "서비스",
+    "description": "CP3000 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuaQAF",
+    "name": "CP3000 Gasket",
+    "code": "CP3000-GS-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtRQAV",
+    "name": "CP3000 Gasket & O-Ring Kit",
+    "code": "CP3000-GK-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtSQAV",
+    "name": "CP3000 Gearbox Lube Oil Filter Element",
+    "code": "CP3000-OF-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtTQAV",
+    "name": "CP3000 Inlet Air Filter Element",
+    "code": "CP3000-AF-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuXQAV",
+    "name": "CP3000 Motor",
+    "code": "CP3000-MT-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuZQAV",
+    "name": "CP3000 O-Ring",
+    "code": "CP3000-OR-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuYQAV",
+    "name": "CP3000 Shaft",
+    "code": "CP3000-SH-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtUQAV",
+    "name": "CP3000 Shaft Seal Kit",
+    "code": "CP3000-SL-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtVQAV",
+    "name": "CP3000 Tilting Pad Bearing Kit",
+    "code": "CP3000-TB-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtWQAV",
+    "name": "CP3000 Vibration Sensor",
+    "code": "CP3000-VS-001",
+    "family": "필터·부품",
+    "description": "CP3000 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrVQAV",
+    "name": "CP3100 Pro",
+    "code": "CP3100Pro-PKG",
+    "family": "압축기",
+    "description": "CP3100 Pro 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 3,300~5,690 m³/hr (1,950~3,240 CFM) · 정격출력 250~600 kW (270~800 HP) · 토출압력 3.0~13.0 bar A · 외형 5,250x2,250x2,500 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrlQAF",
+    "name": "CP3100 Pro 모니터링",
+    "code": "CP3100Pro-AM04",
+    "family": "서비스",
+    "description": "CP3100 Pro 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVriQAF",
+    "name": "CP3100 Pro 부품 공급 서비스",
+    "code": "CP3100Pro-AM01",
+    "family": "서비스",
+    "description": "CP3100 Pro 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrjQAF",
+    "name": "CP3100 Pro 유지보수",
+    "code": "CP3100Pro-AM02",
+    "family": "서비스",
+    "description": "CP3100 Pro 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrkQAF",
+    "name": "CP3100 Pro 주기정비",
+    "code": "CP3100Pro-AM03",
+    "family": "서비스",
+    "description": "CP3100 Pro 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrmQAF",
+    "name": "CP3100 Pro 토탈솔루션",
+    "code": "CP3100Pro-AM05",
+    "family": "서비스",
+    "description": "CP3100 Pro 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuGQAV",
+    "name": "CP3100 Pro Gasket",
+    "code": "CP3100Pro-GS-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVsxQAF",
+    "name": "CP3100 Pro Gasket & O-Ring Kit",
+    "code": "CP3100Pro-GK-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVsyQAF",
+    "name": "CP3100 Pro Gearbox Lube Oil Filter Element",
+    "code": "CP3100Pro-OF-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVszQAF",
+    "name": "CP3100 Pro Inlet Air Filter Element",
+    "code": "CP3100Pro-AF-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuDQAV",
+    "name": "CP3100 Pro Motor",
+    "code": "CP3100Pro-MT-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuFQAV",
+    "name": "CP3100 Pro O-Ring",
+    "code": "CP3100Pro-OR-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuEQAV",
+    "name": "CP3100 Pro Shaft",
+    "code": "CP3100Pro-SH-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVt0QAF",
+    "name": "CP3100 Pro Shaft Seal Kit",
+    "code": "CP3100Pro-SL-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVt1QAF",
+    "name": "CP3100 Pro Tilting Pad Bearing Kit",
+    "code": "CP3100Pro-TB-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVt2QAF",
+    "name": "CP3100 Pro Vibration Sensor",
+    "code": "CP3100Pro-VS-001",
+    "family": "필터·부품",
+    "description": "CP3100 Pro 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrbQAF",
+    "name": "CP4000",
+    "code": "CP4000-PKG",
+    "family": "압축기",
+    "description": "CP4000 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 5,300~8,400 m³/hr (3,100~4,950 CFM) · 정격출력 360~1,200 kW (480~1,600 HP) · 토출압력 3.5~25.0 bar A · 외형 5,100x2,250x2,500 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsFQAV",
+    "name": "CP4000 모니터링",
+    "code": "CP4000-AM04",
+    "family": "서비스",
+    "description": "CP4000 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsCQAV",
+    "name": "CP4000 부품 공급 서비스",
+    "code": "CP4000-AM01",
+    "family": "서비스",
+    "description": "CP4000 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsDQAV",
+    "name": "CP4000 유지보수",
+    "code": "CP4000-AM02",
+    "family": "서비스",
+    "description": "CP4000 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsEQAV",
+    "name": "CP4000 주기정비",
+    "code": "CP4000-AM03",
+    "family": "서비스",
+    "description": "CP4000 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsGQAV",
+    "name": "CP4000 토탈솔루션",
+    "code": "CP4000-AM05",
+    "family": "서비스",
+    "description": "CP4000 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVueQAF",
+    "name": "CP4000 Gasket",
+    "code": "CP4000-GS-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtXQAV",
+    "name": "CP4000 Gasket & O-Ring Kit",
+    "code": "CP4000-GK-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtYQAV",
+    "name": "CP4000 Gearbox Lube Oil Filter Element",
+    "code": "CP4000-OF-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtZQAV",
+    "name": "CP4000 Inlet Air Filter Element",
+    "code": "CP4000-AF-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVubQAF",
+    "name": "CP4000 Motor",
+    "code": "CP4000-MT-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVudQAF",
+    "name": "CP4000 O-Ring",
+    "code": "CP4000-OR-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVucQAF",
+    "name": "CP4000 Shaft",
+    "code": "CP4000-SH-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtaQAF",
+    "name": "CP4000 Shaft Seal Kit",
+    "code": "CP4000-SL-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtbQAF",
+    "name": "CP4000 Tilting Pad Bearing Kit",
+    "code": "CP4000-TB-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtcQAF",
+    "name": "CP4000 Vibration Sensor",
+    "code": "CP4000-VS-001",
+    "family": "필터·부품",
+    "description": "CP4000 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrWQAV",
+    "name": "CP4100 Pro",
+    "code": "CP4100Pro-PKG",
+    "family": "압축기",
+    "description": "CP4100 Pro 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 4,340~9,030 m³/hr (2,480~5,160 CFM) · 정격출력 460~900 kW (620~1,220 HP) · 토출압력 3.0~13.0 bar A · 외형 5,500x2,250x2,500 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrqQAF",
+    "name": "CP4100 Pro 모니터링",
+    "code": "CP4100Pro-AM04",
+    "family": "서비스",
+    "description": "CP4100 Pro 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrnQAF",
+    "name": "CP4100 Pro 부품 공급 서비스",
+    "code": "CP4100Pro-AM01",
+    "family": "서비스",
+    "description": "CP4100 Pro 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVroQAF",
+    "name": "CP4100 Pro 유지보수",
+    "code": "CP4100Pro-AM02",
+    "family": "서비스",
+    "description": "CP4100 Pro 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrpQAF",
+    "name": "CP4100 Pro 주기정비",
+    "code": "CP4100Pro-AM03",
+    "family": "서비스",
+    "description": "CP4100 Pro 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrrQAF",
+    "name": "CP4100 Pro 토탈솔루션",
+    "code": "CP4100Pro-AM05",
+    "family": "서비스",
+    "description": "CP4100 Pro 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuKQAV",
+    "name": "CP4100 Pro Gasket",
+    "code": "CP4100Pro-GS-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVt3QAF",
+    "name": "CP4100 Pro Gasket & O-Ring Kit",
+    "code": "CP4100Pro-GK-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVt4QAF",
+    "name": "CP4100 Pro Gearbox Lube Oil Filter Element",
+    "code": "CP4100Pro-OF-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVt5QAF",
+    "name": "CP4100 Pro Inlet Air Filter Element",
+    "code": "CP4100Pro-AF-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuHQAV",
+    "name": "CP4100 Pro Motor",
+    "code": "CP4100Pro-MT-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuJQAV",
+    "name": "CP4100 Pro O-Ring",
+    "code": "CP4100Pro-OR-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuIQAV",
+    "name": "CP4100 Pro Shaft",
+    "code": "CP4100Pro-SH-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVt6QAF",
+    "name": "CP4100 Pro Shaft Seal Kit",
+    "code": "CP4100Pro-SL-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVt7QAF",
+    "name": "CP4100 Pro Tilting Pad Bearing Kit",
+    "code": "CP4100Pro-TB-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVt8QAF",
+    "name": "CP4100 Pro Vibration Sensor",
+    "code": "CP4100Pro-VS-001",
+    "family": "필터·부품",
+    "description": "CP4100 Pro 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrcQAF",
+    "name": "CP5000",
+    "code": "CP5000-PKG",
+    "family": "압축기",
+    "description": "CP5000 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 8,400~15,000 m³/hr (4,950~8,850 CFM) · 정격출력 560~1,800 kW (750~2,410 HP) · 토출압력 3.5~25.0 bar A · 외형 5,450x2,250x2,500 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsKQAV",
+    "name": "CP5000 모니터링",
+    "code": "CP5000-AM04",
+    "family": "서비스",
+    "description": "CP5000 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsHQAV",
+    "name": "CP5000 부품 공급 서비스",
+    "code": "CP5000-AM01",
+    "family": "서비스",
+    "description": "CP5000 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsIQAV",
+    "name": "CP5000 유지보수",
+    "code": "CP5000-AM02",
+    "family": "서비스",
+    "description": "CP5000 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsJQAV",
+    "name": "CP5000 주기정비",
+    "code": "CP5000-AM03",
+    "family": "서비스",
+    "description": "CP5000 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsLQAV",
+    "name": "CP5000 토탈솔루션",
+    "code": "CP5000-AM05",
+    "family": "서비스",
+    "description": "CP5000 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuiQAF",
+    "name": "CP5000 Gasket",
+    "code": "CP5000-GS-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtdQAF",
+    "name": "CP5000 Gasket & O-Ring Kit",
+    "code": "CP5000-GK-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVteQAF",
+    "name": "CP5000 Gearbox Lube Oil Filter Element",
+    "code": "CP5000-OF-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtfQAF",
+    "name": "CP5000 Inlet Air Filter Element",
+    "code": "CP5000-AF-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVufQAF",
+    "name": "CP5000 Motor",
+    "code": "CP5000-MT-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuhQAF",
+    "name": "CP5000 O-Ring",
+    "code": "CP5000-OR-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVugQAF",
+    "name": "CP5000 Shaft",
+    "code": "CP5000-SH-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtgQAF",
+    "name": "CP5000 Shaft Seal Kit",
+    "code": "CP5000-SL-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVthQAF",
+    "name": "CP5000 Tilting Pad Bearing Kit",
+    "code": "CP5000-TB-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtiQAF",
+    "name": "CP5000 Vibration Sensor",
+    "code": "CP5000-VS-001",
+    "family": "필터·부품",
+    "description": "CP5000 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrXQAV",
+    "name": "CP5100 Pro",
+    "code": "CP5100Pro-PKG",
+    "family": "압축기",
+    "description": "CP5100 Pro 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 7,350~15,150 m³/hr (4,200~8,670 CFM) · 정격출력 570~1,500 kW (770~2,015 HP) · 토출압력 3.0~13.0 bar A · 외형 6,250x2,250x2,550 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrvQAF",
+    "name": "CP5100 Pro 모니터링",
+    "code": "CP5100Pro-AM04",
+    "family": "서비스",
+    "description": "CP5100 Pro 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrsQAF",
+    "name": "CP5100 Pro 부품 공급 서비스",
+    "code": "CP5100Pro-AM01",
+    "family": "서비스",
+    "description": "CP5100 Pro 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrtQAF",
+    "name": "CP5100 Pro 유지보수",
+    "code": "CP5100Pro-AM02",
+    "family": "서비스",
+    "description": "CP5100 Pro 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVruQAF",
+    "name": "CP5100 Pro 주기정비",
+    "code": "CP5100Pro-AM03",
+    "family": "서비스",
+    "description": "CP5100 Pro 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrwQAF",
+    "name": "CP5100 Pro 토탈솔루션",
+    "code": "CP5100Pro-AM05",
+    "family": "서비스",
+    "description": "CP5100 Pro 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuOQAV",
+    "name": "CP5100 Pro Gasket",
+    "code": "CP5100Pro-GS-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVt9QAF",
+    "name": "CP5100 Pro Gasket & O-Ring Kit",
+    "code": "CP5100Pro-GK-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtAQAV",
+    "name": "CP5100 Pro Gearbox Lube Oil Filter Element",
+    "code": "CP5100Pro-OF-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtBQAV",
+    "name": "CP5100 Pro Inlet Air Filter Element",
+    "code": "CP5100Pro-AF-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuLQAV",
+    "name": "CP5100 Pro Motor",
+    "code": "CP5100Pro-MT-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuNQAV",
+    "name": "CP5100 Pro O-Ring",
+    "code": "CP5100Pro-OR-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuMQAV",
+    "name": "CP5100 Pro Shaft",
+    "code": "CP5100Pro-SH-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtCQAV",
+    "name": "CP5100 Pro Shaft Seal Kit",
+    "code": "CP5100Pro-SL-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtDQAV",
+    "name": "CP5100 Pro Tilting Pad Bearing Kit",
+    "code": "CP5100Pro-TB-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtEQAV",
+    "name": "CP5100 Pro Vibration Sensor",
+    "code": "CP5100Pro-VS-001",
+    "family": "필터·부품",
+    "description": "CP5100 Pro 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrdQAF",
+    "name": "CP6000",
+    "code": "CP6000-PKG",
+    "family": "압축기",
+    "description": "CP6000 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 15,000~21,000 m³/hr (8,850~12,400 CFM) · 정격출력 940~2,650 kW (1,260~3,550 HP) · 토출압력 3.5~25.0 bar A · 외형 6,200x2,300x2,550 mm",
+    "expected_life": 10,
+    "overhaul_hours": 12000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsPQAV",
+    "name": "CP6000 모니터링",
+    "code": "CP6000-AM04",
+    "family": "서비스",
+    "description": "CP6000 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsMQAV",
+    "name": "CP6000 부품 공급 서비스",
+    "code": "CP6000-AM01",
+    "family": "서비스",
+    "description": "CP6000 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsNQAV",
+    "name": "CP6000 유지보수",
+    "code": "CP6000-AM02",
+    "family": "서비스",
+    "description": "CP6000 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsOQAV",
+    "name": "CP6000 주기정비",
+    "code": "CP6000-AM03",
+    "family": "서비스",
+    "description": "CP6000 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsQQAV",
+    "name": "CP6000 토탈솔루션",
+    "code": "CP6000-AM05",
+    "family": "서비스",
+    "description": "CP6000 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVumQAF",
+    "name": "CP6000 Gasket",
+    "code": "CP6000-GS-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtjQAF",
+    "name": "CP6000 Gasket & O-Ring Kit",
+    "code": "CP6000-GK-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtkQAF",
+    "name": "CP6000 Gearbox Lube Oil Filter Element",
+    "code": "CP6000-OF-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtlQAF",
+    "name": "CP6000 Inlet Air Filter Element",
+    "code": "CP6000-AF-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVujQAF",
+    "name": "CP6000 Motor",
+    "code": "CP6000-MT-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVulQAF",
+    "name": "CP6000 O-Ring",
+    "code": "CP6000-OR-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVukQAF",
+    "name": "CP6000 Shaft",
+    "code": "CP6000-SH-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtmQAF",
+    "name": "CP6000 Shaft Seal Kit",
+    "code": "CP6000-SL-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtnQAF",
+    "name": "CP6000 Tilting Pad Bearing Kit",
+    "code": "CP6000-TB-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtoQAF",
+    "name": "CP6000 Vibration Sensor",
+    "code": "CP6000-VS-001",
+    "family": "필터·부품",
+    "description": "CP6000 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrYQAV",
+    "name": "CP6100 Pro",
+    "code": "CP6100Pro-PKG",
+    "family": "압축기",
+    "description": "CP6100 Pro 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 11,630~25,890 m³/hr (9,800~14,800 CFM) · 정격출력 870~2,520 kW (1,170~3,380 HP) · 토출압력 3.0~13.0 bar A · 외형 7,100x2,250x2,550 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs0QAF",
+    "name": "CP6100 Pro 모니터링",
+    "code": "CP6100Pro-AM04",
+    "family": "서비스",
+    "description": "CP6100 Pro 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrxQAF",
+    "name": "CP6100 Pro 부품 공급 서비스",
+    "code": "CP6100Pro-AM01",
+    "family": "서비스",
+    "description": "CP6100 Pro 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVryQAF",
+    "name": "CP6100 Pro 유지보수",
+    "code": "CP6100Pro-AM02",
+    "family": "서비스",
+    "description": "CP6100 Pro 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVrzQAF",
+    "name": "CP6100 Pro 주기정비",
+    "code": "CP6100Pro-AM03",
+    "family": "서비스",
+    "description": "CP6100 Pro 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs1QAF",
+    "name": "CP6100 Pro 토탈솔루션",
+    "code": "CP6100Pro-AM05",
+    "family": "서비스",
+    "description": "CP6100 Pro 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuSQAV",
+    "name": "CP6100 Pro Gasket",
+    "code": "CP6100Pro-GS-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtFQAV",
+    "name": "CP6100 Pro Gasket & O-Ring Kit",
+    "code": "CP6100Pro-GK-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtGQAV",
+    "name": "CP6100 Pro Gearbox Lube Oil Filter Element",
+    "code": "CP6100Pro-OF-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtHQAV",
+    "name": "CP6100 Pro Inlet Air Filter Element",
+    "code": "CP6100Pro-AF-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuPQAV",
+    "name": "CP6100 Pro Motor",
+    "code": "CP6100Pro-MT-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuRQAV",
+    "name": "CP6100 Pro O-Ring",
+    "code": "CP6100Pro-OR-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuQQAV",
+    "name": "CP6100 Pro Shaft",
+    "code": "CP6100Pro-SH-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtIQAV",
+    "name": "CP6100 Pro Shaft Seal Kit",
+    "code": "CP6100Pro-SL-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtJQAV",
+    "name": "CP6100 Pro Tilting Pad Bearing Kit",
+    "code": "CP6100Pro-TB-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtKQAV",
+    "name": "CP6100 Pro Vibration Sensor",
+    "code": "CP6100Pro-VS-001",
+    "family": "필터·부품",
+    "description": "CP6100 Pro 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrZQAV",
+    "name": "CP7100 Pro",
+    "code": "CP7100Pro-PKG",
+    "family": "압축기",
+    "description": "CP7100 Pro 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 24,500~36,000 m³/hr (14,400~21,150 CFM) · 정격출력 1,000~2,800 kW (1,340~3,753 HP) · 토출압력 3.5~11.4 bar A · 외형 5,700x2,800x2,950 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs5QAF",
+    "name": "CP7100 Pro 모니터링",
+    "code": "CP7100Pro-AM04",
+    "family": "서비스",
+    "description": "CP7100 Pro 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs2QAF",
+    "name": "CP7100 Pro 부품 공급 서비스",
+    "code": "CP7100Pro-AM01",
+    "family": "서비스",
+    "description": "CP7100 Pro 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs3QAF",
+    "name": "CP7100 Pro 유지보수",
+    "code": "CP7100Pro-AM02",
+    "family": "서비스",
+    "description": "CP7100 Pro 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs4QAF",
+    "name": "CP7100 Pro 주기정비",
+    "code": "CP7100Pro-AM03",
+    "family": "서비스",
+    "description": "CP7100 Pro 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVs6QAF",
+    "name": "CP7100 Pro 토탈솔루션",
+    "code": "CP7100Pro-AM05",
+    "family": "서비스",
+    "description": "CP7100 Pro 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuWQAV",
+    "name": "CP7100 Pro Gasket",
+    "code": "CP7100Pro-GS-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtLQAV",
+    "name": "CP7100 Pro Gasket & O-Ring Kit",
+    "code": "CP7100Pro-GK-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtMQAV",
+    "name": "CP7100 Pro Gearbox Lube Oil Filter Element",
+    "code": "CP7100Pro-OF-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtNQAV",
+    "name": "CP7100 Pro Inlet Air Filter Element",
+    "code": "CP7100Pro-AF-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuTQAV",
+    "name": "CP7100 Pro Motor",
+    "code": "CP7100Pro-MT-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuVQAV",
+    "name": "CP7100 Pro O-Ring",
+    "code": "CP7100Pro-OR-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuUQAV",
+    "name": "CP7100 Pro Shaft",
+    "code": "CP7100Pro-SH-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtOQAV",
+    "name": "CP7100 Pro Shaft Seal Kit",
+    "code": "CP7100Pro-SL-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtPQAV",
+    "name": "CP7100 Pro Tilting Pad Bearing Kit",
+    "code": "CP7100Pro-TB-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtQQAV",
+    "name": "CP7100 Pro Vibration Sensor",
+    "code": "CP7100Pro-VS-001",
+    "family": "필터·부품",
+    "description": "CP7100 Pro 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrfQAF",
+    "name": "CP7100+",
+    "code": "CP7100PLUS-STD",
+    "family": "압축기",
+    "description": "CP7100+ 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 32,000~45,000 m³/hr (18,835~26,487 CFM) · 정격출력 2,300~4,000 kW (3,038~5,361 HP) · 토출압력 5.0~11.5 bar A · 외형 6,201x3,234x3,816 mm",
+    "expected_life": 10,
+    "overhaul_hours": 12000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsZQAV",
+    "name": "CP7100+ 모니터링",
+    "code": "CP7100PLUS-AM04",
+    "family": "서비스",
+    "description": "CP7100+ 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsWQAV",
+    "name": "CP7100+ 부품 공급 서비스",
+    "code": "CP7100PLUS-AM01",
+    "family": "서비스",
+    "description": "CP7100+ 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsXQAV",
+    "name": "CP7100+ 유지보수",
+    "code": "CP7100PLUS-AM02",
+    "family": "서비스",
+    "description": "CP7100+ 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsYQAV",
+    "name": "CP7100+ 주기정비",
+    "code": "CP7100PLUS-AM03",
+    "family": "서비스",
+    "description": "CP7100+ 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsaQAF",
+    "name": "CP7100+ 토탈솔루션",
+    "code": "CP7100PLUS-AM05",
+    "family": "서비스",
+    "description": "CP7100+ 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuuQAF",
+    "name": "CP7100+ Gasket",
+    "code": "CP7100PLUS-GS-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtvQAF",
+    "name": "CP7100+ Gasket & O-Ring Kit",
+    "code": "CP7100PLUS-GK-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtwQAF",
+    "name": "CP7100+ Gearbox Lube Oil Filter Element",
+    "code": "CP7100PLUS-OF-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtxQAF",
+    "name": "CP7100+ Inlet Air Filter Element",
+    "code": "CP7100PLUS-AF-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVurQAF",
+    "name": "CP7100+ Motor",
+    "code": "CP7100PLUS-MT-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVutQAF",
+    "name": "CP7100+ O-Ring",
+    "code": "CP7100PLUS-OR-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVusQAF",
+    "name": "CP7100+ Shaft",
+    "code": "CP7100PLUS-SH-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVtyQAF",
+    "name": "CP7100+ Shaft Seal Kit",
+    "code": "CP7100PLUS-SL-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVtzQAF",
+    "name": "CP7100+ Tilting Pad Bearing Kit",
+    "code": "CP7100PLUS-TB-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVu0QAF",
+    "name": "CP7100+ Vibration Sensor",
+    "code": "CP7100PLUS-VS-001",
+    "family": "필터·부품",
+    "description": "CP7100+ 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrgQAF",
+    "name": "CPA2100",
+    "code": "CPA2100-STD",
+    "family": "압축기",
+    "description": "CPA2100 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 1,200~2,890 m³/hr (700~1,680 CFM) · 정격출력 150~260 kW (200~350 HP) · 토출압력 3.5~11.4 bar A · 외형 3,000x2,500x1,900 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVseQAF",
+    "name": "CPA2100 모니터링",
+    "code": "CPA2100-AM04",
+    "family": "서비스",
+    "description": "CPA2100 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsbQAF",
+    "name": "CPA2100 부품 공급 서비스",
+    "code": "CPA2100-AM01",
+    "family": "서비스",
+    "description": "CPA2100 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVscQAF",
+    "name": "CPA2100 유지보수",
+    "code": "CPA2100-AM02",
+    "family": "서비스",
+    "description": "CPA2100 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsdQAF",
+    "name": "CPA2100 주기정비",
+    "code": "CPA2100-AM03",
+    "family": "서비스",
+    "description": "CPA2100 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsfQAF",
+    "name": "CPA2100 토탈솔루션",
+    "code": "CPA2100-AM05",
+    "family": "서비스",
+    "description": "CPA2100 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuyQAF",
+    "name": "CPA2100 Gasket",
+    "code": "CPA2100-GS-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVu1QAF",
+    "name": "CPA2100 Gasket & O-Ring Kit",
+    "code": "CPA2100-GK-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVu2QAF",
+    "name": "CPA2100 Gearbox Lube Oil Filter Element",
+    "code": "CPA2100-OF-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVu3QAF",
+    "name": "CPA2100 Inlet Air Filter Element",
+    "code": "CPA2100-AF-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuvQAF",
+    "name": "CPA2100 Motor",
+    "code": "CPA2100-MT-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuxQAF",
+    "name": "CPA2100 O-Ring",
+    "code": "CPA2100-OR-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuwQAF",
+    "name": "CPA2100 Shaft",
+    "code": "CPA2100-SH-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVu4QAF",
+    "name": "CPA2100 Shaft Seal Kit",
+    "code": "CPA2100-SL-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVu5QAF",
+    "name": "CPA2100 Tilting Pad Bearing Kit",
+    "code": "CPA2100-TB-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVu6QAF",
+    "name": "CPA2100 Vibration Sensor",
+    "code": "CPA2100-VS-001",
+    "family": "필터·부품",
+    "description": "CPA2100 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVrhQAF",
+    "name": "CPA3100",
+    "code": "CPA3100-STD",
+    "family": "압축기",
+    "description": "CPA3100 오일프리 원심식 공기압축기 (Integrally Geared, ISO 8573-1 Class 0) · 처리용량 3,750~5,500 m³/hr (2,200~3,250 CFM) · 정격출력 400~580 kW (540~780 HP) · 토출압력 3.5~11.0 bar A · 외형 4,650x2,050x1,990 mm",
+    "expected_life": 20,
+    "overhaul_hours": 24000,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsjQAF",
+    "name": "CPA3100 모니터링",
+    "code": "CPA3100-AM04",
+    "family": "서비스",
+    "description": "CPA3100 압축기 CoreConnect 자산 모니터링 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsgQAF",
+    "name": "CPA3100 부품 공급 서비스",
+    "code": "CPA3100-AM01",
+    "family": "서비스",
+    "description": "CPA3100 압축기 순정부품 공급 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVshQAF",
+    "name": "CPA3100 유지보수",
+    "code": "CPA3100-AM02",
+    "family": "서비스",
+    "description": "CPA3100 압축기 현장 유지보수 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsiQAF",
+    "name": "CPA3100 주기정비",
+    "code": "CPA3100-AM03",
+    "family": "서비스",
+    "description": "CPA3100 압축기 주기정비(Overhaul) 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVskQAF",
+    "name": "CPA3100 토탈솔루션",
+    "code": "CPA3100-AM05",
+    "family": "서비스",
+    "description": "CPA3100 압축기 부품·정비·모니터링 통합 서비스",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVv2QAF",
+    "name": "CPA3100 Gasket",
+    "code": "CPA3100-GS-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Gasket (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVu7QAF",
+    "name": "CPA3100 Gasket & O-Ring Kit",
+    "code": "CPA3100-GK-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Gasket & O-Ring Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVu8QAF",
+    "name": "CPA3100 Gearbox Lube Oil Filter Element",
+    "code": "CPA3100-OF-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Gearbox Lube Oil Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVu9QAF",
+    "name": "CPA3100 Inlet Air Filter Element",
+    "code": "CPA3100-AF-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Inlet Air Filter Element (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuzQAF",
+    "name": "CPA3100 Motor",
+    "code": "CPA3100-MT-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Motor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVv1QAF",
+    "name": "CPA3100 O-Ring",
+    "code": "CPA3100-OR-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 O-Ring (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVv0QAF",
+    "name": "CPA3100 Shaft",
+    "code": "CPA3100-SH-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Shaft (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuAQAV",
+    "name": "CPA3100 Shaft Seal Kit",
+    "code": "CPA3100-SL-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Shaft Seal Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVuBQAV",
+    "name": "CPA3100 Tilting Pad Bearing Kit",
+    "code": "CPA3100-TB-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Tilting Pad Bearing Kit (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVuCQAV",
+    "name": "CPA3100 Vibration Sensor",
+    "code": "CPA3100-VS-001",
+    "family": "필터·부품",
+    "description": "CPA3100 압축기용 Vibration Sensor (소모품/교체부품)",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": true
+  },
+  {
+    "id": "01tgK00000DxVsvQAF",
+    "name": "RAPID 112 - 1D 현장 방문",
+    "code": "RP-1D",
+    "family": "서비스",
+    "description": "RAPID 112 서비스 SLA 약속",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsuQAF",
+    "name": "RAPID 112 - 1H 접수 확인",
+    "code": "RP-1H",
+    "family": "서비스",
+    "description": "RAPID 112 서비스 SLA 약속",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVswQAF",
+    "name": "RAPID 112 - 2D 조치 완료",
+    "code": "RP-2D",
+    "family": "서비스",
+    "description": "RAPID 112 서비스 SLA 약속",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DViq5QAD",
+    "name": "Shipping Charge Product",
+    "code": "",
+    "family": "미분류",
+    "description": "Default shipping product to calculate standard shipping charges.",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVslQAF",
+    "name": "Smart Care Stage S1 (≤4,000 hr)",
+    "code": "SC-S1",
+    "family": "서비스",
+    "description": "CoreConnect Smart Care 운전시간 기준 정비 등급 안내",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsmQAF",
+    "name": "Smart Care Stage S2 (≤8,000 hr)",
+    "code": "SC-S2",
+    "family": "서비스",
+    "description": "CoreConnect Smart Care 운전시간 기준 정비 등급 안내",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsnQAF",
+    "name": "Smart Care Stage S3 (≤24,000 hr)",
+    "code": "SC-S3",
+    "family": "서비스",
+    "description": "CoreConnect Smart Care 운전시간 기준 정비 등급 안내",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  },
+  {
+    "id": "01tgK00000DxVsoQAF",
+    "name": "Smart Care Stage S4 (≤40,000 hr)",
+    "code": "SC-S4",
+    "family": "서비스",
+    "description": "CoreConnect Smart Care 운전시간 기준 정비 등급 안내",
+    "expected_life": null,
+    "overhaul_hours": null,
+    "consumable": false
+  }
+]
