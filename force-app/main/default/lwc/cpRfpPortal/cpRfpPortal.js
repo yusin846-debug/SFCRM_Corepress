@@ -345,24 +345,11 @@ export default class CpRfpPortal extends LightningElement {
   get proposalReady() {
     return Boolean(this.selectedRfp?.hasProposal);
   }
+  // The timeline shows recorded events only. It must never synthesize a
+  // "제안서 제출" row from an attached file — the file on an RFP is the
+  // customer's own submission attachment, not a proposal from CorePress.
   get timelineDisplay() {
-    const events = [...this.timeline];
-    const hasSubmitEvent = events.some((e) => e.eventType === "제안서 제출");
-    // Fallback row for when a rep attached the proposal file without running the
-    // "제안서 제출" quick action. Only ever shows once a real file exists.
-    if (this.selectedRfp?.hasProposal && !hasSubmitEvent) {
-      const title = this.selectedRfp.proposalTitle;
-      const uploadedAt =
-        this.selectedRfp.proposalUploadedAt || this.selectedRfp.submittedAt;
-      events.push({
-        eventType: "제안서 제출",
-        detail: `${title || "제안서 파일"} 첨부 완료 — 다운로드 가능`,
-        occurredAt: uploadedAt,
-        displayDate: this.formatDateTime(uploadedAt)
-      });
-      events.sort((a, b) => new Date(a.occurredAt) - new Date(b.occurredAt));
-    }
-    return events;
+    return this.timeline;
   }
   get hasTimeline() {
     return this.timelineDisplay.length > 0;

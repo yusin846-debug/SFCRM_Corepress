@@ -7,6 +7,7 @@ public without sharing class CpSalesPipelineController {
   private static final String NEW_BUSINESS_TYPE = 'New Business';
   private static final String SALES_OWNER_USERNAME = 'saleskim@corepress.demo';
   private static final String LEAD_SOURCE_CATALOG = '카탈로그 문의';
+  private static final String PROPOSAL_SUBMITTED_EVENT = '제안서 제출';
 
   /** @param submission Customer RFP payload. @return Created RFP Id. */
   @AuraEnabled
@@ -356,7 +357,7 @@ public without sharing class CpSalesPipelineController {
     if (accountId == null)
       return summaries;
     enforceCurrentUserAccount(accountId, null);
-    for (CorePress_RFP__c rfp : [
+    List<CorePress_RFP__c> rfps = [
       SELECT
         Id,
         Name,
@@ -382,9 +383,36 @@ public without sharing class CpSalesPipelineController {
       WHERE Account__c = :accountId
       ORDER BY Submitted_At__c DESC
       LIMIT 50
-    ])
-      summaries.add(new RfpSummary(rfp));
+    ];
+    Set<Id> withProposal = rfpIdsWithSubmittedProposal(rfps);
+    for (CorePress_RFP__c rfp : rfps)
+      summaries.add(new RfpSummary(rfp, withProposal.contains(rfp.Id)));
     return summaries;
+  }
+
+  /**
+   * A proposal counts as delivered only where CorePress recorded a
+   * '제안서 제출' event for the RFP. An attached file proves nothing on its
+   * own: attachOriginalFile() links the customer's own RFP attachment to the
+   * very same record.
+   *
+   * @param rfps RFP rows to check. @return Ids that have a submitted proposal.
+   */
+  private static Set<Id> rfpIdsWithSubmittedProposal(
+    List<CorePress_RFP__c> rfps
+  ) {
+    Set<Id> result = new Set<Id>();
+    if (rfps.isEmpty())
+      return result;
+    Set<Id> rfpIds = new Map<Id, CorePress_RFP__c>(rfps).keySet();
+    for (AggregateResult row : [
+      SELECT RFP__c rfpId
+      FROM CorePress_RFP_Event__c
+      WHERE RFP__c IN :rfpIds AND Event_Type__c = :PROPOSAL_SUBMITTED_EVENT
+      GROUP BY RFP__c
+    ])
+      result.add((Id) row.get('rfpId'));
+    return result;
   }
 
   private static final Set<String> RFQ_STAGES = new Set<String>{
@@ -735,7 +763,7 @@ public without sharing class CpSalesPipelineController {
     public Date requestedDeliveryDate;
     @AuraEnabled
     public String specifications;
-    public RfpSummary(CorePress_RFP__c rfp) {
+    public RfpSummary(CorePress_RFP__c rfp, Boolean proposalSubmitted) {
       id = rfp.Id;
       numberValue = rfp.Name;
       leadId = rfp.Lead__c;
@@ -747,9 +775,10 @@ public without sharing class CpSalesPipelineController {
       requestedDeliveryDate = rfp.Requested_Delivery_Date__c;
       specifications = rfp.Specifications__c;
       shortlistComplete = rfp.Opportunity__c != null;
-      // 제안서는 CorePress 담당자가 실제 파일을 첨부했을 때만 "제출됨"으로 본다.
-      hasProposal = !rfp.ContentDocumentLinks.isEmpty();
-      if (hasProposal) {
+      // 제안서 제출은 담당자가 남긴 이벤트로만 판정한다. 첨부 파일 존재는 근거가
+      // 될 수 없다 — 고객이 RFP 제출 시 올린 원본도 같은 레코드에 붙기 때문이다.
+      hasProposal = proposalSubmitted == true;
+      if (hasProposal && !rfp.ContentDocumentLinks.isEmpty()) {
         proposalContentDocumentId = rfp.ContentDocumentLinks[0]
           .ContentDocumentId;
         proposalTitle = rfp.ContentDocumentLinks[0].ContentDocument.Title;
