@@ -1,51 +1,828 @@
 <template>
-    <main class="page">
-        <header class="header"><img src={headerLogoUrl} alt="CorePress"/><nav><a href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a><a href={serviceUrl}>서비스 요청</a><span aria-current="page">RFP·RFQ</span><a href={quoteUrl}>견적</a></nav><div>{headerLabel}</div></header>
-        <section class="content">
-            <div class="heading"><p>PROCUREMENT REQUEST</p><h1>RFP·RFQ</h1><span>요구 사양을 전달하고 기술 제안과 견적 요청을 한곳에서 관리합니다.</span></div>
-            <div class="tabs" role="tablist"><button class={issueTabClass} data-tab="issue" onclick={selectTab}>RFP 발행</button><button class={statusTabClass} data-tab="status" onclick={selectTab}>내 RFP 현황</button><button class={rfqTabClass} data-tab="rfq" onclick={selectTab}>RFQ 제출</button><button class={rfqStatusTabClass} data-tab="rfq-status" onclick={selectTab}>내 RFQ 현황</button></div>
+  <main class="page">
+    <header class="header">
+      <img src={headerLogoUrl} alt="CorePress" />
+      <nav>
+        <a href={homeUrl}>홈</a><a href={assetListUrl}>보유 설비</a
+        ><a href={serviceUrl}>서비스 요청</a
+        ><span aria-current="page">RFP·RFQ</span><a href={quoteUrl}>견적</a>
+      </nav>
+      <div class="account">
+        {accountName}<span></span
+        ><button class="logout" type="button" onclick={handleLogout}>
+          <img src={logoutIconUrl} alt="" />로그아웃
+        </button>
+      </div>
+    </header>
+    <section class="content">
+      <div class="heading">
+        <p>PROCUREMENT REQUEST</p>
+        <h1>RFP·RFQ</h1>
+        <span
+          >요구 사양을 전달하고 기술 제안과 견적 요청을 한곳에서
+          관리합니다.</span
+        >
+      </div>
+      <div class="tabs" role="tablist">
+        <button class={issueTabClass} data-tab="issue" onclick={selectTab}>
+          RFP 발행</button
+        ><button class={statusTabClass} data-tab="status" onclick={selectTab}>
+          내 RFP 현황</button
+        ><button class={rfqTabClass} data-tab="rfq" onclick={selectTab}>
+          RFQ 제출</button
+        ><button
+          class={rfqStatusTabClass}
+          data-tab="rfq-status"
+          onclick={selectTab}
+        >
+          내 RFQ 현황
+        </button>
+      </div>
 
-            <template if:true={showIssue}>
-                <div class={rfpLayoutClass}><form class="form-panel mapped-form" onsubmit={submitRfp} novalidate><div class="section-title"><span>01</span><div><h2>설비 도입 제안 요청서</h2><p>도입 목적과 운전 조건을 입력해 주세요.</p></div></div><fieldset class="entry-mode"><legend>RFP 전달 방식</legend><label class={portalModeClass}><input type="radio" name="entryMode" value="portal" checked={isPortalMode} onchange={changeEntryMode}/><span><strong>포털에서 새로 작성</strong><small>필요한 내용을 직접 입력해 요청서를 제출합니다.</small></span></label><label class={emailModeClass}><input type="radio" name="entryMode" value="email" checked={isEmailMode} onchange={changeEntryMode}/><span><strong>이메일로 이미 전달함</strong><small>보낸 요청서를 등록하고 포털에서 후속 진행합니다.</small></span></label></fieldset><template if:true={isEmailMode}><section class="email-handoff"><div class="handoff-heading"><span>이메일 제출 정보</span><strong>빠른 확인을 위해 원본과 발송 정보를 등록해 주세요.</strong><p>누락된 정보가 있으면 담당자가 등록된 이메일로 보완을 요청드립니다.</p></div><div class="account-summary"><span>로그인 계정으로 자동 등록</span><strong>{customerName}</strong><small>{customerEmail}</small></div><div class="two-cols compact-fields"><label class="field"><span>이메일 발송일 <em>필수</em></span><input type="date" required/></label><label class="field"><span>이메일 제목 <em>필수</em></span><input required placeholder="예) 보낸 이메일 제목을 입력해 주세요"/></label></div><div class="field"><label class="upload emphasized"><input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.eml,.msg" required onchange={handleFile}/><b>원본 첨부 <i>+</i></b><span>{fileLabel}</span></label><p class="help">PDF, Word, Excel 또는 이메일 원본 파일을 첨부할 수 있습니다.</p></div></section></template>
-                    <template if:true={isPortalMode}><div class="form-block"><h3>도입 개요 <span class="mapping">Opportunity</span></h3><div class="two-cols"><label class="field"><span>RFP 요청 제목 <em>필수</em></span><input name="rfpTitle" required placeholder="예) 제2공장 신규 생산라인 압축기 도입"/></label><label class="field"><span>도입 형태 <em>필수</em></span><select name="rfpType" required><option value="" disabled selected>예) 도입 형태를 선택해 주세요</option><option>신규 설비 도입</option><option>노후화 장비 교체</option><option>기타</option></select></label><label class="field"><span>제안서 제출 마감 <em>필수</em></span><input type="text" required placeholder="예) 2026-08-31"/></label><label class="field"><span>예상 계약 완료일 <em>필수</em></span><input name="rfpCloseDate" type="date" required/></label></div><label class="field"><span>도입 목적 및 현재 설비 현황</span><textarea name="rfpPurpose" rows="4" placeholder="예) 제2공장 신규 생산라인 증설에 따른 압축공기 수요 대응. 현재 오일프리 스크류 2대, 공급 용량 40 m³/min, 24시간 연속 운전."></textarea></label></div>
-                    <div class="form-block"><h3>요구 사양 <span class="mapping">Opportunity Product</span></h3><div class="spec-grid"><label><span>품목</span><input placeholder="예) 오일프리 스크류 압축기"/></label><label><span>수량</span><input type="number" min="1" placeholder="예) 2"/></label><label><span>필요 풍량</span><input placeholder="예) 25 m³/min 이상"/></label><label><span>필요 압력</span><input placeholder="예) 7.0 barG 이상"/></label><label><span>오일프리 등급</span><input placeholder="예) ISO 8573-1 Class 0"/></label><label><span>전원 조건</span><input placeholder="예) AC 440V / 3상 / 60Hz"/></label></div><label class="field"><span>제품별 적용 사양</span><textarea rows="3" placeholder="예) 주간 100%, 야간 60~70% 부하 변동 대응. 수랭식, 통합 제어 및 원격 모니터링 포함."></textarea></label></div>
-                    <div class="form-block"><h3>일정 및 성능 조건 <span class="mapping">Opportunity</span></h3><div class="two-cols"><label class="field"><span>희망 납기</span><input type="text" placeholder="예) 2027-03-02"/></label><label class="field"><span>설치 가능 기간</span><input placeholder="예) 2027-03-02 ~ 2027-03-20"/></label></div><label class="field"><span>성능 보증 기준</span><textarea rows="3" placeholder="예) 토출 풍량 25 m³/min ±3%, 소음 75 dB(A) 이하 @1m. 시운전 완료 시 인수 성능 시험 실시."></textarea></label></div>
-                    <div class="form-block warranty-block"><h3>보증 요구 조건 <span class="mapping">Warranty Term 근거</span></h3><div class="warranty-grid"><label><span>보증기간</span><input type="number" placeholder="예) 24"/><small>개월</small></label><label><span>부품 커버율</span><input type="number" placeholder="예) 100"/><small>%</small></label><label><span>공임 커버율</span><input type="number" placeholder="예) 100"/><small>%</small></label><label><span>출장비 커버율</span><input type="number" placeholder="예) 50"/><small>%</small></label></div><label class="field"><span>보증 범위 설명</span><input placeholder="예) 소모품 별도 명시, 설비 정지 시 현장 대응시간 협의"/></label></div>
-                    <div class="form-block"><h3>원본 문서 <span class="mapping">ContentDocument</span></h3><div class="field"><label class="upload"><input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx" onchange={handleFile}/><b>파일 선택 <i>+</i></b><span>{fileLabel}</span></label><p class="help">검토할 원본 RFP 문서가 있다면 함께 첨부해 주세요.</p></div></div></template><template if:true={rfpSubmitError}><p class="submit-error" role="alert">{rfpSubmitError}</p></template><div class="actions"><template if:true={isPortalMode}><button type="button" class="secondary">임시 저장</button></template><button type="submit" class="primary" disabled={isSubmittingRfp}>{rfpSubmitLabel} <span>→</span></button></div></form>
-                    <aside class="guide"><p>SPECIFICATION GUIDE</p><h2>제안에 필요한 핵심 정보</h2><ol><li><b>01</b><span><strong>필요 용량 및 토출 압력</strong><small>정상·최대 운전 조건을 함께 기재</small></span></li><li><b>02</b><span><strong>사용 가스 종류</strong><small>공기, 질소, CO₂ 등 대상 가스</small></span></li><li><b>03</b><span><strong>설치 환경 조건</strong><small>실내외, 온도, 고도 및 방폭 조건</small></span></li><li><b>04</b><span><strong>희망 납기와 수량</strong><small>설치·시운전 희망 일정 포함</small></span></li><li><b>05</b><span><strong>기타 특수 요구사항</strong><small>인증, 재질, 제어 및 연동 조건</small></span></li></ol><div class="guide-note">내용이 구체적일수록 정확한 장비 선정과 기술 검토가 가능합니다.</div></aside></div>
-            </template>
-
-            <template if:true={showStatus}>
-                <div class="status-layout">
-                    <section class="request-list"><header><h2>내 RFP 현황</h2><span>총 {rfpRequestCount}건</span></header>
-                        <template for:each={rfpRequestRows} for:item="req"><button key={req.id} class={req.rowClass} type="button" data-id={req.id} onclick={selectRfpRequest}><span class="state">{req.stage}</span><strong>{req.name}</strong><small>예상 완료 {req.closeDate}</small><i>→</i></button></template>
-                        <template if:false={hasRfpRequests}><p class="empty-history">접수된 RFP가 없습니다.</p></template>
-                    </section>
-                    <template if:true={selectedRfp}>
-                    <section class="proposal"><p>OPPORTUNITY</p><h2>{selectedRfp.name}</h2><span>{selectedRfp.stage} 단계 · 도입 형태 {selectedRfp.type}</span><div class="review"><small>요청 내용</small><p>{selectedRfp.description}</p></div><div class="proposal-actions"><template if:true={hasRfpProposal}><a href={rfpProposalUrl} target="_blank" rel="noopener">기술 제안서 PDF ↓</a></template><template if:false={hasRfpProposal}><span class="muted">제안서 준비 중</span></template><button type="button" onclick={goToRfq}>RFQ 제출하기 <span>→</span></button></div></section>
-                    </template>
+      <template if:true={showIssue}>
+        <div class={rfpLayoutClass}>
+          <form class="form-panel mapped-form" onsubmit={submitRfp} novalidate>
+            <div class="section-title">
+              <span>01</span>
+              <div>
+                <h2>설비 도입 제안 요청서</h2>
+                <p>도입 목적과 운전 조건을 입력해 주세요.</p>
+              </div>
+            </div>
+            <fieldset class="entry-mode">
+              <legend>RFP 전달 방식</legend>
+              <label class={portalModeClass}
+                ><input
+                  type="radio"
+                  name="entryMode"
+                  value="portal"
+                  checked={isPortalMode}
+                  onchange={changeEntryMode}
+                /><span
+                  ><strong>포털에서 새로 작성</strong
+                  ><small
+                    >필요한 내용을 직접 입력해 요청서를 제출합니다.</small
+                  ></span
+                ></label
+              ><label class={emailModeClass}
+                ><input
+                  type="radio"
+                  name="entryMode"
+                  value="email"
+                  checked={isEmailMode}
+                  onchange={changeEntryMode}
+                /><span
+                  ><strong>이메일로 이미 전달함</strong
+                  ><small
+                    >보낸 요청서를 등록하고 포털에서 후속 진행합니다.</small
+                  ></span
+                ></label
+              >
+            </fieldset>
+            <template if:true={isEmailMode}
+              ><section class="email-handoff">
+                <div class="handoff-heading">
+                  <span>이메일 제출 정보</span
+                  ><strong
+                    >빠른 확인을 위해 원본과 발송 정보를 등록해 주세요.</strong
+                  >
+                  <p>
+                    누락된 정보가 있으면 담당자가 등록된 이메일로 보완을
+                    요청드립니다.
+                  </p>
                 </div>
-            </template>
-
-            <template if:true={showRfqStatus}>
-                <div class="status-layout">
-                    <section class="request-list"><header><h2>내 RFQ 현황</h2><span>총 {rfqRequestCount}건</span></header>
-                        <template for:each={rfqRequestRows} for:item="req"><button key={req.id} class={req.rowClass} type="button" data-id={req.id} onclick={selectRfqRequest}><span class="state">{req.stage}</span><strong>{req.name}</strong><small>예상 완료 {req.closeDate}</small><i>→</i></button></template>
-                        <template if:false={hasRfqRequests}><p class="empty-history">접수된 RFQ가 없습니다.</p></template>
-                    </section>
-                    <template if:true={selectedRfq}>
-                    <section class="proposal"><p>QUOTE SUMMARY</p><h2>{selectedRfq.name}</h2><span>{selectedRfq.stage} 단계입니다.</span><div class="review"><small>결제 조건 및 비고</small><p>{selectedRfq.description}</p></div><div class="proposal-actions"><a href={quoteUrl}>견적 조회로 이동 →</a></div></section>
-                    </template>
+                <div class="account-summary">
+                  <span>로그인 계정으로 자동 등록</span
+                  ><strong>{customerName}</strong><small>{customerEmail}</small>
                 </div>
-            </template>
+                <label class="field"
+                  ><span>연결 카탈로그 문의 <em>필수</em></span
+                  ><select name="leadId" required onchange={handleLeadChange}>
+                    <option value="">문의 건을 선택해 주세요</option>
+                    <template for:each={leadOptions} for:item="lead"
+                      ><option key={lead.id} value={lead.id}>
+                        {lead.optionLabel}
+                      </option></template
+                    ></select
+                  ><template if:false={hasLeadOptions}
+                    ><small class="warning"
+                      >먼저 공개 랜딩에서 카탈로그 문의를 등록해 주세요.</small
+                    ></template
+                  ></label
+                >
+                <div class="two-cols compact-fields">
+                  <label class="field"
+                    ><span>이메일 발송일 <em>필수</em></span
+                    ><input name="emailSentDate" type="date" required /></label
+                  ><label class="field"
+                    ><span>이메일 제목 <em>필수</em></span
+                    ><input
+                      name="emailSubject"
+                      required
+                      placeholder="예) 보낸 이메일 제목을 입력해 주세요"
+                  /></label>
+                </div>
+                <div class="field">
+                  <label class="upload emphasized"
+                    ><input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.xls,.xlsx,.eml,.msg"
+                      required
+                      onchange={handleFile}
+                    /><b>원본 첨부 <i>+</i></b
+                    ><span>{fileLabel}</span></label
+                  >
+                  <p class="help">
+                    PDF, Word, Excel 또는 이메일 원본 파일을 첨부할 수 있습니다.
+                  </p>
+                </div>
+              </section></template
+            >
+            <template if:true={isPortalMode}
+              ><div class="form-block">
+                <h3>도입 개요 <span class="mapping">Lead · RFP</span></h3>
+                <div class="two-cols">
+                  <label class="field"
+                    ><span>연결 카탈로그 문의 <em>필수</em></span
+                    ><select name="leadId" required onchange={handleLeadChange}>
+                      <option value="">문의 건을 선택해 주세요</option>
+                      <template for:each={leadOptions} for:item="lead"
+                        ><option key={lead.id} value={lead.id}>
+                          {lead.optionLabel}
+                        </option></template
+                      ></select
+                    ><template if:false={hasLeadOptions}
+                      ><small class="warning"
+                        >먼저 공개 랜딩에서 카탈로그 문의를 등록해
+                        주세요.</small
+                      ></template
+                    ></label
+                  ><label class="field"
+                    ><span>관심 장비 <em>필수</em></span
+                    ><input
+                      name="rfpEquipment"
+                      required
+                      value={rfpEquipmentValue}
+                      onchange={handleEquipmentInput}
+                      placeholder="연결 카탈로그 문의를 선택하면 자동 입력됩니다" /></label
+                  ><label class="field"
+                    ><span>RFP 요청 제목 <em>필수</em></span
+                    ><input
+                      name="rfpTitle"
+                      required
+                      placeholder="예) 제2공장 신규 생산라인 압축기 도입" /></label
+                  ><label class="field"
+                    ><span>도입 형태 <em>필수</em></span
+                    ><select name="rfpType" required>
+                      <option value="신규 도입" selected>신규 설비 도입</option>
+                      <option value="장비 교체">노후화 장비 교체</option>
+                      <option>기타</option>
+                    </select></label
+                  ><label class="field"
+                    ><span>예상 계약 완료일 <em>필수</em></span
+                    ><input name="rfpCloseDate" type="date" required
+                  /></label>
+                </div>
+                <label class="field"
+                  ><span>도입 목적 및 현재 설비 현황</span
+                  ><textarea
+                    name="rfpPurpose"
+                    rows="4"
+                    placeholder="예) 제2공장 신규 생산라인 증설에 따른 압축공기 수요 대응."
+                  ></textarea>
+                </label>
+              </div>
+              <div class="form-block">
+                <h3>
+                  요구 사양 <span class="mapping">Opportunity Product</span>
+                </h3>
+                <div class="spec-grid">
+                  <label
+                    ><span>품목</span
+                    ><input placeholder="예) 오일프리 스크류 압축기" /></label
+                  ><label
+                    ><span>수량</span
+                    ><input type="number" min="1" placeholder="예) 2" /></label
+                  ><label
+                    ><span>필요 풍량</span
+                    ><input placeholder="예) 25 m³/min 이상" /></label
+                  ><label
+                    ><span>필요 압력</span
+                    ><input placeholder="예) 7.0 barG 이상" /></label
+                  ><label
+                    ><span>오일프리 등급</span
+                    ><input placeholder="예) ISO 8573-1 Class 0" /></label
+                  ><label
+                    ><span>전원 조건</span
+                    ><input placeholder="예) AC 440V / 3상 / 60Hz"
+                  /></label>
+                </div>
+                <label class="field"
+                  ><span>제품별 적용 사양</span
+                  ><textarea
+                    rows="3"
+                    placeholder="예) 주간 100%, 야간 60~70% 부하 변동 대응. 수랭식, 통합 제어 및 원격 모니터링 포함."
+                  ></textarea>
+                </label>
+              </div>
+              <div class="form-block">
+                <h3>
+                  일정 및 성능 조건 <span class="mapping">Opportunity</span>
+                </h3>
+                <div class="two-cols">
+                  <label class="field"
+                    ><span>희망 납기</span
+                    ><input type="text" placeholder="예) 2027-03-02" /></label
+                  ><label class="field"
+                    ><span>설치 가능 기간</span
+                    ><input placeholder="예) 2027-03-02 ~ 2027-03-20"
+                  /></label>
+                </div>
+                <label class="field"
+                  ><span>성능 보증 기준</span
+                  ><textarea
+                    rows="3"
+                    placeholder="예) 토출 풍량 25 m³/min ±3%, 소음 75 dB(A) 이하 @1m. 시운전 완료 시 인수 성능 시험 실시."
+                  ></textarea>
+                </label>
+              </div>
+              <div class="form-block warranty-block">
+                <h3>
+                  보증 요구 조건 <span class="mapping">Warranty Term 근거</span>
+                </h3>
+                <div class="warranty-grid">
+                  <label
+                    ><span>보증기간</span
+                    ><input type="number" placeholder="예) 24" /><small
+                      >개월</small
+                    ></label
+                  ><label
+                    ><span>부품 커버율</span
+                    ><input type="number" placeholder="예) 100" /><small
+                      >%</small
+                    ></label
+                  ><label
+                    ><span>공임 커버율</span
+                    ><input type="number" placeholder="예) 100" /><small
+                      >%</small
+                    ></label
+                  ><label
+                    ><span>출장비 커버율</span
+                    ><input type="number" placeholder="예) 50" /><small
+                      >%</small
+                    ></label
+                  >
+                </div>
+                <label class="field"
+                  ><span>보증 범위 설명</span
+                  ><input
+                    placeholder="예) 소모품 별도 명시, 설비 정지 시 현장 대응시간 협의"
+                /></label>
+              </div>
+              <div class="form-block">
+                <h3>원본 문서 <span class="mapping">ContentDocument</span></h3>
+                <div class="field">
+                  <label class="upload"
+                    ><input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.xls,.xlsx"
+                      onchange={handleFile}
+                    /><b>파일 선택 <i>+</i></b
+                    ><span>{fileLabel}</span></label
+                  >
+                  <p class="help">
+                    검토할 원본 RFP 문서가 있다면 함께 첨부해 주세요.
+                  </p>
+                </div>
+              </div></template
+            ><template if:true={rfpSubmitError}
+              ><p class="submit-error" role="alert">
+                {rfpSubmitError}
+              </p></template
+            >
+            <div class="actions">
+              <template if:true={isPortalMode}
+                ><button type="button" class="secondary">
+                  임시 저장
+                </button></template
+              ><button type="submit" class="primary" disabled={isSubmittingRfp}>
+                {rfpSubmitLabel} <span>→</span>
+              </button>
+            </div>
+          </form>
+          <aside class="guide">
+            <p>SPECIFICATION GUIDE</p>
+            <h2>제안에 필요한 핵심 정보</h2>
+            <ol>
+              <li>
+                <b>01</b
+                ><span
+                  ><strong>필요 용량 및 토출 압력</strong
+                  ><small>정상·최대 운전 조건을 함께 기재</small></span
+                >
+              </li>
+              <li>
+                <b>02</b
+                ><span
+                  ><strong>사용 가스 종류</strong
+                  ><small>공기, 질소, CO₂ 등 대상 가스</small></span
+                >
+              </li>
+              <li>
+                <b>03</b
+                ><span
+                  ><strong>설치 환경 조건</strong
+                  ><small>실내외, 온도, 고도 및 방폭 조건</small></span
+                >
+              </li>
+              <li>
+                <b>04</b
+                ><span
+                  ><strong>희망 납기와 수량</strong
+                  ><small>설치·시운전 희망 일정 포함</small></span
+                >
+              </li>
+              <li>
+                <b>05</b
+                ><span
+                  ><strong>기타 특수 요구사항</strong
+                  ><small>인증, 재질, 제어 및 연동 조건</small></span
+                >
+              </li>
+            </ol>
+            <div class="guide-note">
+              내용이 구체적일수록 정확한 장비 선정과 기술 검토가 가능합니다.
+            </div>
+          </aside>
+        </div>
+      </template>
 
-            <template if:true={showRfq}>
-                <div class={rfqLayoutClass}><form class="form-panel mapped-form" onsubmit={submitRfq} novalidate><div class="section-title"><span>03</span><div><h2>견적 요청서</h2><p>확정된 사양과 구매 조건을 입력해 주세요.</p></div></div><fieldset class="entry-mode"><legend>RFQ 전달 방식</legend><label class={rfqPortalModeClass}><input type="radio" name="rfqEntryMode" value="portal" checked={isRfqPortalMode} onchange={changeRfqEntryMode}/><span><strong>포털에서 제출</strong><small>협의된 품목과 구매 조건을 확인한 뒤 제출합니다.</small></span></label><label class={rfqEmailModeClass}><input type="radio" name="rfqEntryMode" value="email" checked={isRfqEmailMode} onchange={changeRfqEntryMode}/><span><strong>이메일로 이미 전달함</strong><small>보낸 RFQ를 등록하고 포털에서 진행 상태를 확인합니다.</small></span></label></fieldset><template if:true={isRfqEmailMode}><section class="email-handoff"><div class="handoff-heading"><span>이메일 제출 정보</span><strong>보낸 RFQ와 발송 정보를 등록해 주세요.</strong><p>누락된 정보가 있으면 담당자가 등록된 이메일로 보완을 요청드립니다.</p></div><div class="account-summary"><span>로그인 계정으로 자동 등록</span><strong>{customerName}</strong><small>{customerEmail}</small></div><div class="two-cols compact-fields"><label class="field"><span>이메일 발송일 <em>필수</em></span><input type="date" required/></label><label class="field"><span>이메일 제목 <em>필수</em></span><input required placeholder="예) 제2공장 압축기 견적 요청"/></label></div><div class="field"><label class="upload emphasized"><input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.eml,.msg" required onchange={handleRfqFile}/><b>RFQ 원본 첨부 <i>+</i></b><span>{rfqFileLabel}</span></label><p class="help">PDF, Word, Excel 또는 이메일 원본 파일을 첨부할 수 있습니다.</p></div></section></template><template if:true={isRfqPortalMode}><div class="two-cols"><label class="field"><span>연결 RFP</span><input placeholder="예) DHC-RFP-2026-014" readonly/></label><label class="field"><span>사내 품의 확인 <em>필수</em></span><select required><option value="" disabled selected>예) 진행 상태를 선택해 주세요</option><option>승인 완료</option><option>진행 중</option></select></label><label class="field"><span>RFQ 요청 제목 <em>필수</em></span><input name="rfqTitle" required placeholder="예) 제2공장 증설 CP7100+ 견적 요청"/></label><label class="field"><span>희망 납기</span><input name="rfqCloseDate" type="date"/></label></div>
-                    <div class="form-block agreed-products"><div class="agreed-heading"><div><span class="agreement-state">기술 협의 완료</span><h3>협의된 견적 요청 품목</h3><p>RFP 검토와 기술 협의를 통해 확정된 구성입니다. 이 화면에서 품목과 수량은 직접 변경되지 않습니다.</p></div><button type="button" class="change-request-button" onclick={toggleProductChange}>품목 변경 요청</button></div><div class="line-items" aria-label="협의가 완료된 견적 요청 품목"><div><span>오일프리 스크류 압축기</span><b>2대</b><small>7.5 barG · 25 m³/min · 인버터</small></div><div><span>에어드라이어</span><b>2대</b><small>냉동식 · 30 m³/min</small></div><div><span>라인필터</span><b>2세트</b><small>프리·애프터 세트</small></div><div><span>리시버 탱크</span><b>1대</b><small>5,000 L</small></div></div><div class="locked-note"><strong>변경이 필요한가요?</strong><span>변경 요청을 남기면 담당자가 기술 영향과 납기 조건을 다시 검토한 뒤 확정 품목을 갱신합니다.</span></div><template if:true={showProductChange}><div class="change-request-panel"><label class="field"><span>희망 변경 내용과 사유 <em>필수</em></span><textarea rows="4" required placeholder="예) 압축기 수량을 3대로 변경하고 싶습니다. 야간 생산량 증가가 예상됩니다."></textarea></label><p>요청을 제출해도 현재 확정 품목은 즉시 바뀌지 않습니다. 담당자 검토 후 결과를 안내드립니다.</p></div></template></div>
-                    <div class="form-block"><h3>계약 전 검토 조건 <span class="mapping">Opportunity</span></h3><label class="field"><span>설치 가능 기간</span><input placeholder="예) 2027-03-02 ~ 2027-03-20"/></label><label class="field"><span>성능 보증 기준</span><textarea rows="3" placeholder="예) 토출 풍량 25 m³/min ±3%, 소음 75 dB(A) 이하 @1m, 인수 성능 시험 입회 실시."></textarea></label></div>
-                    <div class="form-block warranty-block"><h3>보증 요구 조건 <span class="mapping">Warranty Term 근거</span></h3><div class="warranty-grid"><label><span>보증기간</span><input type="number" placeholder="예) 24"/><small>개월</small></label><label><span>부품</span><input type="number" placeholder="예) 100"/><small>%</small></label><label><span>공임</span><input type="number" placeholder="예) 100"/><small>%</small></label><label><span>출장비</span><input type="number" placeholder="예) 50"/><small>%</small></label></div></div>
-                    <div class="form-block"><h3>결제 및 원본 문서 <span class="mapping">Quote · ContentDocument</span></h3><label class="field"><span>결제 조건</span><input name="rfqPaymentTerms" placeholder="예) 계약 30% / 출하 40% / 시운전·인수 후 30%"/></label><div class="check-grid"><label><input type="checkbox" required/>확정 사양</label><label><input type="checkbox" required/>희망 납기</label><label><input type="checkbox" required/>수량</label><label><input type="checkbox" required/>결제 조건</label><label><input type="checkbox" required/>RFQ 원본</label></div></div></template><template if:true={rfqSubmitError}><p class="submit-error" role="alert">{rfqSubmitError}</p></template><div class="actions"><template if:true={isRfqPortalMode}><button type="button" class="secondary">취소</button></template><button type="submit" class="primary" disabled={isSubmittingRfq}>{rfqSubmitLabel} <span>→</span></button></div></form><aside class="guide rfq-guide"><p>MAPPING SUMMARY</p><h2>CRM 반영 항목</h2><span>영업기회와 후속 견적·보증 프로세스에 전달되는 항목입니다.</span><dl><div><dt>품목·수량</dt><dd>Opportunity Product</dd></div><div><dt>희망 납기</dt><dd>Opportunity</dd></div><div><dt>설치 기간</dt><dd>Opportunity</dd></div><div><dt>성능 보증</dt><dd>Opportunity</dd></div><div><dt>결제 조건</dt><dd>Quote</dd></div><div><dt>보증 커버율</dt><dd>Warranty Term 근거</dd></div><div><dt>원본 문서</dt><dd>ContentDocument</dd></div></dl></aside></div>
-            </template>
-        </section>
-    </main>
+      <template if:true={showStatus}>
+        <div class="status-layout">
+          <section class="request-list">
+            <header>
+              <h2>내 RFP 현황</h2>
+              <span>총 {rfpRequestCount}건</span>
+            </header>
+            <template for:each={rfpRequestRows} for:item="req"
+              ><button
+                key={req.id}
+                class={req.rowClass}
+                type="button"
+                data-id={req.id}
+                onclick={selectRfpRequest}
+              >
+                <span class="state">{req.status}</span
+                ><strong>{req.name}</strong
+                ><small>{req.equipment} · 등록 {req.createdDate}</small><i>→</i>
+              </button></template
+            >
+            <template if:false={hasRfpRequests}
+              ><p class="empty-history">접수된 RFP가 없습니다.</p></template
+            >
+          </section>
+          <template if:true={selectedRfp}>
+            <section class="proposal">
+              <p>TECHNICAL PROPOSAL</p>
+              <h2>{selectedRfp.name}</h2>
+              <span
+                >{selectedRfp.status} 단계 · 관심 장비
+                {selectedRfp.equipment}</span
+              >
+              <div class="proposal-actions">
+                <template if:true={proposalReady}
+                  ><button
+                    type="button"
+                    class="secondary"
+                    onclick={downloadProposal}
+                  >
+                    제안서 다운로드 ↓
+                  </button></template
+                ><template if:false={proposalReady}
+                  ><button type="button" class="secondary" disabled>
+                    제안서 준비 중
+                  </button></template
+                ><button
+                  type="button"
+                  onclick={handleShortlist}
+                  disabled={shortlistDisabled}
+                >
+                  {selectedRfp.shortlistLabel} <span>→</span>
+                </button>
+              </div>
+              <template if:true={proposalReady}
+                ><div class="revision-request">
+                  <button
+                    type="button"
+                    class="link-button"
+                    onclick={toggleRevisionPanel}
+                  >
+                    제안서 수정요청
+                  </button>
+                  <template if:true={showRevisionPanel}
+                    ><div class="revision-panel">
+                      <label
+                        ><span>수정 요청 내용 <em>필수</em></span
+                        ><textarea
+                          rows="3"
+                          onchange={handleRevisionInput}
+                          placeholder="예) 납기 일정을 2주 앞당길 수 있는 구성으로 다시 제안 부탁드립니다."
+                        ></textarea>
+                      </label>
+                      <template if:true={revisionError}
+                        ><p class="submit-error" role="alert">
+                          {revisionError}
+                        </p></template
+                      >
+                      <button
+                        type="button"
+                        class="primary"
+                        onclick={submitRevisionRequest}
+                        disabled={isSubmittingRevision}
+                      >
+                        수정 요청 보내기
+                      </button>
+                      <p class="help">
+                        요청을 보내면 담당자에게 전달되며, 진행 이력에
+                        기록됩니다.
+                      </p>
+                    </div></template
+                  >
+                </div></template
+              >
+              <div class="timeline">
+                <h3>진행 이력</h3>
+                <template for:each={timelineDisplay} for:item="entry"
+                  ><div key={entry.occurredAt} class="timeline-row">
+                    <span></span>
+                    <div>
+                      <strong>{entry.eventType}</strong
+                      ><small>{entry.displayDate}</small>
+                      <p>{entry.detail}</p>
+                    </div>
+                  </div></template
+                ><template if:false={hasTimeline}
+                  ><p class="empty-history">
+                    기록된 진행 이력이 없습니다.
+                  </p></template
+                >
+              </div>
+              <template if:true={selectedRfp.shortlistComplete}
+                ><div class="proposal-actions">
+                  <span class="muted">숏리스트 선정 완료</span
+                  ><button type="button" onclick={goToRfq}>
+                    RFQ 제출하기 <span>→</span>
+                  </button>
+                </div></template
+              >
+            </section>
+          </template>
+        </div>
+      </template>
+
+      <template if:true={showRfqStatus}>
+        <div class="status-layout">
+          <section class="request-list">
+            <header>
+              <h2>내 RFQ 현황</h2>
+              <span>총 {rfqRequestCount}건</span>
+            </header>
+            <template for:each={rfqRequestRows} for:item="req"
+              ><button
+                key={req.id}
+                class={req.rowClass}
+                type="button"
+                data-id={req.id}
+                onclick={selectRfqRequest}
+              >
+                <span class="state">{req.stage}</span><strong>{req.name}</strong
+                ><small>예상 완료 {req.closeDate}</small><i>→</i>
+              </button></template
+            >
+            <template if:false={hasRfqRequests}
+              ><p class="empty-history">접수된 RFQ가 없습니다.</p></template
+            >
+          </section>
+          <template if:true={selectedRfq}>
+            <section class="proposal">
+              <p>QUOTE SUMMARY</p>
+              <h2>{selectedRfq.name}</h2>
+              <span>{selectedRfq.stage} 단계입니다.</span>
+              <div class="review">
+                <small>결제 조건 및 비고</small>
+                <p>{selectedRfq.description}</p>
+              </div>
+              <div class="proposal-actions">
+                <a href={quoteUrl}>견적 조회로 이동 →</a>
+              </div>
+            </section>
+          </template>
+        </div>
+      </template>
+
+      <template if:true={showRfq}>
+        <div class={rfqLayoutClass}>
+          <form class="form-panel mapped-form" onsubmit={submitRfq} novalidate>
+            <div class="section-title">
+              <span>03</span>
+              <div>
+                <h2>견적 요청서</h2>
+                <p>확정된 사양과 구매 조건을 입력해 주세요.</p>
+              </div>
+            </div>
+            <fieldset class="entry-mode">
+              <legend>RFQ 전달 방식</legend>
+              <label class={rfqPortalModeClass}
+                ><input
+                  type="radio"
+                  name="rfqEntryMode"
+                  value="portal"
+                  checked={isRfqPortalMode}
+                  onchange={changeRfqEntryMode}
+                /><span
+                  ><strong>포털에서 제출</strong
+                  ><small
+                    >협의된 품목과 구매 조건을 확인한 뒤 제출합니다.</small
+                  ></span
+                ></label
+              ><label class={rfqEmailModeClass}
+                ><input
+                  type="radio"
+                  name="rfqEntryMode"
+                  value="email"
+                  checked={isRfqEmailMode}
+                  onchange={changeRfqEntryMode}
+                /><span
+                  ><strong>이메일로 이미 전달함</strong
+                  ><small
+                    >보낸 RFQ를 등록하고 포털에서 진행 상태를 확인합니다.</small
+                  ></span
+                ></label
+              >
+            </fieldset>
+            <template if:true={isRfqEmailMode}
+              ><section class="email-handoff">
+                <div class="handoff-heading">
+                  <span>이메일 제출 정보</span
+                  ><strong>보낸 RFQ와 발송 정보를 등록해 주세요.</strong>
+                  <p>
+                    누락된 정보가 있으면 담당자가 등록된 이메일로 보완을
+                    요청드립니다.
+                  </p>
+                </div>
+                <div class="account-summary">
+                  <span>로그인 계정으로 자동 등록</span
+                  ><strong>{customerName}</strong><small>{customerEmail}</small>
+                </div>
+                <div class="two-cols compact-fields">
+                  <label class="field"
+                    ><span>이메일 발송일 <em>필수</em></span
+                    ><input type="date" required /></label
+                  ><label class="field"
+                    ><span>이메일 제목 <em>필수</em></span
+                    ><input required placeholder="예) 제2공장 압축기 견적 요청"
+                  /></label>
+                </div>
+                <div class="field">
+                  <label class="upload emphasized"
+                    ><input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.xls,.xlsx,.eml,.msg"
+                      required
+                      onchange={handleRfqFile}
+                    /><b>RFQ 원본 첨부 <i>+</i></b
+                    ><span>{rfqFileLabel}</span></label
+                  >
+                  <p class="help">
+                    PDF, Word, Excel 또는 이메일 원본 파일을 첨부할 수 있습니다.
+                  </p>
+                </div>
+              </section></template
+            ><template if:true={isRfqPortalMode}
+              ><div class="two-cols">
+                <label class="field"
+                  ><span>연결 RFP <em>필수</em></span
+                  ><select name="rfqRfpId" required onchange={selectRfqRfp}>
+                    <option value="">숏리스트 완료된 RFP를 선택해 주세요</option>
+                    <template for:each={shortlistedRfps} for:item="rfp"
+                      ><option
+                        key={rfp.id}
+                        value={rfp.id}
+                        selected={rfp.selected}
+                      >
+                        {rfp.name}
+                      </option></template
+                    ></select
+                  ><template if:false={hasShortlistedRfps}
+                    ><small class="warning"
+                      >먼저 제안서를 숏리스트로 선정해 주세요.</small
+                    ></template
+                  ></label
+                ><label class="field"
+                  ><span>사내 품의 확인</span
+                  ><select>
+                    <option value="">진행 상태를 선택해 주세요</option>
+                    <option>승인 완료</option>
+                    <option>진행 중</option>
+                  </select></label
+                ><label class="field"
+                  ><span>RFQ 요청 제목</span
+                  ><input
+                    name="rfqTitle"
+                    value={rfqTitleValue}
+                    onchange={handleRfqTitleInput}
+                    placeholder="연결 RFP를 선택하면 자동 입력됩니다" /></label
+                ><label class="field"
+                  ><span>희망 납기</span
+                  ><input
+                    name="rfqCloseDate"
+                    type="date"
+                    value={rfqCloseDateValue}
+                    onchange={handleRfqCloseInput}
+                /></label>
+              </div>
+              <template if:true={rfqSpecValue}
+                ><label class="field"
+                  ><span>확정 사양 (RFP에서 가져옴)</span
+                  ><textarea rows="3" readonly>{rfqSpecValue}</textarea></label
+                ></template
+              >
+              <div class="form-block agreed-products">
+                <div class="agreed-heading">
+                  <div>
+                    <span class="agreement-state">기술 협의 완료</span>
+                    <h3>협의된 견적 요청 품목</h3>
+                    <p>
+                      RFP 검토와 기술 협의를 통해 확정된 구성입니다. 이 화면에서
+                      품목과 수량은 직접 변경되지 않습니다.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    class="change-request-button"
+                    onclick={toggleProductChange}
+                  >
+                    품목 변경 요청
+                  </button>
+                </div>
+                <div
+                  class="line-items"
+                  aria-label="협의가 완료된 견적 요청 품목"
+                >
+                  <div>
+                    <span>오일프리 스크류 압축기</span><b>2대</b
+                    ><small>7.5 barG · 25 m³/min · 인버터</small>
+                  </div>
+                  <div>
+                    <span>에어드라이어</span><b>2대</b
+                    ><small>냉동식 · 30 m³/min</small>
+                  </div>
+                  <div>
+                    <span>라인필터</span><b>2세트</b
+                    ><small>프리·애프터 세트</small>
+                  </div>
+                  <div>
+                    <span>리시버 탱크</span><b>1대</b><small>5,000 L</small>
+                  </div>
+                </div>
+                <div class="locked-note">
+                  <strong>변경이 필요한가요?</strong
+                  ><span
+                    >변경 요청을 남기면 담당자가 기술 영향과 납기 조건을 다시
+                    검토한 뒤 확정 품목을 갱신합니다.</span
+                  >
+                </div>
+                <template if:true={showProductChange}
+                  ><div class="change-request-panel">
+                    <label class="field"
+                      ><span>희망 변경 내용과 사유 <em>필수</em></span
+                      ><textarea
+                        rows="4"
+                        required
+                        placeholder="예) 압축기 수량을 3대로 변경하고 싶습니다. 야간 생산량 증가가 예상됩니다."
+                      ></textarea>
+                    </label>
+                    <p>
+                      요청을 제출해도 현재 확정 품목은 즉시 바뀌지 않습니다.
+                      담당자 검토 후 결과를 안내드립니다.
+                    </p>
+                  </div></template
+                >
+              </div>
+              <div class="form-block">
+                <h3>
+                  계약 전 검토 조건 <span class="mapping">Opportunity</span>
+                </h3>
+                <label class="field"
+                  ><span>설치 가능 기간</span
+                  ><input placeholder="예) 2027-03-02 ~ 2027-03-20" /></label
+                ><label class="field"
+                  ><span>성능 보증 기준</span
+                  ><textarea
+                    rows="3"
+                    placeholder="예) 토출 풍량 25 m³/min ±3%, 소음 75 dB(A) 이하 @1m, 인수 성능 시험 입회 실시."
+                  ></textarea>
+                </label>
+              </div>
+              <div class="form-block warranty-block">
+                <h3>
+                  보증 요구 조건 <span class="mapping">Warranty Term 근거</span>
+                </h3>
+                <div class="warranty-grid">
+                  <label
+                    ><span>보증기간</span
+                    ><input type="number" placeholder="예) 24" /><small
+                      >개월</small
+                    ></label
+                  ><label
+                    ><span>부품</span
+                    ><input type="number" placeholder="예) 100" /><small
+                      >%</small
+                    ></label
+                  ><label
+                    ><span>공임</span
+                    ><input type="number" placeholder="예) 100" /><small
+                      >%</small
+                    ></label
+                  ><label
+                    ><span>출장비</span
+                    ><input type="number" placeholder="예) 50" /><small
+                      >%</small
+                    ></label
+                  >
+                </div>
+              </div>
+              <div class="form-block">
+                <h3>
+                  결제 및 원본 문서
+                  <span class="mapping">Quote · ContentDocument</span>
+                </h3>
+                <label class="field"
+                  ><span>결제 조건</span
+                  ><input
+                    name="rfqPaymentTerms"
+                    placeholder="예) 계약 30% / 출하 40% / 시운전·인수 후 30%"
+                /></label>
+                <div class="check-grid">
+                  <label><input type="checkbox" />확정 사양</label
+                  ><label><input type="checkbox" />희망 납기</label
+                  ><label><input type="checkbox" />수량</label
+                  ><label><input type="checkbox" />결제 조건</label
+                  ><label><input type="checkbox" />RFQ 원본</label>
+                </div>
+              </div></template
+            ><template if:true={rfqSubmitError}
+              ><p class="submit-error" role="alert">
+                {rfqSubmitError}
+              </p></template
+            >
+            <div class="actions">
+              <template if:true={isRfqPortalMode}
+                ><button type="button" class="secondary">취소</button></template
+              ><button type="submit" class="primary" disabled={isSubmittingRfq}>
+                {rfqSubmitLabel} <span>→</span>
+              </button>
+            </div>
+          </form>
+          <aside class="guide rfq-guide">
+            <p>MAPPING SUMMARY</p>
+            <h2>CRM 반영 항목</h2>
+            <span
+              >영업기회와 후속 견적·보증 프로세스에 전달되는 항목입니다.</span
+            >
+            <dl>
+              <div>
+                <dt>품목·수량</dt>
+                <dd>Opportunity Product</dd>
+              </div>
+              <div>
+                <dt>희망 납기</dt>
+                <dd>Opportunity</dd>
+              </div>
+              <div>
+                <dt>설치 기간</dt>
+                <dd>Opportunity</dd>
+              </div>
+              <div>
+                <dt>성능 보증</dt>
+                <dd>Opportunity</dd>
+              </div>
+              <div>
+                <dt>결제 조건</dt>
+                <dd>Quote</dd>
+              </div>
+              <div>
+                <dt>보증 커버율</dt>
+                <dd>Warranty Term 근거</dd>
+              </div>
+              <div>
+                <dt>원본 문서</dt>
+                <dd>ContentDocument</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </template>
+    </section>
+  </main>
 </template>
